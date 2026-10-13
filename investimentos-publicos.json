@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-10-13",
+  "source": "Resumo público selecionado da planilha SHIRO. NÃO é sincronização automática ou indicação de compra.",
+  "livePrivateSheets": false,
+  "markets": {
+    "br": {
+      "broker": "Nubank",
+      "count": 26,
+      "stocks": 13,
+      "fiis": 9,
+      "smallcaps": 4,
+      "homologated": 0,
+      "perOrderBRL": 500,
+      "tickers": [
+        "VALE3",
+        "BBAS3",
+        "CMIG4",
+        "ISAE4",
+        "ITSA4",
+        "PETR4",
+        "TAEE11",
+        "CSMG3",
+        "AGRO3",
+        "ITUB4",
+        "BBDC4",
+        "CXSE3",
+        "ALUP11",
+        "CPTS11",
+        "VGIA11",
+        "VGHF11",
+        "GARE11",
+        "HGBS11",
+        "HGLG11",
+        "XPML11",
+        "VGIR11",
+        "MXRF11",
+        "PLPL3",
+        "KEPL3",
+        "LWSA3",
+        "MILS3"
+      ]
+    },
+    "us": {
+      "broker": "Nomad",
+      "count": 13,
+      "stocks": 10,
+      "etfs": 3,
+      "homologated": 0,
+      "perOrderBRL": 500,
+      "tickers": [
+        "MSFT",
+        "JNJ",
+        "AVGO",
+        "JPM",
+        "ABBV",
+        "TXN",
+        "CAT",
+        "PG",
+        "HD",
+        "KO",
+        "JEPQ",
+        "IVV",
+        "TFLO"
+      ]
+    },
+    "crypto": {
+      "broker": "Binance Spot",
+      "perOrderBRL": 1000,
+      "symbols": [
+        {
+          "symbol": "BTCUSDT",
+          "name": "Bitcoin",
+          "risk": "Alto"
+        },
+        {
+          "symbol": "SOLUSDT",
+          "name": "Solana",
+          "risk": "Extremo — veto"
+        },
+        {
+          "symbol": "ETHUSDT",
+          "name": "Ethereum",
+          "risk": "Muito alto"
+        },
+        {
+          "symbol": "XRPUSDT",
+          "name": "XRP",
+          "risk": "Muito alto"
+        },
+        {
+          "symbol": "BNBUSDT",
+          "name": "BNB",
+          "risk": "Muito alto"
+        }
+      ],
+      "historicalOnly": [
+        "TRXUSDT",
+        "ZECUSDT",
+        "HYPEUSDT",
+        "DOGEUSDT",
+        "LINKUSDT"
+      ],
+      "approvedOrders": 0,
+      "note": "SOL segue com veto enquanto não houver revisão humana de risco."
+    }
+  }
+}
