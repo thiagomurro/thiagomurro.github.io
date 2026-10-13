@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Radar de Investimentos | Thiago Murro</title>
+<meta name="description" content="Acompanhamento educacional de ações e FIIs do Brasil, ações e ETFs americanos e cinco criptomoedas com dados públicos da Binance. Sem recomendações automáticas.">
+<meta name="theme-color" content="#101116">
+<link rel="icon" href="assets/favicon.svg">
+<link rel="canonical" href="https://thiagomurro.github.io/investimentos.html">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="investimentos.css">
+</head>
+<body>
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<header class="nav-shell"><div class="container nav">
+<a class="brand" href="index.html"><img alt="" height="38" src="assets/favicon.svg" width="38"><span>Thiago Murro</span></a>
+<button aria-expanded="false" aria-label="Abrir menu" class="menu">☰</button>
+<nav class="navlinks" aria-label="Navegação principal"><a href="index.html">Início</a><a href="biografia.html">Biografia</a><a href="livro.html">Livro</a><a href="licitacoes.html">Licitações</a><a href="palestras.html">Palestras</a><a href="imprensa.html">Imprensa</a><a aria-current="page" href="investimentos.html">Investimentos</a><a href="links.html">Links</a><a class="nav-cta" href="contato.html">Contato</a></nav>
+</div></header>
+<main id="conteudo">
+<section class="invest-hero"><div class="container">
+<div class="invest-kicker"><span class="invest-led"></span> SHIRO INVESTIMENTOS <span>•</span> VISÃO PÚBLICA</div>
+<div class="invest-hero-layout"><div><h1>Informação para <em>decidir melhor.</em></h1><p>Três mercados, metodologias distintas e critérios de risco visíveis. Uma visão educacional do acompanhamento técnico — sem publicar conta, posições ou patrimônio do investidor.</p></div><div class="invest-hero-aside"><strong>3 dashboards</strong><span>Brasil · Estados Unidos · Criptomoedas</span><small>Os dados da planilha privada não são compartilhados neste site.</small></div></div>
+</div></section>
+<section class="invest-body"><div class="container">
+<div class="invest-intro"><div><p class="invest-kicker dark-label">PAINÉIS DE MERCADO</p><h2>Acompanhe por classe de ativo.</h2></div><p>Dados resumidos de referência, sujeitos a revisão. As cotações cripto são consultadas na API pública da Binance enquanto esta página estiver aberta; sinais e homologações não são produzidos pelo site.</p></div>
+<div class="invest-notice" role="status"><strong>Importante:</strong> o feed da planilha original é privado e <strong>não está sincronizado automaticamente com este site</strong>. As contagens de ativos e homologações abaixo representam a última base pública preparada em <span id="snapshot-date">13/10/2026</span>. Cotações vencidas, notícias não conferidas ou ausência de homologação impedem uma recomendação de compra.</div>
+<div class="invest-tabs" role="tablist" aria-label="Escolher dashboard">
+<button class="invest-tab" id="tab-br" type="button" role="tab" aria-controls="panel-br" aria-selected="true" data-panel="br">01 <b>Brasil</b><small>Nubank · ações e FIIs</small></button>
+<button class="invest-tab" id="tab-us" type="button" role="tab" aria-controls="panel-us" aria-selected="false" tabindex="-1" data-panel="us">02 <b>Estados Unidos</b><small>Nomad · ações e ETFs</small></button>
+<button class="invest-tab" id="tab-crypto" type="button" role="tab" aria-controls="panel-crypto" aria-selected="false" tabindex="-1" data-panel="crypto">03 <b>Criptomoedas</b><small>Binance · 5 moedas spot</small></button>
+</div>
+<div class="invest-panel" id="panel-br" role="tabpanel" aria-labelledby="tab-br">
+<div class="panel-title"><div><p class="invest-kicker dark-label">B3 · NUBANK</p><h3>Ações e fundos imobiliários</h3><p>Monitoramento por preço, tendência, proventos, valuation, risco e fontes oficiais. Sinal técnico não equivale a autorização de compra.</p></div><span class="invest-tag">Ordens manuais</span></div>
+<div class="invest-stats"><article><span>Ativos brasileiros</span><strong id="br-count">26</strong><small>13 ações · 9 FIIs · 4 small caps</small></article><article><span>Aporte de referência</span><strong>R$ 500</strong><small>Por entrada efetivamente aprovada</small></article><article><span>Compras homologadas</span><strong id="br-hom">0</strong><small>Fotografia documental, não sinal em tempo real</small></article></div>
+<div class="invest-sub"><h4>Universo acompanhado</h4><p>As cotações, tetos e decisões internas permanecem na planilha privada; o site não replica informações pessoais.</p></div><div class="invest-tickers" id="br-tickers"></div>
+<div class="invest-guide"><h4>Requisitos para uma entrada</h4><p>Fonte primária atual, valuation fundamentado, preço-teto documentado, concentração aceitável, liquidez, dados de cotação recentes e revisão humana. Hoje a publicação pública não possui uma recomendação homologada.</p></div>
+</div>
+<div class="invest-panel" id="panel-us" role="tabpanel" aria-labelledby="tab-us" hidden>
+<div class="panel-title"><div><p class="invest-kicker dark-label">NYSE / NASDAQ · NOMAD</p><h3>Ações e ETFs americanos</h3><p>Análise em moeda original, com atenção a valuation, resultados SEC, câmbio, spreads, custos de conversão e risco por classe.</p></div><span class="invest-tag">Ordens manuais</span></div>
+<div class="invest-stats"><article><span>Ativos nos EUA</span><strong id="us-count">13</strong><small>10 ações · 3 ETFs</small></article><article><span>Aporte de referência</span><strong>R$ 500</strong><small>Conversão e taxa Nomad devem ser verificadas</small></article><article><span>Compras homologadas</span><strong id="us-hom">0</strong><small>Sem recomendações certificadas neste feed</small></article></div>
+<div class="invest-sub"><h4>Universo acompanhado</h4><p>Os preços e sinais operacionais pertencem à planilha de análise; nenhum vínculo público é concedido à conta Nomad.</p></div><div class="invest-tickers" id="us-tickers"></div>
+<div class="invest-guide"><h4>Observação</h4><p>Um retorno em USD pode diferir do retorno em BRL. Custos da Nomad, câmbio de compra/venda, impostos e distribuição de proventos precisam ser conciliados antes de apresentar rentabilidade real.</p></div>
+</div>
+<div class="invest-panel" id="panel-crypto" role="tabpanel" aria-labelledby="tab-crypto" hidden>
+<div class="panel-title"><div><p class="invest-kicker dark-label">SPOT · BINANCE · 24 HORAS / 7 DIAS</p><h3>Somente cinco criptomoedas</h3><p>Bitcoin, Solana, Ethereum, XRP e BNB. Preços ao vivo são públicos; indicadores de tendência exibidos aqui são apenas informativos e não validam uma entrada.</p></div><button class="invest-refresh" id="refresh-crypto" type="button">Atualizar cotações ↻</button></div>
+<div class="invest-stats"><article><span>Moedas ativas</span><strong id="crypto-count">5</strong><small>BTC · SOL · ETH · XRP · BNB</small></article><article><span>Aporte de referência</span><strong>R$ 1.000</strong><small>Máximo 3 lotes; dependerá do capital reservado</small></article><article><span>Metas de estudo</span><strong>5% / 10%</strong><small>Revisões aos 30 / 90 dias; nunca promessa</small></article></div>
+<div class="invest-api-status" aria-live="polite"><span id="crypto-api-label">Consultando a Binance pública…</span><span id="crypto-api-time">—</span></div>
+<div class="invest-crypto-grid" id="crypto-cards"><p class="invest-skeleton">Preparando a cotação das cinco moedas…</p></div>
+<div class="invest-guide"><h4>Por que o painel não mostra “COMPRAR”?</h4><p>Uma entrada depende de confirmação 1h, 4h e 1d, liquidez, spread, notícias revisadas, orçamento real e homologação humana. Este site não conhece esses dados privados e não executa ordens. <strong>SOL permanece com risco extremo e veto operacional vigente</strong> até revisão específica. A ausência de stop-loss automático não impede perda de capital.</p></div>
+</div>
+<section class="invest-method">
+<div class="invest-method-head"><p class="invest-kicker dark-label">QUALIDADE DE DADOS</p><h3>Rastreamento antes de recomendação.</h3><p>As amostras retrospectivas ajudam a estudar o comportamento de preços, mas não demonstram necessariamente que todos os filtros estariam disponíveis no passado. Não divulgamos lucro de backtest como rentabilidade efetivamente obtida.</p></div>
+<div class="invest-method-grid"><article><span>01</span><h4>Fonte e atualidade</h4><p>Cotação vencida, documento ausente ou falha de conexão significam ausência de sinal.</p></article><article><span>02</span><h4>Risco e homologação</h4><p>Preço-teto, liquidez, notícias, concentração e revisões humanas independentes.</p></article><article><span>03</span><h4>Prazo para rever</h4><p>30/90 dias são datas de reavaliação da tese, não obrigação ou garantia de venda.</p></article></div>
+</section>
+</div></section>
+</main>
+<footer class="footer"><div class="container footer-grid"><div><strong>Thiago Murro</strong><br>Educação financeira · Critérios de risco · Acompanhamento de mercado<br><a href="index.html">Voltar ao site</a></div><div><a href="biografia.html">Biografia</a> · <a href="livro.html">Livro</a> · <a href="contato.html">Contato</a><small>Material educacional e informativo. Cotações públicas não constituem recomendação individual, promessa de rentabilidade, consultoria ou ordem de negociação. Sem acesso às contas Nubank, Nomad ou Binance. © <span data-year=""></span> Thiago Murro.</small></div></div></footer>
+<script defer src="script.js"></script><script defer src="investimentos.js"></script>
+</body></html>
