@@ -224,7 +224,7 @@ function setupNav(){
  nav.append(proxy);
 }
 document.addEventListener("click",e=>{
- const b=e.target.closest("[data-tf18-page],[data-tf18],[data-tf18-agenda],[data-tf18-sleep],[data-tf18-quotes],[data-tf18-mtab],[data-tf18-date],[data-tf18-mode]");
+ const b=e.target.closest("[data-tf18-page],[data-tf18],[data-tf18-agenda],[data-tf18-training],[data-tf18-sleep],[data-tf18-quotes],[data-tf18-mtab],[data-tf18-date],[data-tf18-mode]");
  if(!b)return;
  if(b.dataset.tf18Page){activate(b.dataset.tf18Page);return}
  if(b.dataset.tf18Agenda){agendaMode=b.dataset.tf18Agenda;calendar();return}
