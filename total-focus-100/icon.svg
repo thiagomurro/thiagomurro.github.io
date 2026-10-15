@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="38" fill="#071629"/><circle cx="96" cy="96" r="76" stroke="#3be0d9" stroke-width="12" fill="#10374b"/><circle cx="96" cy="96" r="55" stroke="#128ab5" stroke-width="5" fill="none"/><path d="M36 132 96 46 156 132 96 94Z" fill="#86fff5" stroke="#129ee6" stroke-width="4"/><path d="M96 13v30M96 149v30M13 96h30M149 96h30" stroke="white" stroke-width="7" stroke-linecap="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="TOTAL FOCUS TF">
+<defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff5b0"/><stop offset=".52" stop-color="#ffd052"/><stop offset="1" stop-color="#ad6f19"/></linearGradient><linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#183657"/><stop offset="1" stop-color="#050b17"/></linearGradient></defs>
+<rect width="192" height="192" rx="39" fill="url(#sky)"/><circle cx="96" cy="96" r="81" stroke="#24e1fc" stroke-width="4" fill="none" opacity=".7"/>
+<path d="M96 24 165 62 165 136 96 173 27 136 27 62Z" fill="#0a2237" stroke="url(#gold)" stroke-width="7"/>
+<path d="M49 77 72 54 94 75 119 43 145 77" stroke="url(#gold)" stroke-width="6" fill="none" stroke-linecap="round"/>
+<path d="M48 91H146V106H108V156H90V106H48Z" fill="url(#gold)"/>
+<path d="M117 113H149V128H131V155H116Z" fill="url(#gold)"/>
+<path d="M42 162h108" stroke="#27e9e9" stroke-width="3" opacity=".6"/>
+</svg>
