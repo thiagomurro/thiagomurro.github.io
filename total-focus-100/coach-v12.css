@@ -36,3 +36,5 @@
 
 /* O treinador V12 substitui o cronometro basico V10 apenas nesta ficha */
 #modalcontent:has(#tf12-entry-workout) #tf-work-runner{display:none!important}
+
+.tf12-stage-remaining{text-align:center;color:#ffdf88!important;font-weight:800;margin:0 0 12px!important;font-size:12px!important}
