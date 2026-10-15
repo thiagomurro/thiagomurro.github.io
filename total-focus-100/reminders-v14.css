@@ -1,0 +1,11 @@
+/* TOTAL FOCUS V14 — Central de lembretes, gratuita */
+.tf14-reminders{border:1px solid #2ba4b4!important;background:linear-gradient(145deg,#102d46,#08182c)!important;padding:16px!important}
+.tf14-reminders .kicker{color:#5bf6ed}
+.tf14-reminders h2{margin:7px 0 10px;color:#fcfdff}.tf14-reminders p{font-size:12px;line-height:1.5;color:#c4dfe8}
+.tf14-cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:13px 0}.tf14-cats label{background:#0d2d43;border:1px solid #24536d;padding:9px 7px;border-radius:11px;display:flex;align-items:center;gap:8px;font-size:12px;margin:0;color:#ecfaff;min-height:40px}
+.tf14-cats input,.tf14-inline input{width:17px;height:17px;margin:0;accent-color:#34e5cb;flex-shrink:0}
+.tf14-selects{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tf14-selects label{font-size:12px}.tf14-selects select{width:100%;margin:5px 0}
+.tf14-inline{display:flex;align-items:center;gap:9px;margin:12px 0}
+.tf14-download{width:100%;padding:15px!important;font-weight:900!important;box-shadow:0 0 22px #33eac82c}
+.tf14-note{border-left:3px solid #ffcf67;padding:10px;background:#45372680;border-radius:6px;color:#fff1cc!important}
+#tf14-count{color:#8dfde6;font-weight:900;text-align:center}
