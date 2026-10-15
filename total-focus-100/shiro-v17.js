@@ -24,7 +24,7 @@ function dogPage(){
  const u=get(),m=$("#main");if(!u||!m)return;const cmds=Object.keys(u.d.commands||{});
  const current=cmds.length?cmds:["Senta","Deita","Fica","Vem","Junto","Olha","Espera","Patinha","Deixa","Solta","Pega","Traz"];
  const chosen=current.filter(c=>filter==="todos"||filter==="basicos"&&basic.includes(c)||filter==="avancados"&&!basic.includes(c));
- const completed=u.tasks.filter(t=>u.s.statuses?.[t.id]==="feito"),today=new Date().toISOString().slice(0,10),soon=u.tasks.find(t=>t.date>=today&&!["feito","cancelado"].includes(u.s.statuses?.[t.id]))||u.tasks.find(t=>!["feito","cancelado"].includes(u.s.statuses?.[t.id]));
+ const completed=u.tasks.filter(t=>u.s.statuses?.[t.id]==="feito"),today=(()=>{const z=new Date();return [z.getFullYear(),String(z.getMonth()+1).padStart(2,"0"),String(z.getDate()).padStart(2,"0")].join("-")})(),soon=u.tasks.find(t=>t.date>=today&&!["feito","cancelado"].includes(u.s.statuses?.[t.id]))||u.tasks.find(t=>!["feito","cancelado"].includes(u.s.statuses?.[t.id]));
  const attempts=u.tasks.reduce((sum,t)=>sum+Object.values(read(ATT+t.id)||{}).reduce((a,b)=>a+Number(b||0),0),0);
  const cards=chosen.map(cmd=>{const v=report(u,cmd),i=(Math.max(0,current.indexOf(cmd))%4)+2;return '<button class="tf17-dogtile" data-dogcommand="'+esc(cmd)+'"><img src="'+pic(i)+'" loading="lazy" alt="Fotografia ilustrativa de pastor branco suíço" onerror="this.style.display=\'none\'"><div class="tf17-dogtile-body"><strong>'+esc(cmd)+'</strong><small>'+v.attempts+' tentativas · '+v.hit+' acertos</small><div class="tf17-pct"><span style="width:'+v.pct+'%"></span></div></div></button>'}).join("");
  const image=localStorage.getItem(PHOTO)||pic(0);
