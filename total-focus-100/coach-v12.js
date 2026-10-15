@@ -77,6 +77,7 @@ function connect(e){const b=e.target.closest("[data-tf12-open],[data-tf12]");if(
   if(op==="dogprev"||op==="dognext"){a.current=Math.max(0,Math.min(a.routine.length,a.current+(op==="dogprev"?-1:1)));document.querySelector("#tf12-view").innerHTML=dogCard(a);if(a.routine[a.current]){const cmd=a.routine[a.current][0],guide=read(DK)?.commands?.[cmd]?.steps||[];say("Agora: "+cmd+". "+guide.slice(0,2).join(". "))}}
   if(op==="dogfinish"){const id=a.id,attempts=read(AK+id)||{},complete=a.routine.every(([name,target])=>Math.max(attempts[name]||0,read(SK)?.dogs?.[id]?.counts?.[name]||0)>=target);if(!complete){if(!confirm("Nem todas as tentativas previstas foram registradas. Encerrar como sessão parcial, sem marcar missão como concluída?"))return;closeGuide();return}closeGuide();const parent=content.querySelector('[data-do="dogdone"][data-id="'+id+'"]');if(parent)parent.click()}}
 }
+document.addEventListener("error",e=>{if(e.target&&e.target.matches?.(".tf15-photo img")){const fig=e.target.closest(".tf15-photo");if(fig)fig.style.display="none"}},true);
 document.addEventListener("click",connect);
 document.addEventListener("change",e=>{if(e.target.id==="tf12-voice"){voice=e.target.checked;localStorage.setItem(voiceSetting,voice?"on":"off");if(!voice){try{speechSynthesis.cancel()}catch{}}}});
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&active?.type==="work"&&active.run){active.elapsed+=Date.now()-active.since;active.run=false;stop();}});
