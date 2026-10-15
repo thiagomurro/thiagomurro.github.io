@@ -86,3 +86,5 @@
 @media(min-width:650px){.tf17-doggrid{grid-template-columns:repeat(3,minmax(0,1fr))}.tf17-kpi{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:390px){.tf17-ringbar{grid-template-columns:108px 1fr}.tf17-ring,.tf17-ring svg{width:103px;height:103px}.tf17-ring .center strong{font-size:26px}}
 @media(prefers-reduced-motion:reduce){.tf17-area-track>div{transition:none}}
+
+.tf17-coach-photo{margin:12px 0;position:relative;overflow:hidden;border:1px solid #45bed7;border-radius:16px;background:#0d293b}.tf17-coach-photo img{width:100%;height:230px;display:block;object-fit:cover;object-position:center 35%}.tf17-coach-photo figcaption{font-size:11px;color:#d6f8f4;background:#0b2637;padding:9px 11px;line-height:1.4}
