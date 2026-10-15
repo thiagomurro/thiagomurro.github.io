@@ -38,3 +38,9 @@
 #modalcontent:has(#tf12-entry-workout) #tf-work-runner{display:none!important}
 
 .tf12-stage-remaining{text-align:center;color:#ffdf88!important;font-weight:800;margin:0 0 12px!important;font-size:12px!important}
+
+.tf15-photo{background:#092536;border:1px solid #3b8f9e;border-radius:14px;overflow:hidden;margin:13px 0}
+.tf15-photo img{width:100%;max-height:255px;display:block;object-fit:contain;background:#0b2339}
+.tf15-photo figcaption{padding:10px 12px;font-size:12px;color:#cee8ed;line-height:1.45}
+.tf15-photo figcaption span{display:block;margin-top:6px;font-size:10px;color:#accbd7}
+.tf15-photo a{color:#76f4ef;text-decoration:underline}
