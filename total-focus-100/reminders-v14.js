@@ -24,7 +24,7 @@ function events(){
  return out.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
 }
 function buildICS(){
- const list=events(),dt=new Date().toISOString().replace(/[-:]|\.\d{3}/g,""),lines=["BEGIN:VCALENDAR","VERSION:2.0","CALSCALE:GREGORIAN","PRODID:-//TOTAL FOCUS//AGENDA PESSOAL//PT-BR","X-WR-TIMEZONE:America/Sao_Paulo"];
+ const list=events(),dt=new Date().toISOString().replace(/[-:]|\.\d{3}/g,""),lines=["BEGIN:VCALENDAR","VERSION:2.0","CALSCALE:GREGORIAN","PRODID:-//TOTAL FOCUS//AGENDA PESSOAL//PT-BR","X-WR-TIMEZONE:America/Sao_Paulo","BEGIN:VTIMEZONE","TZID:America/Sao_Paulo","BEGIN:STANDARD","DTSTART:19700101T000000","TZOFFSETFROM:-0300","TZOFFSETTO:-0300","TZNAME:-03","END:STANDARD","END:VTIMEZONE"];
  for(const e of list){
    const d=new Date(e.date+"T"+e.time+":00");d.setMinutes(d.getMinutes()+5);
    const finish=[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
@@ -39,7 +39,7 @@ function download(){
  alert("Gerados "+f.count+" eventos. Para avisos na tela bloqueada, importe o arquivo no Calendário e permita suas notificações. Não substitui o despertador nativo. Se remanejar tarefas, atualize o calendário evitando duplicações.");
 }
 function paint(){
- const main=$("#main");if(!main||!main.querySelector("h1")?.textContent?.includes("Ajustes e privacidade"))return;
+ const main=$("#main");if(!main)return;const hero=main.querySelector(".card.hero");if(hero&&!main.querySelector("#tf14-open")){const b=document.createElement("button");b.id="tf14-open";b.className="tf14-quick";b.textContent="◷ Atualizar avisos";b.type="button";hero.insertAdjacentElement("afterend",b)}if(!main.querySelector("h1")?.textContent?.includes("Ajustes e privacidade"))return;
  let area=$("#tf14-reminders");if(!area){area=document.createElement("section");area.id="tf14-reminders";area.className="card tf14-reminders";main.append(area)}const signature=JSON.stringify({cfg,events:events().map(x=>x.id+"_"+x.date+x.time)});if(area.dataset.signature===signature)return;area.dataset.signature=signature;
  let h='<div class="kicker">ALERTAS · SEM CUSTO</div><h2>Lembretes para tela bloqueada</h2><p>Gere eventos no próprio aparelho e importe no Calendário. O arquivo fica no seu iPhone e não é enviado ao GitHub.</p><div class="tf14-cats">';
  for(const c of cats)h+='<label><input type="checkbox" data-tf14-cat="'+escapeHTML(c)+'" '+(cfg.cats.includes(c)?"checked":"")+'> '+escapeHTML(c)+'</label>';
@@ -54,7 +54,7 @@ function change(e){
  else return;
  localStorage.setItem(PK,JSON.stringify(cfg));paint();
 }
-document.addEventListener("change",change);document.addEventListener("click",e=>{if(e.target.closest("#tf14-download"))download()});
+document.addEventListener("change",change);document.addEventListener("click",e=>{if(e.target.closest("#tf14-download"))download();if(e.target.closest("#tf14-open")){const nav=document.querySelector('#nav button[data-page="config"]');if(nav)nav.click();requestAnimationFrame(()=>document.querySelector("#tf14-reminders")?.scrollIntoView({behavior:"smooth",block:"start"}))}});
 let queued=false;const schedule=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;paint()})};
 const main=$("#main");if(main)new MutationObserver(schedule).observe(main,{childList:true});schedule();
 })();
