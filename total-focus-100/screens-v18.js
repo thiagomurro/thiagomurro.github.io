@@ -11,7 +11,7 @@ const fmt=s=>s?s.split("-").reverse().join("/"):"—",week=["Dom","Seg","Ter","Q
 const millis=s=>new Date(s+"T12:00:00").getTime();
 const colors={Treino:"#45f2a5",Cardio:"#3ee7ea",Shiro:"#ffd568",Empresa:"#e1bc49",PMERJ:"#ad8eff","Inglês":"#7dabff",Igreja:"#f7b065",Família:"#e695cd",Sono:"#957bfa",Lazer:"#85b6f3"};
 const cats=["Treino","Cardio","Shiro","Empresa","PMERJ","Inglês","Família","Lazer"],icon={Treino:"⚡",Cardio:"◉",Shiro:"♧",Empresa:"▣",PMERJ:"▤","Inglês":"♢",Família:"♡",Lazer:"☀",Igreja:"✦"};
-let active="today",agendaMode="week",selected="",sleepTab="sono",metricsTab="resumo",quoteFilter="hoje",focus={started:0,elapsed:0,run:false},focusTick=null;
+let active="today",agendaMode="week",selected="",sleepTab="sono",metricsTab="resumo",quoteFilter="hoje",trainingFilter="todos",focus={started:0,elapsed:0,run:false},focusTick=null;
 function base(){const d=read(DK),s=read(SK)||{};if(!d?.tasks?.length)return null;let tasks=d.tasks.map(t=>({...t,...(s.overrides?.[t.id]||{})}));return {d,s,tasks}}
 function valid(t){return t.priority==="flex"&&!t.meta?.optional}
 function done(s,t){return s.statuses?.[t.id]==="feito"}
@@ -50,14 +50,14 @@ function calendar(){
   html+='</div></div>';
  }
  const events=eventsFor(tasks,selected);
- html+='<div class="tf18-card"><h2>▦ '+fmt(selected)+' <span style="float:right;color:#6cf1dd;font-size:11px">'+events.length+' eventos</span></h2><div class="tf18-events">'+(events.length?events.map(t=>taskRow(t,s)).join(""):'<p class="tf18-state">Nenhum compromisso programado.</p>')+'</div></div><div class="tf18-card"><div class="tf18-actions"><button data-tf18="add" class="gold">＋ Nova atividade</button><button data-do="travel">✈ Modo viagem</button></div></div></section>';
+ html+='<div class="tf18-card"><h2>▦ '+fmt(selected)+' <span style="float:right;color:#6cf1dd;font-size:11px">'+events.length+' eventos</span></h2><div class="tf18-events">'+(events.length?events.map(t=>taskRow(t,s)).join(""):'<p class="tf18-state">Nenhum compromisso programado.</p>')+'</div></div><div class="tf18-card"><div class="tf18-actions"><button data-tf18="add" class="gold">＋ Nova atividade</button><button data-tf18-mode="travel">✈ Modo viagem</button></div></div></section>';
  m.innerHTML=html;
 }
 function training(){
- const m=$("#main"),u=base();if(!u||!m)return;const {d,s,tasks}=u,today=dateToday(d),training=tasks.filter(t=>t.category==="Treino"||t.category==="Cardio"),incoming=training.filter(t=>t.date>=today&&!done(s,t)).slice(0,12),finished=training.filter(t=>done(s,t)),push=training.filter(t=>t.category==="Treino"&&done(s,t)).length;
+ const m=$("#main"),u=base();if(!u||!m)return;const {d,s,tasks}=u,today=dateToday(d),training=tasks.filter(t=>t.category==="Treino"||t.category==="Cardio"),filtered=training.filter(t=>trainingFilter==="todos"||(trainingFilter==="casa"&&t.category==="Treino")||(trainingFilter==="corrida"&&t.category==="Cardio"&&t.meta?.kind==="run")||(trainingFilter==="bike"&&t.category==="Cardio"&&/bike|bicic/i.test(t.title+" "+JSON.stringify(t.meta||{})))),incoming=filtered.filter(t=>t.date>=today&&!done(s,t)).slice(0,12),finished=training.filter(t=>done(s,t)),push=training.filter(t=>t.category==="Treino"&&done(s,t)).length;
  const catsMove={Treino:"⚡",Cardio:"◉"};
  const blocks=incoming.map(t=>'<button class="tf18-gallery-card" data-do="view" data-id="'+esc(t.id)+'" style="display:flex;gap:10px;width:100%;margin:8px 0;background:#0e2c43;border:1px solid #2d748d;padding:9px;border-radius:13px;text-align:left;align-items:center"><span class="tf18-art" style="width:70px;height:70px;flex-shrink:0;display:grid;place-items:center;border-radius:9px;background:#135466;font-size:35px">'+(catsMove[t.category]||"✦")+'</span><span style="flex:1;min-width:0"><strong style="font-size:13px;color:#f5ffff;display:block">'+esc(t.title)+'</strong><small style="display:block;color:#ade1e5;font-size:11px;margin:6px 0">'+fmt(t.date)+' · '+esc(t.time)+'</small><small style="color:#ffda89;font-size:11px">'+(t.category==="Treino"?"10 minutos guiados":esc(t.description||"Cardio progressivo").slice(0,58))+'</small></span><span style="color:#3beadd;font-size:20px">▶</span></button>').join("");
- m.innerHTML='<section data-tf18-screen="training" class="tf18-screen">'+top("Meu Treino","",'<span style="color:#ffde86;font-weight:900">⚡</span>')+tabs("training",[["all","Em casa + Cardio"]],"all")+'<div class="tf18-card" style="border-color:#43e8d6"><div class="tf18-kicker" style="color:#8bfcf0;font-size:11px">MISSÃO FÍSICA</div><h2 style="font-size:22px;margin:9px 0">Força, resistência e recuperação</h2><p class="tf18-state">Sessões de 10 minutos em casa, corridas e bicicleta conforme seu cronograma. Evite treinar com dor incomum.</p><div class="tf18-counters"><div class="tf18-counter"><b>'+push+'</b><span>Treinos físicos</span></div><div class="tf18-counter"><b>'+finished.length+'</b><span>Sessões feitas</span></div><div class="tf18-counter"><b>'+training.length+'</b><span>Programadas</span></div></div></div><div class="tf18-card"><h2>Próximas sessões</h2>'+(blocks||'<p class="tf18-state">Sem novas sessões programadas.</p>')+'</div><div class="tf18-card"><h2>Guias de execução</h2><p class="tf18-state">Abra uma sessão para consultar repetições, músculos trabalhados, técnica e iniciar o treinador narrado.</p><button data-tf18-page="metrics" class="primary" style="width:100%">Ver minha evolução</button></div></section>'
+ m.innerHTML='<section data-tf18-screen="training" class="tf18-screen">'+top("Meu Treino","",'<span style="color:#ffde86;font-weight:900">⚡</span>')+tabs("training",[["todos","Todos"],["casa","Em casa"],["corrida","Corrida"],["bike","Bicicleta"]],trainingFilter)+'<div class="tf18-card" style="border-color:#43e8d6"><div class="tf18-kicker" style="color:#8bfcf0;font-size:11px">MISSÃO FÍSICA</div><h2 style="font-size:22px;margin:9px 0">Força, resistência e recuperação</h2><p class="tf18-state">Sessões de 10 minutos em casa, corridas e bicicleta conforme seu cronograma. Evite treinar com dor incomum.</p><div class="tf18-counters"><div class="tf18-counter"><b>'+push+'</b><span>Treinos físicos</span></div><div class="tf18-counter"><b>'+finished.length+'</b><span>Sessões feitas</span></div><div class="tf18-counter"><b>'+training.length+'</b><span>Programadas</span></div></div></div><div class="tf18-card"><h2>Próximas sessões</h2>'+(blocks||'<p class="tf18-state">Sem novas sessões programadas.</p>')+'</div><div class="tf18-card"><h2>Guias de execução</h2><p class="tf18-state">Abra uma sessão para consultar repetições, músculos trabalhados, técnica e iniciar o treinador narrado.</p><button data-tf18-page="metrics" class="primary" style="width:100%">Ver minha evolução</button></div></section>'
 }
 function quotations(){
  const m=$("#main"),u=base();if(!u||!m)return;
@@ -145,8 +145,8 @@ function applyMode(k){
   if(!confirm("Cancelar "+items.length+" missões flexíveis entre "+fmt(start)+" e "+fmt(end)+"? Compromissos fixos serão preservados. Faça backup antes."))return;
   u.s.undo=JSON.stringify({statuses:{...u.s.statuses},overrides:{...u.s.overrides}});u.s.statuses=u.s.statuses||{};for(const t of items)u.s.statuses[t.id]="cancelado";updateLocal(u.s);
  }
- if(k==="family"){const u=base();if(u){u.s.settings=u.s.settings||{};u.s.settings.sound=false;updateLocal(u.s)}}
- write(MK,{mode:k,at:new Date().toISOString()});modes();
+ let previousSound=null;if(k==="family"){const u=base();if(u){u.s.settings=u.s.settings||{};previousSound=u.s.settings.sound!==false;u.s.settings.sound=false;updateLocal(u.s)}}
+ write(MK,{mode:k,at:new Date().toISOString(),previousSound});modes();
 }
 function focusMenu(){
  const u=base();if(!u)return;active="focusTimer";paint();
@@ -192,6 +192,7 @@ function enhanceMetrics(){
  if(!m.querySelector(".tf18-metric-tabs")){
  const bar=document.createElement("section");bar.className="tf18-metric-tabs";bar.innerHTML=tabs("mtab",[["resumo","Resumo"],["habitos","Hábitos"],["saude","Saúde"],["estudos","Estudos"],["trabalho","Trabalho"]],metricsTab);
  dashboard.prepend(bar)}
+ dashboard.querySelectorAll("[data-tf18-mtab]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.tf18Mtab===metricsTab)));
  const blocks=[...dashboard.querySelectorAll(".tf17-card")];blocks.forEach(x=>x.style.display=metricsTab==="resumo"?"":"none");
  let extra=$("#tf18-metric-extra");
  if(!extra){extra=document.createElement("section");extra.id="tf18-metric-extra";dashboard.insertBefore(extra,blocks[0]||null)}
@@ -227,6 +228,7 @@ document.addEventListener("click",e=>{
  if(!b)return;
  if(b.dataset.tf18Page){activate(b.dataset.tf18Page);return}
  if(b.dataset.tf18Agenda){agendaMode=b.dataset.tf18Agenda;calendar();return}
+ if(b.dataset.tf18Training){trainingFilter=b.dataset.tf18Training;training();return}
  if(b.dataset.tf18Sleep){sleepTab=b.dataset.tf18Sleep;sleepView();return}
  if(b.dataset.tf18Quotes){quoteFilter=b.dataset.tf18Quotes;quotations();return}
  if(b.dataset.tf18Mtab){metricsTab=b.dataset.tf18Mtab;enhanceMetrics();return}
@@ -243,7 +245,7 @@ document.addEventListener("click",e=>{
  if(op==="sleepdialog"){const btn=$("#sleep-open");if(btn)btn.click();else alert("Módulo de sono ainda não está disponível.")}
  if(op==="checkin")recordCheckin();
  if(op==="savecheck")saveCheck();
- if(op==="clearmode"){write(MK,{mode:"normal",at:new Date().toISOString()});modes()}
+ if(op==="clearmode"){const md=read(MK)||{};if(md.mode==="family"&&typeof md.previousSound==="boolean"){const u=base();if(u){u.s.settings=u.s.settings||{};u.s.settings.sound=md.previousSound;updateLocal(u.s)}}write(MK,{mode:"normal",at:new Date().toISOString()});modes()}
  if(op==="focusplay"){if(focus.run){focus.elapsed+=Date.now()-focus.started;focus.run=false}else if(focus.elapsed<1500000){focus.run=true;focus.started=Date.now()}showClock()}
  if(op==="focusreset"){focus={started:0,elapsed:0,run:false};showClock()}
 });
