@@ -8,7 +8,7 @@ let clientId=(read(CFG)||{}).clientId||"",token="",expiresAt=0,key=null,remote=n
 const EXTRA=["totalfocus100.sleep.v9","totalfocus100.v12.voice","totalfocus100.calendar.v14"];
 function logs(s){const msg=$("#tfcloud-status");if(msg)msg.textContent=s;lastErr=s}
 function getExtra(){const extra={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(EXTRA.includes(k)||k.startsWith("totalfocus100.v12.dog-attempts."))extra[k]=localStorage.getItem(k)}return extra}
-function localData(){return {schema:1,cronograma:read(DATA),registros:read(STATE),extras:getExtra()}}
+function localData(){return {schema:1,cronograma:read(DATA),registros:read(STATE)||{},extras:getExtra()}}
 function meaningful(x){return !!x?.cronograma?.tasks?.length||!!Object.keys(x?.registros?.statuses||{}).length}
 async function digest(x){const a=new TextEncoder().encode(JSON.stringify(x));const h=new Uint8Array(await crypto.subtle.digest("SHA-256",a));return Array.from(h,b=>b.toString(16).padStart(2,"0")).join("")}
 function toB64(a){return btoa(String.fromCharCode(...new Uint8Array(a)))}
@@ -63,7 +63,7 @@ async function loadGIS(){if(window.google?.accounts?.oauth2)return;await new Pro
 async function connect(){if(!crypto.subtle){uiStatus("Criptografia HTTPS indisponível.");return}
  const input=$("#tfcloud-client");clientId=(input?.value||"").trim();if(!/^[A-Za-z0-9-]+\.apps\.googleusercontent\.com$/.test(clientId)){uiStatus("Informe um ID OAuth de aplicativo Web válido.");return}
  localStorage.setItem(CFG,JSON.stringify({clientId}));let pass=$("#tfcloud-pass")?.value||"";if(pass.length<12){uiStatus("Crie ou informe sua senha de criptografia com pelo menos 12 caracteres.");return}
- let salt=read("totalfocus100.cloud.salt");cloudSalt=salt?fromB64(salt):crypto.getRandomValues(new Uint8Array(16));key=await derive(pass,cloudSalt);$("#tfcloud-pass").value=""; 
+ let salt=localStorage.getItem("totalfocus100.cloud.salt");cloudSalt=salt?fromB64(salt):crypto.getRandomValues(new Uint8Array(16));key=await derive(pass,cloudSalt);$("#tfcloud-pass").value=""; 
  try{await loadGIS();const oauth=google.accounts.oauth2.initTokenClient({client_id:clientId,scope:SCOPE,callback:async result=>{if(result.error){uiStatus("Autorização Google: "+result.error);return}token=result.access_token;expiresAt=Date.now()+(Number(result.expires_in)||3600)*1000;connectedOnce=true;uiStatus("Google conectado. Conferindo nuvem...");
     try{const existing=await list();if(existing){const b=await get(existing.id);if(!b?.salt)throw Error("Dados remotos incompatíveis.");if(!salt){cloudSalt=fromB64(b.salt);key=await derive(pass,cloudSalt)}else if(toB64(cloudSalt)!==b.salt){cloudSalt=fromB64(b.salt);key=await derive(pass,cloudSalt)}const confirmHash=await unseal(b);if(!confirmHash?.schema)throw Error("Senha inválida")}localStorage.setItem("totalfocus100.cloud.salt",toB64(cloudSalt));await synchronize(true)}catch(e){uiStatus("Conexão: "+(e.name==="OperationError"?"Senha de criptografia incorreta.":e.message))}
   }});
