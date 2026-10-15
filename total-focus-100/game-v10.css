@@ -1,0 +1,58 @@
+
+:root{--bg:#020d19;--panel:#081c30;--panel2:#0d2840;--edge:#1c567a;--txt:#f5fcff;--muted:#a3bdcd;--cyan:#28eaff;--gold:#ffc54d;--red:#fa465a;--green:#31e59c}
+html{background:#020d19}body{background:radial-gradient(circle at 15% -9%,#0d6282 0%,transparent 45%),radial-gradient(circle at 105% 28%,#123862 0%,transparent 44%),#020d19;background-attachment:fixed}
+body:before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(#61bff40a 1px,transparent 1px),linear-gradient(90deg,#61bff40a 1px,transparent 1px);background-size:40px 40px;mask-image:linear-gradient(0deg,transparent,#000 24%,#000 84%,transparent)}
+#shell{position:relative;max-width:650px;padding:14px 15px 115px}
+header{padding:12px 13px!important;border:1px solid #2986ad!important;box-shadow:inset 0 1px #a6fbff2b,0 8px 28px #0008,0 0 30px #097ba82a!important;background:linear-gradient(125deg,#0b2037db,#0b192fd9)!important}
+header .logo{font-size:15px;letter-spacing:1.1px;display:flex;align-items:center;gap:10px;color:#eefbff;text-shadow:0 0 16px #00dafa4a}
+header .logo svg{display:none}header .logo .tf-icon{width:45px;height:45px;display:block;filter:drop-shadow(0 0 12px #f6b53b70)}
+#level{background:#152b45!important;border:1px solid #ffd16a!important;color:#ffd671!important;font-weight:800;box-shadow:0 0 15px #ffbb2c28}
+#sleep-open{color:#ffd46f!important;border-color:#ffde77aa!important}
+#main>h1{font-size:28px;letter-spacing:-.6px}
+.kicker{color:#51e8ff;letter-spacing:1.4px}
+.card{background:linear-gradient(148deg,#102b44,#061a2d 75%)!important;border:1px solid #20567b!important;border-radius:21px!important;box-shadow:inset 0 1px #8bdaf923,0 8px 25px #0007!important}
+.card.hero{border:1px solid #32ebd1!important;box-shadow:0 0 0 1px #14e4c634,0 0 35px #00f6eb25,inset 0 0 25px #06d9b714!important;background:radial-gradient(circle at 100% 0%,#095d76 0%,transparent 65%),linear-gradient(137deg,#0d3140,#0b1b35)!important;padding:20px 18px;overflow:hidden;position:relative}
+.card.hero:after{content:'◈';position:absolute;right:0;top:-50px;font-size:175px;color:#21ffff10;pointer-events:none}
+.card.hero h2{font-size:24px!important;margin:10px 0 4px;text-shadow:0 0 15px #2de0ed29;position:relative;z-index:1}
+.card.hero .kicker{display:inline-block;border-radius:20px;color:#ffe390;background:#53421d;border:1px solid #a17a29;padding:5px 11px}
+.card.hero .primary{width:100%;padding:15px 17px;font-size:16px;box-shadow:0 5px 20px #00eeb64d!important;position:relative;z-index:1}
+button{transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;touch-action:manipulation}
+button:not(:disabled):active{transform:scale(.965)}button:focus-visible{outline:2px solid #ffe272;outline-offset:2px}
+button.primary{background:linear-gradient(160deg,#3efaaf,#04b977)!important;color:#001c18!important;border:0!important;font-weight:900;box-shadow:0 5px 12px #19dc9440}
+button.warn,button[data-do="qfinish"]{background:linear-gradient(150deg,#ff5d6b,#b72b42)!important;border:1px solid #ff7c89!important;color:#fff!important;font-weight:800}
+button[data-do="qpause"]{background:linear-gradient(150deg,#3ded76,#12ac54)!important;border:0!important;color:#052111!important;font-weight:850}
+button[data-do="qstart"],button[data-do="quoteconfirm"],button[data-do="dogdone"],button[data-do="complete"]{background:linear-gradient(145deg,#51f1a3,#08b96c)!important;color:#051e17!important;font-weight:900}
+button.gold,.tf-goldbtn{background:linear-gradient(125deg,#ffe86e,#ffb431)!important;color:#38240b!important;border:0!important;font-weight:900;box-shadow:0 5px 18px #ffb43145}
+button[data-do="next"],button[data-do="day"]{border-color:#ffc95188;color:#ffebaf}
+.metric{background:linear-gradient(140deg,#0e3549,#0b1b31)!important;border:1px solid #2a6993;box-shadow:inset 0 1px #b7edff1d}
+.metric strong{color:#6cfcff;font-size:28px}
+.bar{height:10px!important;background:#0b3449!important}.bar span{background:linear-gradient(90deg,#19ddeb,#57ff9b,#ffd15d)!important;box-shadow:0 0 12px #38f5eacc}
+.task{border-bottom:1px solid #234663}.task .hour{color:#59eaff}.task strong{font-size:14px}
+.task .data small{font-size:11px;color:#a3c2d3}.task button{background:#103a52;border:1px solid #2486a2;color:#a6ffff;font-weight:750}
+.tag{color:#ffe285}
+#nav{background:#051725f5!important;border-top:1px solid #2e96ad!important;box-shadow:0 -9px 30px #02bbdc26;gap:2px}
+#nav button{font-size:10px!important;min-width:52px;padding:7px 2px}
+#nav button i{font-size:20px;color:#aad5e9}
+#nav button.current{background:#134756!important;color:#b4ffff!important;border:1px solid #25c0cb77!important}
+#nav button.current i{color:#32ffdf;text-shadow:0 0 12px #23ffdbad}
+#modal,.tf-gamemodal{background:linear-gradient(145deg,#0e2b44,#061629)!important;border:1px solid #2cafcb!important;box-shadow:0 20px 90px #000e,0 0 45px #14b5ca24!important}
+#modal h2{color:#f6feff}#modal .circle{color:#66fce7;text-align:center;font-size:38px}
+#qtime{position:relative;display:flex;align-items:center;justify-content:center;border:10px solid #1ea7b7;background:radial-gradient(circle,#0d3d51,#061828);border-radius:50%;width:min(72vw,255px);height:min(72vw,255px);margin:22px auto 17px!important;box-shadow:0 0 36px #20eaed38,inset 0 0 24px #053348;text-shadow:0 0 13px #66feec;font-size:clamp(22px,6vw,34px)!important}
+#qstatus{display:block;text-align:center;color:#ffcf65;font-weight:900;letter-spacing:1px}
+#qbuttons{display:flex!important;justify-content:center}#qbuttons button{flex:1;min-height:49px}
+#qsummary{background:#0b2a3e;border:1px solid #2f6a88;border-radius:12px;padding:8px 12px;margin-top:15px}
+.dog-line{background:#0e293e;border:1px solid #245f79;border-radius:13px;padding:13px!important;margin:11px 0}.dog-line h3{color:#61eeeb}.dog-line .flex{margin-top:9px}.dog-line .flex button{color:#071b28;background:#69dfff}
+#toast{background:#083a3a;border:1px solid #3df6cd;box-shadow:0 0 30px #0afccc4d;color:#f4fff9;font-weight:800}
+.tf-dashboard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}.tf-dashboard .tf-stat{background:linear-gradient(150deg,#112e48,#0c1d31);border:1px solid #2a6788;border-radius:14px;padding:11px 7px;text-align:center;box-shadow:inset 0 1px #98f1ff21}.tf-stat strong{font-size:22px;color:#ffd163;display:block}.tf-stat small{font-size:10px;display:block;color:#c2dbe5}
+.tf-rank{display:flex;justify-content:space-between;align-items:center;margin:8px 0 6px}.tf-rank strong{color:#ffe090}.tf-rank em{font-size:12px;color:#80f7ea;font-style:normal}
+.tf-miniquick{display:flex;gap:8px;margin-top:13px}.tf-miniquick button{flex:1;background:#153952;border-color:#2b89ad;font-size:12px}
+.tf-video{padding:0;border-radius:14px;overflow:hidden;display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:13px 0}
+.tf-video figure{margin:0;background:linear-gradient(140deg,#123956,#0d2237);border:1px solid #257c8e;border-radius:13px;overflow:hidden;min-height:142px;display:flex;flex-direction:column;justify-content:center}
+.tf-video figure svg{display:block;width:100%;height:125px}.tf-video figcaption{padding:6px 7px;font-size:11px;text-align:center;color:#d9faff}
+.tf-muscles{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.tf-muscles span{background:#144554;color:#83f8fa;border-radius:19px;border:1px solid #398ca0;padding:5px 9px;font-size:11px;font-weight:750}
+.tf-workout-clock{border-radius:16px;background:radial-gradient(circle at 50% 0%,#1c5562,#0e1f32 75%);border:1px solid #3defd8;padding:14px;margin:12px 0;text-align:center;box-shadow:0 0 25px #24e9c422}
+.tf-workout-clock strong{font-variant-numeric:tabular-nums;font-size:40px;color:#71ffe4;text-shadow:0 0 16px #38eeec}.tf-workout-clock small{display:block}
+.tf-guide-note{font-size:12px;line-height:1.5;color:#c4dfed;border-left:3px solid #ffcf5f;padding:8px 11px;background:#26334a;border-radius:7px}
+.tf-preview-label{font-size:11px;text-align:center;color:#dce9f2}
+@media(max-width:390px){.tf-dashboard{grid-template-columns:repeat(3,1fr)}.tf-stat strong{font-size:19px}#nav button{min-width:47px}}
+@media(prefers-reduced-motion:reduce){button{transition:none}body:before{display:none}}
