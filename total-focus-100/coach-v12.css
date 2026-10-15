@@ -33,3 +33,6 @@
 .tf12-dog-target strong{font-size:20px;color:#ffdc74}.tf12-dog-target span{font-size:11px;color:#9fe3e3}
 .tf12-dogfinal{padding:25px 10px;text-align:center}
 @media(prefers-reduced-motion:reduce){.tf12-track>span{transition:none}}
+
+/* O treinador V12 substitui o cronometro basico V10 apenas nesta ficha */
+#modalcontent:has(#tf12-entry-workout) #tf-work-runner{display:none!important}
