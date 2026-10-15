@@ -5,7 +5,7 @@ const FILENAME="total-focus-100-private-v1.json",SCOPE="https://www.googleapis.c
 const $=(s,r=document)=>r.querySelector(s),read=k=>{try{return JSON.parse(localStorage.getItem(k)||"null")}catch{return null}};
 const txt=s=>String(s||"").replace(/[&<>"]/g,x=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[x]));
 let clientId=(read(CFG)||{}).clientId||"",token="",expiresAt=0,key=null,remote=null,busy=false,stopped=false,panel=null,lastSync=0,lastErr="",connectedOnce=false;
-const EXTRA=["totalfocus100.sleep.v9","totalfocus100.v12.voice","totalfocus100.calendar.v14","totalfocus100.v17.shiroPhoto"];
+const EXTRA=["totalfocus100.sleep.v9","totalfocus100.v12.voice","totalfocus100.calendar.v14","totalfocus100.v17.shiroPhoto","totalfocus100.v18.modes"];
 function logs(s){const msg=$("#tfcloud-status");if(msg)msg.textContent=s;lastErr=s}
 function getExtra(){const extra={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(EXTRA.includes(k)||k.startsWith("totalfocus100.v12.dog-attempts."))extra[k]=localStorage.getItem(k)}return extra}
 function localData(){return {schema:1,cronograma:read(DATA),registros:read(STATE)||{},extras:getExtra()}}
