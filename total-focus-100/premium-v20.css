@@ -130,12 +130,12 @@ button:focus-visible{outline:2px solid #ffe87d;outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.card.hero:before,.tf18-screen{animation:none!important}}
 
 /* Realces finais inspirados nas telas aprovadas */
-.tf18-screen[data-tf18-screen=awards]>.tf18-card:first-of-type{background:linear-gradient(180deg,#04182a2a,#04182aee 85%),url("https://images.pexels.com/photos/20717490/pexels-photo-20717490.jpeg?auto=compress&cs=tinysrgb&w=980") center 50%/cover!important;border:1px solid #e8b54f!important;box-shadow:0 0 28px #f6c04940!important;padding:27px 15px!important}
+.tf18-screen[data-tf18-screen=awards]>.tf18-card:first-of-type{background:linear-gradient(180deg,#04182a2a,#04182aee 85%),url("https://images.pexels.com/photos/777211/pexels-photo-777211.jpeg?auto=compress&cs=tinysrgb&w=980") center 50%/cover!important;border:1px solid #e8b54f!important;box-shadow:0 0 28px #f6c04940!important;padding:27px 15px!important}
 .tf18-screen[data-tf18-screen=awards]>.tf18-card:first-of-type>img{width:118px!important;height:118px!important;filter:drop-shadow(0 0 19px #ffc83bbd)!important}
 .tf18-screen[data-tf18-screen=awards]>.tf18-card:first-of-type h2{color:#ffe17e!important;text-shadow:0 0 17px #ffc53d8c;font-size:29px!important;margin-top:12px!important}
-.tf18-screen[data-tf18-screen=modes] .tf20-mode-travel{background:linear-gradient(90deg,#06375dea,#05314aaa 65%,#03203366),url("https://images.pexels.com/photos/20717490/pexels-photo-20717490.jpeg?auto=compress&cs=tinysrgb&w=700") center/cover!important}
-.tf18-screen[data-tf18-screen=modes] .tf20-mode-rest{background:linear-gradient(90deg,#48331de9,#332d16b5 63%,#09203080),url("https://images.pexels.com/photos/7880273/pexels-photo-7880273.jpeg?auto=compress&cs=tinysrgb&w=700") center/cover!important}
-.tf18-screen[data-tf18-screen=modes] .tf20-mode-goal{background:linear-gradient(90deg,#09482ceb,#0b60418f 68%,#071b3770),url("https://images.pexels.com/photos/20717490/pexels-photo-20717490.jpeg?auto=compress&cs=tinysrgb&w=700") center/cover!important}
+.tf18-screen[data-tf18-screen=modes] .tf20-mode-travel{background:linear-gradient(90deg,#06375dea,#05314aaa 65%,#03203366),url("https://images.pexels.com/photos/777211/pexels-photo-777211.jpeg?auto=compress&cs=tinysrgb&w=700") center/cover!important}
+.tf18-screen[data-tf18-screen=modes] .tf20-mode-rest{background:linear-gradient(90deg,#48331de9,#332d16b5 63%,#09203080),url("https://images.pexels.com/photos/723449/pexels-photo-723449.jpeg?auto=compress&cs=tinysrgb&w=700") center/cover!important}
+.tf18-screen[data-tf18-screen=modes] .tf20-mode-goal{background:linear-gradient(90deg,#09482ceb,#0b60418f 68%,#071b3770),url("https://images.pexels.com/photos/777211/pexels-photo-777211.jpeg?auto=compress&cs=tinysrgb&w=700") center/cover!important}
 .tf18-screen[data-tf18-screen=modes] .tf20-mode-focus{background:linear-gradient(90deg,#2a2257f2,#392b5acc 68%,#071d3488),url("https://images.pexels.com/photos/4162491/pexels-photo-4162491.jpeg?auto=compress&cs=tinysrgb&w=700") center/cover!important}
 .tf18-screen[data-tf18-screen=modes] .tf20-mode-family{background:linear-gradient(90deg,#60304ff1,#5a324fca 60%,#15202f82),url("https://images.pexels.com/photos/31566538/pexels-photo-31566538.jpeg?auto=compress&cs=tinysrgb&w=700") center/cover!important}
 .tf20-sleep-summary{display:grid;grid-template-columns:135px 1fr;gap:10px;align-items:center;margin:10px 0 15px}
@@ -149,3 +149,25 @@ button:focus-visible{outline:2px solid #ffe87d;outline-offset:2px}
 .tf20-sleep-stats>div:last-child{border:0}
 .tf20-sleep-stats b{color:#75f9ef;font-size:12px;white-space:nowrap}
 @media(max-width:350px){.tf20-sleep-summary{grid-template-columns:113px 1fr}.tf20-sleep-ring{height:110px;width:110px}.tf20-sleep-ring strong{font-size:22px}}
+
+
+/* V21 — Refinamento de imagens corretas e feedback táctil visual */
+.tf21-neutral-guide,.tf21-photo-fallback{width:100%;height:100%;min-height:74px;display:grid;place-items:center;align-content:center;gap:4px;color:#92ffff;background:radial-gradient(circle at 42% 30%,#26728b,#0b2642 70%);border-radius:10px;text-align:center}
+.tf21-neutral-guide{font-weight:900;font-size:31px;line-height:1}
+.tf21-neutral-guide small,.tf21-photo-fallback small{font-size:10px;color:#deffff;font-weight:750;line-height:1.2;max-width:125px}
+.tf21-photo-fallback>span{font-size:32px;color:#ffd875;line-height:1.1}
+.tf17-dogtile .tf21-photo-fallback{height:135px}
+.tf20-hero-exercise .tf21-photo-fallback{height:100%}
+.tf17-doghero .tf21-photo-fallback{height:100%;min-height:280px}
+.tf20-doglarge .tf21-photo-fallback{height:100%;min-height:205px}
+.tf18-gallery-card .tf18-art .tf21-photo-fallback{height:94px}
+.tf20-cover img{transition:filter .25s ease}
+.tf18-segments button[aria-pressed=true],.tf17-switch button[aria-pressed=true]{position:relative}
+.tf18-award:not(.locked) .symbol{box-shadow:0 0 14px #ffd35a61}
+.tf18-award:not(.locked){transition:transform .14s ease,box-shadow .2s ease}
+.tf18-award:not(.locked):active{transform:scale(.96)}
+.tf18-event .event-action:active,.tf18-gallery-card:active{transform:scale(.97);filter:brightness(1.13)}
+.tf18-quote-ring,.tf20-circular,.tf17-ring{transition:filter .25s ease}
+.tf18-quote-ring:active{filter:brightness(1.1)}
+.tf20-legend{padding:8px 11px;background:#123349;border:1px solid #285878;border-radius:10px}
+@media(prefers-reduced-motion:reduce){.tf18-award,.tf20-cover img,.tf18-quote-ring,.tf20-circular,.tf17-ring{transition:none!important}}
