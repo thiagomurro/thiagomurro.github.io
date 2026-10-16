@@ -13,7 +13,7 @@ const modkey=t=>t?.category==="PMERJ"?"pmerj":t?.category==="Inglês"?"english":
 const wd=s=>dt(s).getDay();
 const initial={pmerj:30,english:15},goal={pmerj:60,english:30};
 const pmSlot={1:["21:45","22:15"],2:["18:05","18:35"],3:["22:10","22:40"],4:["21:55","22:25"],5:["19:10","19:40"]};
-let guard=false,working=false,dlg=null,lastEvaluation="";
+let guard=false,working=false,dlg=null,lastEvaluation="",previousHTML=new WeakMap();
 function state(){return {pmerj:null,english:null,pending:[],...(J(PK)||{})}}
 function eligible(task,type){return type==="pmerj"?task.category==="PMERJ"&&task.meta?.studyTrack!=="pmerj-extra"&&task.meta?.kind!=="study-extension":task.category==="Inglês"&&task.meta?.studyTrack!=="english-extra"&&task.meta?.kind!=="study-extension"}
 function info(type,data,app,day=today()){
@@ -86,7 +86,7 @@ function evaluate(){
  if(working)return;
  const data=J(DK),app=J(SK)||{},plan=state();
  if(!Array.isArray(data?.tasks)||!data.studyProgression||!full30(today(),data.start))return;
- const day=today(),key=day+"-"+Object.keys(app.statuses||{}).length+"-"+(plan.pmerj?.on||"")+"-"+(plan.english?.on||"");
+ const day=today(),key=day+"-"+JSON.stringify(app.statuses||{})+"-"+(plan.pmerj?.on||"")+"-"+(plan.english?.on||"");
  if(lastEvaluation===key)return;
  lastEvaluation=key;working=true;
  try{
@@ -113,7 +113,7 @@ function evaluate(){
 function row(type,d,s,plan){
  const z=info(type,d,s),upgrade=!!plan[type]?.on,ready=full30(today(),d.start);
  const label=type==="pmerj"?"PMERJ":"Inglês",unit=upgrade?goal[type]:initial[type],availableDays=z.n?z.n+" sessões": "Sem sessões encerradas";
- const pct=upgrade?"100":z.pct.toString();
+ const pct=z.pct.toString();
  return '<div class="tf24-track"><div class="tf24-head"><strong>'+label+'</strong><span class="tf24-badge" data-promoted="'+upgrade+'">'+(upgrade?"EVOLUÇÃO ATIVADA":"META · 80%")+'</span></div>'+
  '<div class="tf24-numbers"><b>'+z.all+'/'+z.n+'</b><span>'+z.pct+'% de adesão</span><strong>'+unit+' min</strong></div>'+
  '<div class="tf24-progress"><i style="width:'+pct+'%"></i></div><small>'+availableDays+' nos últimos 30 dias completos · '+z.remaining+' conclusão(ões) para 80%.</small>'+
@@ -135,7 +135,7 @@ function paint(){
  if(!destination&&!isProgress)return;
  let el=$("#tf24-panel",m);
  if(!el){el=document.createElement("section");if(destination)destination.after(el);else m.querySelector(".tf17-dash")?.prepend(el)}
- const html=renderBox();if(el.outerHTML!==html)el.outerHTML=html;
+ const html=renderBox();if(previousHTML.get(el)!==html){el.outerHTML=html;const updated=$("#tf24-panel",m);if(updated)previousHTML.set(updated,html)}
 }
 function openToday(){
  const d=J(DK),s=J(SK)||{},now=today();if(!d)return;
