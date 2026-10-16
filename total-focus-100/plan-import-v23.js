@@ -29,8 +29,9 @@ const b=document.createElement("button");b.id="tf23-update";b.type="button";b.cl
 }
 input.addEventListener("change",async()=>{const file=input.files?.[0];input.value="";if(!file)return;if(file.size>6000000)return alert("Arquivo muito grande");
 try{
-const d=JSON.parse(await file.text()),r=inspect(d),done=Object.values(JSON.parse(localStorage.getItem(SK)||"{}").statuses||{}).filter(x=>x==="feito").length;
-if(!confirm("Aplicar novo plano?\nPMERJ: "+r.days+" dias de expediente, 15h30–16h.\nCotações: "+r.quotes+" blocos só domingo, segunda e quinta.\n"+done+" atividades concluídas mantidas.\n\nNenhum dado será enviado ao GitHub."))return;
+const d=JSON.parse(await file.text()),r=inspect(d),promoted=JSON.parse(localStorage.getItem("totalfocus100.study.v24")||"{}"),done=Object.values(JSON.parse(localStorage.getItem(SK)||"{}").statuses||{}).filter(x=>x==="feito").length;
+if(promoted.pmerj?.on||promoted.english?.on)throw Error("A progressão de estudo já foi desbloqueada neste dispositivo. Não reimporte a versão inicial e não apague os complementos. Faça backup primeiro.");
+if(!confirm("Aplicar novo plano?\nPMERJ: "+r.days+" dias de expediente, 15h30–16h.\nCotações: "+r.quotes+" blocos só domingo, segunda e quinta.\nInglês: 15 min nos 100 dias (inclui fins de semana), dobrando após a meta.\n"+done+" atividades concluídas mantidas.\n\nNenhum dado será enviado ao GitHub."))return;
 const old=localStorage.getItem(DK);if(old)localStorage.setItem(PREV,old);localStorage.setItem(DK,JSON.stringify(d));window.dispatchEvent(new Event("tf-remote-update"));alert("Cronograma atualizado. Faça backup para preservar o histórico.");
 }catch(e){alert("Importação não realizada: "+e.message)}});
 const main=q("#main");if(main)new MutationObserver(()=>{if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;display()})}}).observe(main,{childList:true});display();
