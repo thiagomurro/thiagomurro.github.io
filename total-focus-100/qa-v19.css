@@ -1,0 +1,9 @@
+/* TOTAL FOCUS V19 — diagnóstico local de homologação iPhone */
+.tf19-qa-dialog{width:min(94vw,480px);max-height:88dvh;border:1px solid #29dad9;background:linear-gradient(150deg,#0d2d46,#061a2c);border-radius:19px;padding:17px;color:#e9fcff;box-shadow:0 22px 70px #000d;overflow-y:auto}
+.tf19-qa-dialog::backdrop{background:#000b17c9}
+.tf19-qa-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.tf19-qa-head strong{font-size:14px;color:#88f6e7;letter-spacing:.3px}.tf19-qa-head button{padding:5px 11px;font-size:18px;background:#12364c;border:1px solid #2f7295;color:#fff}
+.tf19-qa-dialog .tf19-sub{font-size:12px;color:#b5d8dd;margin:11px 0;line-height:1.5}.tf19-test{display:grid;gap:5px;border:1px solid #254f65;border-radius:11px;padding:10px;margin:7px 0;background:#102b3e}
+.tf19-test strong{font-size:12px;line-height:1.4}.tf19-test small{font-size:11px;color:#b6d1db;line-height:1.4}
+.tf19-test[data-result="pass"]{border-left:4px solid #35e6aa}.tf19-test[data-result="warn"]{border-left:4px solid #ffd16e}.tf19-test[data-result="fail"]{border-left:4px solid #ff6579}
+.tf19-actions{display:flex;gap:9px;margin-top:14px}.tf19-actions button{flex:1;min-height:46px;font-size:12px;font-weight:850}
+.tf19-qa-dialog .tf19-caveat{font-size:11px;color:#cbd3de;line-height:1.5;margin-top:14px}
