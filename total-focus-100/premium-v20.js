@@ -6,6 +6,7 @@ const read=k=>{try{return JSON.parse(localStorage.getItem(k)||"null")}catch{retu
 const day=()=>{let d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const photos={
+ wall:"https://images.pexels.com/photos/5036902/pexels-photo-5036902.jpeg?auto=compress&cs=tinysrgb&w=900",
  dog:"https://images.pexels.com/photos/31566538/pexels-photo-31566538.jpeg?auto=compress&cs=tinysrgb&w=900",
  dog2:"https://images.pexels.com/photos/32350335/pexels-photo-32350335.jpeg?auto=compress&cs=tinysrgb&w=900",
  dog3:"https://images.pexels.com/photos/19052332/pexels-photo-19052332.jpeg?auto=compress&cs=tinysrgb&w=900",
@@ -87,6 +88,8 @@ function agenda(){
  });
 }
 function photoFor(text){
+ if(/flexão na parede/i.test(text))return photos.wall;
+ if(/flexão inclinada|prancha inclinada|prancha lateral|isometria|panturrilh|bird.dog|dead bug|mobilidade|gato.vaca|elevação escapular|respiração/i.test(text))return "";
  if(/flex|supino|tríceps|braç|peito/i.test(text))return photos.pushup;
  if(/agacha|perna|glúteo/i.test(text))return photos.squat;
  if(/prancha|plank/i.test(text))return photos.plank;
