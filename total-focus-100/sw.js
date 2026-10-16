@@ -1,5 +1,5 @@
 /* TOTAL FOCUS offline cache premium V17 */
-const VERSION="totalfocus100-premium-v20-20261016";
+const VERSION="totalfocus100-premium-v20b-20261016";
 const ASSETS=["./","./index.html","./manifest.webmanifest","./icon.svg","./game-v10.css","./game-v10.js","./game-v11.css","./game-v11.js","./coach-v12.css","./coach-v12.js","./install-v13.css","./install-v13.js","./reminders-v14.css","./reminders-v14.js","./cloud-v16.css","./cloud-v16.js","./experience-v17.css","./metrics-v17.js","./shiro-v17.js","./trainer-photo-v17.js","./home-v17.js","./screens-v18.css","./screens-v18.js","./qa-v19.css","./qa-v19.js","./premium-v20.css","./premium-v20.js"];
 self.addEventListener("install",event=>{event.waitUntil(caches.open(VERSION).then(cache=>Promise.all(ASSETS.map(asset=>cache.add(asset)))).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith("totalfocus100-")&&k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
