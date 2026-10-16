@@ -42,10 +42,10 @@ async function run(){
  let items=[],previous=window.TF18_APP?.current?.()||"today",stateBefore=localStorage.getItem(SK),dataBefore=localStorage.getItem(DK),test=testData();
  const mark=(kind,name,detail)=>{items.push({kind,name,detail});setOutput(items,"Testando. Não feche esta janela.")};
  try{
-  mark(storageTest()?"pass":"fail","Armazenamento local",storageTest()?"Leitura e escrita de teste disponíveis.":"Não foi possível salvar dados nesta sessão.");
+  const storageOK=storageTest();mark(storageOK?"pass":"fail","Armazenamento local",storageOK?"Leitura e escrita de teste disponíveis.":"Não foi possível salvar dados nesta sessão.");
   mark(test.loaded?(test.problems.length?"warn":"pass"):"warn","Cronograma privado",test.loaded?test.count+" atividades • "+(test.problems.length?test.problems.slice(0,3).join(", "):"estrutura básica válida"):"Ainda não foi importado.");
   mark(location.protocol==="https:"?"pass":"warn","Conexão HTTPS",location.protocol==="https:"?"Conexão segura.":"Abra pelo endereço HTTPS publicado.");
-  mark(window.matchMedia?.("(display-mode: standalone)")?.matches||navigator.standalone===true?"pass":"warn","Aplicativo instalado","Abrir pela Tela de Início permite verificar o modo PWA.");
+  const installed=!!(window.matchMedia?.("(display-mode: standalone)")?.matches||navigator.standalone===true);mark(installed?"pass":"warn","Aplicativo instalado",installed?"Executando pela Tela de Início como PWA.":"Aberto em navegador; instale pelo menu Compartilhar do Safari.");
   if(!window.TF18_APP?.activate){mark("fail","Módulo de telas","Navegador ainda não carregou a atualização V18.");return}
   if(test.loaded){
    for(const [page,name,selector] of pages){
