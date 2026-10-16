@@ -1,0 +1,28 @@
+/* TOTAL FOCUS — Estudos com evolução condicional, V24 */
+.tf24-panel{background:linear-gradient(145deg,#0c2d42,#071827);border:1px solid #2fc7c0;border-radius:18px;margin:13px 0;padding:17px 14px;box-shadow:0 0 24px #28e7d528;color:#e9fbff}
+.tf24-eyebrow{font-size:10px;letter-spacing:1.2px;color:#57f8e6;font-weight:900}
+.tf24-panel h2{font-size:19px;margin:8px 0 7px;color:#fff}
+.tf24-panel>p{font-size:12px;line-height:1.6;color:#bcd4df}
+.tf24-track{border:1px solid #285574;border-radius:14px;background:linear-gradient(150deg,#12364b,#0c2436);padding:12px;margin:12px 0}
+.tf24-head{display:flex;align-items:center;justify-content:space-between;gap:7px}
+.tf24-head strong{font-size:16px}.tf24-badge{font-size:10px;font-weight:950;color:#fbe7a1;background:#493c1e;border:1px solid #987739;padding:5px 8px;border-radius:20px}
+.tf24-badge[data-promoted="true"]{background:#174e3c;border-color:#30dbaa;color:#8ffff0}
+.tf24-numbers{display:flex;align-items:center;justify-content:space-between;gap:7px;margin:14px 0 8px}
+.tf24-numbers b{font-size:26px;color:#fff;font-variant-numeric:tabular-nums}.tf24-numbers span{color:#81ede4;font-size:12px;font-weight:850}.tf24-numbers strong{font-size:23px;color:#ffde76}
+.tf24-progress{height:10px;border-radius:10px;background:#15384e;overflow:hidden;margin-bottom:9px}
+.tf24-progress i{height:100%;display:block;background:linear-gradient(90deg,#2cc2e5,#47eabc,#f9da79);box-shadow:0 0 13px #20f9cf61;transition:width .3s}
+.tf24-track>small{font-size:11px;line-height:1.5;color:#9dcad4;display:block}
+.tf24-track .tf24-extra{font-size:11px;color:#c1e0e6;line-height:1.45;margin:8px 0 0}
+.tf24-panel .tf24-foot{font-size:11px;color:#b9d0da;background:#133346;border-left:3px solid #27e3e4;padding:10px;border-radius:9px}
+.tf24-warning{color:#ffdd93!important;border-left:3px solid #ffb95c;padding:10px;background:#453526;border-radius:8px}
+.tf24-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tf24-row button{flex:1;padding:12px!important;min-width:120px;border-radius:12px!important;font-size:12px;font-weight:900!important;color:#022c33!important;background:#40e8db!important;border:0!important}
+.tf24-dialog{background:#0b2134;color:#f5ffff;border:1px solid #36dbdb;border-radius:18px;width:min(92vw,490px);max-height:88dvh;padding:18px;overflow-y:auto}
+.tf24-dialog::backdrop{background:#01111edc}
+.tf24-dialog h2{margin:0 0 9px}.tf24-dialog>p{color:#bddeea;font-size:12px;line-height:1.55}
+.tf24-study-item{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#123349;border:1px solid #2b6b82;border-radius:12px;padding:10px;margin:9px 0}
+.tf24-study-item b{font-size:13px}.tf24-study-item small{display:block;font-size:10px;color:#b5d4dd;line-height:1.5;margin-top:4px}
+.tf24-study-item button{font-size:11px;min-width:87px;background:#2fdfb0;color:#032e24;border:0;font-weight:850;min-height:39px}
+.tf24-study-item button:disabled{opacity:.5}
+.tf24-dialog>button:last-child{width:100%;margin-top:8px}
+@media(prefers-reduced-motion:reduce){.tf24-progress i{transition:none}}
