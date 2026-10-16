@@ -175,10 +175,21 @@ function settings(){const m=$("#main [data-tf18-screen=configMenu]");if(!m)retur
  const types=["user","cloud","bell","volume","shield","settings","target"];
  $$(".tf18-listnav button",m).forEach((b,i)=>{const g=$(".glyph",b);if(g&&!g.dataset.tf20){g.dataset.tf20="1";g.innerHTML=svg(types[i]||"settings")}})
 }
+function sleepGraphic(){
+ const root=$("#main [data-tf18-screen='sleep']");if(!root)return;
+ const inner=root.querySelector(".tf18-card"),tabs=root.querySelector(".tf18-segments");
+ if(!inner||!tabs||!tabs.querySelector('[aria-pressed="true"]')?.textContent?.includes("Sono"))return;
+ if(root.querySelector(".tf20-sleep-summary"))return;
+ const check=Object.entries(read(SK)?.checkins||{}).filter(([,v])=>Number(v.sleep)>0).sort((a,b)=>a[0].localeCompare(b[0])).at(-1);
+ const hours=Number(check?.[1]?.sleep||0),quality=hours?Math.min(100,Math.round(hours/8*100)):0;
+ const box=document.createElement("div");box.className="tf20-sleep-summary";
+ box.innerHTML='<div class="tf20-sleep-ring" style="--pct:'+quality+'%"><div class="values"><strong>'+ (hours?hours.toFixed(1).replace(".",",")+"h":"—") +'</strong><small>último registro</small></div></div><div class="tf20-sleep-stats"><div><span>Meta de referência</span><b>8 horas</b></div><div><span>Energia percebida</span><b>'+(Number(check?.[1]?.energy)||"—")+'/5</b></div><div><span>Registro</span><b>'+(check?check[0].split("-").reverse().join("/"):"Pendente")+'</b></div></div>';
+ inner.querySelector("h2")?.insertAdjacentElement("afterend",box);
+}
 function quoteModal(){const m=$("#modalcontent");if(!m?.querySelector("#qtime"))return;
  const timer=$("#qtime",m);if(timer&&!timer.dataset.tf20){timer.dataset.tf20="1";timer.style.border="11px solid #20e7ec";timer.style.borderRadius="50%";timer.style.boxShadow="0 0 25px #10f9f65c";timer.style.background="radial-gradient(#0c354e,#051322)";timer.style.width="min(72vw,250px)";timer.style.height="min(72vw,250px)";timer.style.margin="15px auto";timer.style.display="grid";timer.style.placeItems="center";timer.style.fontSize="clamp(23px,6vw,34px)"}
 }
-let busy=false;function paint(){if(busy)return;busy=true;requestAnimationFrame(()=>{busy=false;try{nav();home();agenda();training();shiro();dogDialog();trainer();award();modes();settings();quoteModal()}catch(e){console.warn("TOTAL FOCUS V20 visual:",e.message)}})}
+let busy=false;function paint(){if(busy)return;busy=true;requestAnimationFrame(()=>{busy=false;try{nav();home();agenda();training();shiro();dogDialog();trainer();award();modes();settings();sleepGraphic();quoteModal()}catch(e){console.warn("TOTAL FOCUS V20 visual:",e.message)}})}
 const main=$("#main"),content=$("#modalcontent"),modal=$("#tf12-dialog"),body=document.body;
 if(main)new MutationObserver(paint).observe(main,{subtree:true,childList:true});
 if(content)new MutationObserver(paint).observe(content,{childList:true,subtree:true});
