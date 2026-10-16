@@ -12,6 +12,10 @@ if(t.category==="Trabalho"&&/Prefeitura/.test(t.title)&&[1,2,3,4,5].includes(new
 if(t.category==="PMERJ"&&t.time==="15:30"&&t.end==="16:00")learn.add(t.date);
 }
 for(const wd of days)if(!learn.has(wd))throw Error("Falta o estudo PMERJ em "+wd);
+if(!d.studyProgression||d.studyProgression.evaluationDays!==30)throw Error("Selecione o cronograma V24 com progressão de 80%.");
+const english=d.tasks.filter(t=>t.category==="Inglês"),englishDays=new Set(english.map(t=>t.date));
+if(english.length!==100||englishDays.size!==100)throw Error("O plano deve ter 100 sessões de inglês, incluindo os fins de semana.");
+if(english.some(t=>Math.floor((Number(t.end.slice(0,2))*60+Number(t.end.slice(3,5)))-(Number(t.time.slice(0,2))*60+Number(t.time.slice(3,5))))!==15))throw Error("O tempo inicial de inglês deve ser 15 minutos.");
 if(!quotes[0]||!quotes[1]||!quotes[4])throw Error("Faltam blocos confirmados de cotação.");
 return {days:days.size,quotes:quotes[0]+quotes[1]+quotes[4]}
 }
