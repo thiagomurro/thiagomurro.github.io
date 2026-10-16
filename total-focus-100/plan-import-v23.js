@@ -24,7 +24,7 @@ let queued=false;
 function display(){
 const main=q("#main");if(!main)return;const menu=main.querySelector('[data-tf18-screen="configMenu"] .tf18-listnav'),native=main.querySelector("h1")?.textContent?.includes("Ajustes e privacidade");
 if(!menu&&!native||main.querySelector("#tf23-update"))return;
-const b=document.createElement("button");b.id="tf23-update";b.type="button";b.className="tf23-update";b.style.cssText="width:100%;padding:15px;text-align:left;border:1px solid #36dbd5;border-radius:12px;background:#0d3549;color:#affdf1;font-weight:850;margin:12px 0";b.textContent="▦ Atualizar PMERJ e cotações (preserva histórico)";
+const b=document.createElement("button");b.id="tf23-update";b.type="button";b.className="tf23-update";b.style.cssText="width:100%;padding:15px;text-align:left;border:1px solid #36dbd5;border-radius:12px;background:#0d3549;color:#affdf1;font-weight:850;margin:12px 0";b.textContent="▦ Atualizar PMERJ, inglês e cotações (V24)";
 (menu||main).append(b);b.addEventListener("click",()=>input.click())
 }
 input.addEventListener("change",async()=>{const file=input.files?.[0];input.value="";if(!file)return;if(file.size>6000000)return alert("Arquivo muito grande");
