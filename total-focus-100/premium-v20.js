@@ -138,7 +138,7 @@ function training(){
 function shiro(){
  const m=$("#main .tf17-school");if(!m)return;
  const myPhoto=!!localStorage.getItem(PHOTO);
- const hero=m.querySelector(".tf17-doghero img");if(hero&&!hero.dataset.tf20){hero.dataset.tf20="1";if(!myPhoto)hero.src=photos.dog}
+ const hero=m.querySelector(".tf17-doghero img");if(hero&&!hero.dataset.tf20){hero.dataset.tf20="1";if(!myPhoto)hero.src=photos.dog;imageFallback(hero,"Foto do pastor-branco-suíço indisponível")}
  $(".tf17-dogtile img",m).forEach(el=>{if(el.dataset.tf20)return;el.dataset.tf20="1";const title=el.closest(".tf17-dogtile")?.querySelector("strong")?.textContent||"";el.src=commandPhoto(title);el.alt="Pastor-branco-suíço: fotografia ilustrativa para "+title;imageFallback(el,"Foto do comando "+title+" indisponível")});
  const caption=m.querySelector(".tf17-photo-license");if(caption&&!caption.dataset.tf20){caption.dataset.tf20="1";caption.innerHTML='Fotos de exemplo da raça, não são o Shiro. Fotos: <a href="https://www.pexels.com/photo/white-swiss-shepherd-dog-in-a-sunny-park-31566538/" rel="noopener noreferrer" target="_blank">Pexels / Nadin Romanova</a> e fotógrafos creditados. Você pode substituir pela foto real do Shiro.'}
 }
@@ -157,7 +157,7 @@ function trainer(){
   if(!view.querySelector(".tf12-dog-cards")){
    const src=photoFor(title);if(src){
     const figure=document.createElement("div");figure.className="tf20-hero-exercise";
-    const img=trustedImg(src,"Imagem ilustrativa de "+title);figure.append(img);
+    const img=trustedImg(src,"Imagem ilustrativa de "+title);imageFallback(img,"Foto do exercício indisponível");figure.append(img);
     const legend=document.createElement("span");legend.textContent="Fotografia ilustrativa — verifique posição, amplitude e execução no guia.";figure.append(legend);
     const heading=$(".tf12-movename",view);heading?.insertAdjacentElement("afterend",figure);
     const stale=$(".tf15-photo",view);if(stale)stale.style.display="none";
@@ -165,10 +165,10 @@ function trainer(){
   }
  }
  if(view.querySelector(".tf12-dog-cards")){
-  const photo=$(".tf17-coach-photo img",view)||$(".tf15-photo img",view);if(photo&&!photo.dataset.tf20){photo.dataset.tf20="1";photo.src=localStorage.getItem(PHOTO)||photos.dog2}
+  const photo=$(".tf17-coach-photo img",view)||$(".tf15-photo img",view);if(photo&&!photo.dataset.tf20){photo.dataset.tf20="1";photo.src=localStorage.getItem(PHOTO)||commandPhoto($(".tf12-movename",view)?.textContent.replace(/^♧\s*/,""));imageFallback(photo,"Imagem do Shiro indisponível")}
   const old=$(".tf15-photo",view);if(old)old.style.display="none";
   let box=$(".tf20-doglarge",view);
-  if(!box){box=document.createElement("div");box.className="tf20-doglarge";box.innerHTML='<img alt="Foto ilustrativa de pastor-branco-suíço" src="'+(localStorage.getItem(PHOTO)||commandPhoto($(".tf12-movename",view)?.textContent?.replace(/^♧\\s*/,"")))+'"><small>Imagem ilustrativa. Siga as instruções textuais de cada comando.</small>';imageFallback(box.querySelector("img"),"Fotografia do comando indisponível");$(".tf12-movename",view)?.insertAdjacentElement("afterend",box)}
+  if(!box){box=document.createElement("div");box.className="tf20-doglarge";box.innerHTML='<img alt="Foto ilustrativa de pastor-branco-suíço" src="'+(localStorage.getItem(PHOTO)||commandPhoto($(".tf12-movename",view)?.textContent?.replace(/^♧\s*/,"")))+'"><small>Imagem ilustrativa. Siga as instruções textuais de cada comando.</small>';imageFallback(box.querySelector("img"),"Fotografia do comando indisponível");$(".tf12-movename",view)?.insertAdjacentElement("afterend",box)}
   const count=Number($(".tf12-dog-target strong",view)?.textContent?.match(/^\d+/)?.[0]||0),target=Number($(".tf12-dog-target strong",view)?.textContent?.match(/\/\s*(\d+)/)?.[1]||5);
   if(!$("#tf20-attempts",view)){const attempts=document.createElement("div");attempts.id="tf20-attempts";attempts.className="tf20-attempts";$(".tf12-dog-target",view)?.after(attempts)}
   const slot=$("#tf20-attempts",view);if(slot)slot.innerHTML=Array.from({length:Math.min(12,target)},(_,i)=>'<i class="'+(i<count?"hit":"")+'">'+(i<count?"✓":"♧")+"</i>").join("");
