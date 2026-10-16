@@ -25,7 +25,7 @@ var style=document.createElement("style");style.textContent=css;document.head.ap
 var dialog=document.createElement("dialog");dialog.className="tf28-dialog";dialog.id="tf28-guide-modal";
 function init(){if(!dialog.isConnected)document.body.appendChild(dialog);inject();}
 function inject(){var root=document.querySelector('[data-tf25-root="treino"]');if(root&&!root.querySelector('[data-tf28="library"]')){var top=root.querySelector(".tf25-top")||root;var button=document.createElement("button");button.type="button";button.dataset.tf28="library";button.className="tf28-library-button";button.textContent="▦ Guias ilustrados";top.appendChild(button);}}
-function show(title,body){init();dialog.innerHTML='<div class="tf28-top"><h2>'+esc(title)+'</h2><button class="tf28-close" data-tf28="close" aria-label="Fechar">✕</button></div>'+body;dialog.showModal();}
+function show(title,body){init();dialog.innerHTML='<div class="tf28-top"><h2>'+esc(title)+'</h2><button class="tf28-close" data-tf28="close" aria-label="Fechar">✕</button></div>'+body;if(!dialog.open)dialog.showModal();}
 function library(){var options=rows.map(function(r){return '<button data-tf28="guide" data-key="'+esc(r[1])+'">'+esc(r[0])+' ›</button>';}).join("");show("Biblioteca ilustrada",' <p class="tf28-note">Guias demonstrativos. As séries, repetições e duração de cada sessão continuam definidas na sua agenda.</p><div class="tf28-options">'+options+"</div>");}
 function guide(key){
  var r=byKey[key];if(!r)return;
