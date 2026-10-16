@@ -1,0 +1,57 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Baixar TOTAL FOCUS para PC</title><style>body{background:radial-gradient(circle at 50% 0%,#0c5f7b,#07172b 60%);color:#e9fcff;font-family:system-ui,-apple-system,sans-serif;min-height:100vh;margin:0;display:grid;place-items:center;padding:20px}main{max-width:610px;width:100%;box-sizing:border-box;background:linear-gradient(150deg,#10314a,#061628);border:1px solid #2bd3de;border-radius:20px;padding:28px;box-shadow:0 15px 60px #0007}h1{font-size:26px}p{line-height:1.6;color:#bedee7}button{width:100%;padding:17px;border:0;border-radius:13px;font-weight:900;font-size:17px;background:linear-gradient(#ffed89,#ffc12d);color:#291f06;cursor:pointer}button:disabled{opacity:.5}a{color:#66f6ec}.track{height:10px;border-radius:11px;background:#12445c;margin:17px 0;overflow:hidden}.track>div{height:100%;width:0;background:linear-gradient(90deg,#19b7e2,#2ef0ab,#ffe370)}.caption{font-size:12px;color:#b0c6d7}</style></head><body><main><div style="color:#ffd86f;letter-spacing:2px;font-size:13px;font-weight:900">◈ TOTAL FOCUS 100 • GAME V21</div><h1>Baixar aplicativo para Windows</h1><p>Gere um arquivo ZIP com a versão atual do TOTAL FOCUS, incluindo <strong>telas, gráficos, treinos e Escola do Shiro</strong>. O cronograma pessoal não será colocado neste arquivo.</p><button id="get">↓ Baixar TOTAL FOCUS V21 (.ZIP)</button><div class="track"><div id="fill"></div></div><p id="msg" class="caption" aria-live="polite">Pronto para baixar.</p><p class="caption">Após baixar, clique com o botão direito no ZIP → Extrair tudo → abra <strong>ABRIR_TOTAL_FOCUS_PC.html</strong>. Algumas funções dependem de HTTPS e devem ser usadas na <a href="./" target="_blank" rel="noopener noreferrer">versão online</a>.</p><p class="caption">Arquivos públicos: 27. Nenhuma senha, CPF, histórico pessoal ou cronograma privado será incluído.</p></main><script>
+const FILES=["index.html","","manifest.webmanifest","icon.svg","game-v10.css","game-v10.js","game-v11.css","game-v11.js","coach-v12.css","coach-v12.js","install-v13.css","install-v13.js","reminders-v14.css","reminders-v14.js","cloud-v16.css","cloud-v16.js","experience-v17.css","metrics-v17.js","shiro-v17.js","trainer-photo-v17.js","home-v17.js","screens-v18.css","screens-v18.js","qa-v19.css","qa-v19.js","premium-v20.css","premium-v20.js"],README="TOTAL FOCUS 100 - V21 PARA WINDOWS\r\n\r\nAbra ABRIR_TOTAL_FOCUS_PC.html no Chrome ou Edge.\r\nSe preferir a versão completa online, use https://thiagomurro.github.io/total-focus-100/\r\nImporte seu cronograma JSON privado separadamente.\r\nEste ZIP contém somente arquivos públicos do aplicativo, nunca seus dados pessoais.\r\nDados salvos no iPhone não aparecem automaticamente no PC.\r\nGoogle OAuth funciona apenas em origem HTTPS autorizada.\r\nAlgumas fotografias externas requerem conexão à internet.\r\nNão apague registros antes de criar backup criptografado.\r\nNão compartilhe senhas ou CPF no código público.",encoder=new TextEncoder();
+const pick=x=>document.getElementById(x);
+const table=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let j=0;j<8;j++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;table[n]=c>>>0}
+function crc(b){let c=0xffffffff;for(const n of b)c=table[(c^n)&255]^(c>>>8);return (c^0xffffffff)>>>0}
+function write(size){let bytes=new Uint8Array(size);return {bytes,view:new DataView(bytes.buffer)}}
+function zip(entries){
+ let local=[],center=[],offset=0,total=0;
+ for(const [name,value] of entries){
+  const fn=encoder.encode(name),data=typeof value==="string"?encoder.encode(value):value,check=crc(data);
+  let h=write(30+fn.length),v=h.view;
+  v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,2048,true);
+  v.setUint32(14,check,true);v.setUint32(18,data.length,true);v.setUint32(22,data.length,true);v.setUint16(26,fn.length,true);h.bytes.set(fn,30);
+  local.push(h.bytes,data);
+  let c=write(46+fn.length),w=c.view;
+  w.setUint32(0,0x02014b50,true);w.setUint16(4,20,true);w.setUint16(6,20,true);w.setUint16(8,2048,true);
+  w.setUint32(16,check,true);w.setUint32(20,data.length,true);w.setUint32(24,data.length,true);w.setUint16(28,fn.length,true);w.setUint32(42,offset,true);c.bytes.set(fn,46);
+  center.push(c.bytes);total+=c.bytes.length;offset+=h.bytes.length+data.length;
+ }
+ let z=write(22);z.view.setUint32(0,0x06054b50,true);z.view.setUint16(8,entries.length,true);z.view.setUint16(10,entries.length,true);z.view.setUint32(12,total,true);z.view.setUint32(16,offset,true);
+ return new Blob([...local,...center,z.bytes],{type:"application/zip"})
+}
+function single(map){
+ let h=map.get("index.html");
+ for(const [f,text] of map){
+  let name=f.replace(/\./g,"\\.");
+  if(f.endsWith(".css")){let pattern=new RegExp('<link\\s+rel="stylesheet"\\s+href="\\.\\/'+name+'(?:\\?[^"]*)?"\\s*>',"g");h=h.replace(pattern,()=>"<style>\n"+text+"\n</style>")}
+  if(f.endsWith(".js")&&f!=="sw.js"){let pattern=new RegExp('<script\\s+src="\\.\\/'+name+'(?:\\?[^"]*)?"\\s+defer\\s*><\\/script>',"g");h=h.replace(pattern,()=>"<script>\n"+text.replace(/<\/script/gi,"<\\/script")+"\n<\/script>")}
+ }
+ return h;
+}
+async function start(){
+ const btn=pick("get"),bar=pick("fill"),msg=pick("msg");
+ btn.disabled=true;bar.style.width="0%";
+ try{
+  let files=new Map;
+  for(let i=0;i<FILES.length;i++){
+   let url=new URL("./"+FILES[i],location.href);url.searchParams.set("pc","21");
+   const response=await fetch(url,{cache:"no-store"});
+   if(!response.ok)throw new Error("Arquivo indisponível: "+FILES[i]+" (HTTP "+response.status+")");
+   files.set(FILES[i],await response.text());
+   bar.style.width=Math.round((i+1)*80/FILES.length)+"%";
+   msg.textContent="Preparando "+(i+1)+"/"+FILES.length+": "+FILES[i];
+  }
+  const standalone=single(files);
+  const entries=[["TOTAL_FOCUS_100_V21_PC/LEIA_PRIMEIRO.txt",README],["TOTAL_FOCUS_100_V21_PC/ABRIR_TOTAL_FOCUS_PC.html",standalone]];
+  for(const [name,content] of files)entries.push(["TOTAL_FOCUS_100_V21_PC/"+name,content]);
+  msg.textContent="Compactando aplicativo...";bar.style.width="90%";
+  const archive=zip(entries),link=URL.createObjectURL(archive),a=document.createElement("a");
+  a.href=link;a.download="TOTAL_FOCUS_100_GAME_V21_PC.zip";document.body.appendChild(a);a.click();a.remove();
+  bar.style.width="100%";msg.textContent="Download preparado ("+Math.round(archive.size/1024)+" KB; "+entries.length+" arquivos). Veja sua pasta Downloads.";
+  setTimeout(()=>URL.revokeObjectURL(link),60000);
+ }catch(e){msg.textContent="Erro ao gerar ZIP: "+e.message}
+ finally{btn.disabled=false}
+}
+pick("get").addEventListener("click",start);
+</script></body></html>
