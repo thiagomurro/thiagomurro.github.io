@@ -116,8 +116,8 @@ function row(type,d,s,plan){
  const pct=z.pct.toString();
  return '<div class="tf24-track"><div class="tf24-head"><strong>'+label+'</strong><span class="tf24-badge" data-promoted="'+upgrade+'">'+(upgrade?"EVOLUÇÃO ATIVADA":"META · 80%")+'</span></div>'+
  '<div class="tf24-numbers"><b>'+z.all+'/'+z.n+'</b><span>'+z.pct+'% de adesão</span><strong>'+unit+' min</strong></div>'+
- '<div class="tf24-progress"><i style="width:'+pct+'%"></i></div><small>'+availableDays+' nos últimos 30 dias completos · '+z.remaining+' conclusão(ões) para 80%.</small>'+
- '<p class="tf24-extra">'+(upgrade?"Aumentou para "+goal[type]+" minutos em "+z.begin+" ou depois. A conquista é permanente até o fim do desafio.":ready?"Avaliação diária automática; marque as sessões realmente estudadas como concluídas.":"Primeira avaliação em "+shift(d.start,30)+".")+'</p></div>'
+ '<div class="tf24-progress"><i style="width:'+pct+'%"></i></div><small>'+availableDays+' nos últimos 30 dias completos · '+(upgrade?"meta de evolução atingida":z.remaining+" conclusão(ões) para 80%")+'.</small>'+
+ '<p class="tf24-extra">'+(upgrade?"Aumentou para "+goal[type]+" minutos em "+plan[type].on+". A conquista é permanente até o fim do desafio.":ready?"Avaliação diária automática; marque as sessões realmente estudadas como concluídas.":"Primeira avaliação em "+shift(d.start,30)+".")+'</p></div>'
 }
 function renderBox(){
  const d=J(DK),s=J(SK)||{};if(!d?.studyProgression)return "";
@@ -147,6 +147,18 @@ function openToday(){
  '<button data-tf24-close="1">Fechar</button>';
  dlg.showModal();
 }
+document.addEventListener("click",e=>{
+ const b=e.target.closest('[data-do="complete"]');if(!b)return;
+ const d=J(DK),t=d?.tasks?.find(v=>v.id===b.dataset.id);
+ if(!d?.studyProgression||!t||!(t.category==="PMERJ"||t.category==="Inglês"))return;
+ const minutes=t.meta?.durationMin||minute(t.end)-minute(t.time);
+ if(!confirm("Confirma que estudou realmente "+minutes+" minutos de "+t.category+"? Apenas sessões executadas devem contar para a meta de 80%.")){
+  e.preventDefault();e.stopImmediatePropagation();return
+ }
+ const plan=state();plan.confirmed=plan.confirmed||{};
+ plan.confirmed[t.id]={minutes,at:new Date().toISOString(),method:"declaração do usuário"};
+ localStorage.setItem(PK,JSON.stringify(plan));lastEvaluation="";
+},true);
 document.addEventListener("click",e=>{
  if(e.target.closest("#tf24-refresh")){lastEvaluation="";evaluate();paint()}
  if(e.target.closest("#tf24-open-today"))openToday();
