@@ -10,13 +10,13 @@ const photos={
  dog:"https://images.pexels.com/photos/31566538/pexels-photo-31566538.jpeg?auto=compress&cs=tinysrgb&w=900",
  dog2:"https://images.pexels.com/photos/32350335/pexels-photo-32350335.jpeg?auto=compress&cs=tinysrgb&w=900",
  dog3:"https://images.pexels.com/photos/19052332/pexels-photo-19052332.jpeg?auto=compress&cs=tinysrgb&w=900",
- mountains:"https://images.pexels.com/photos/20717490/pexels-photo-20717490.jpeg?auto=compress&cs=tinysrgb&w=1100",
+ mountains:"https://images.pexels.com/photos/777211/pexels-photo-777211.jpeg?auto=compress&cs=tinysrgb&w=1100",
  pushup:"https://images.pexels.com/photos/4162491/pexels-photo-4162491.jpeg?auto=compress&cs=tinysrgb&w=900",
  pushup2:"https://images.pexels.com/photos/4162487/pexels-photo-4162487.jpeg?auto=compress&cs=tinysrgb&w=900",
  squat:"https://images.pexels.com/photos/4164456/pexels-photo-4164456.jpeg?auto=compress&cs=tinysrgb&w=900",
- plank:"https://images.pexels.com/photos/35342417/pexels-photo-35342417.jpeg?auto=compress&cs=tinysrgb&w=900",
- running:"https://images.pexels.com/photos/7880273/pexels-photo-7880273.jpeg?auto=compress&cs=tinysrgb&w=900",
- bicycle:"https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&w=900"
+ plank:"https://images.pexels.com/photos/7592358/pexels-photo-7592358.jpeg?auto=compress&cs=tinysrgb&w=900",
+ running:"https://images.pexels.com/photos/32996801/pexels-photo-32996801.jpeg?auto=compress&cs=tinysrgb&w=900",
+ bicycle:"https://images.pexels.com/photos/4162580/pexels-photo-4162580.jpeg?auto=compress&cs=tinysrgb&w=900"
 };
 const icon={
  house:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
@@ -88,22 +88,47 @@ function agenda(){
  });
 }
 function photoFor(text){
- if(/flexão na parede/i.test(text))return photos.wall;
- if(/flexão inclinada|prancha inclinada|prancha lateral|isometria|panturrilh|bird.dog|dead bug|mobilidade|gato.vaca|elevação escapular|respiração/i.test(text))return "";
- if(/flex|supino|tríceps|braç|peito/i.test(text))return photos.pushup;
- if(/agacha|perna|glúteo/i.test(text))return photos.squat;
- if(/prancha|plank/i.test(text))return photos.plank;
- if(/corri|corrida/i.test(text))return photos.running;
- if(/bicic|bike|pedal/i.test(text))return photos.bicycle;
- if(/shiro|caminh|passeio/i.test(text))return photos.dog2;
+ const title=String(text||"").toLowerCase();
+ // Apenas imagens que correspondem ao exercício; em outros casos, mantém o guia técnico.
+ if(/flexão na parede|flexao na parede/.test(title))return photos.wall;
+ if(/flexão|flexao|supino|tríceps|triceps/.test(title))return photos.pushup;
+ if(/agachamento|agacha|afundo/.test(title))return photos.squat;
+ if(/prancha|plank/.test(title)&&!/lateral|inclinada/.test(title))return photos.plank;
+ if(/corrida|correr|trotes|trote/.test(title))return photos.running;
+ if(/bicicleta|bike|pedal/.test(title))return photos.bicycle;
+ if(/caminhada|passeio com shiro|passeio do shiro/.test(title))return photos.dog3;
  return "";
 }
+function commandPhoto(name){
+ const x=String(name||"").trim().toLowerCase();
+ if(x==="senta"||x==="f ica"||x==="fica")return photos.dog2;
+ if(x==="deita")return "https://images.pexels.com/photos/14372462/pexels-photo-14372462.jpeg?auto=compress&cs=tinysrgb&w=900";
+ if(x==="vem"||x==="pega"||x==="traz")return "https://images.pexels.com/photos/46523/pexels-photo-46523.jpeg?auto=compress&cs=tinysrgb&w=900";
+ return photos.dog3;
+}
+function imageFallback(img,alternative){
+ if(!img)return;
+ img.addEventListener("error",()=>{
+  if(img.dataset.photoFailed)return;
+  img.dataset.photoFailed="1";
+  img.removeAttribute("src");
+  img.setAttribute("alt",alternative||"Imagem ilustrativa indisponível; utilize o guia escrito");
+  img.style.display="none";
+  const root=img.parentElement;
+  if(root&&!root.querySelector(".tf21-photo-fallback")){
+    const box=document.createElement("div");box.className="tf21-photo-fallback";
+    box.innerHTML='<span>◈</span><small>Imagem indisponível</small>';
+    root.insertBefore(box,img)
+  }
+ },{once:true});
+}
+
 function training(){
  const root=$("#main [data-tf18-screen='training']");if(!root)return;
  $$(".tf18-gallery-card",root).forEach(card=>{
   const h=card.querySelector("strong"),art=card.querySelector(".tf18-art");if(!h||!art||art.dataset.tf20)return;art.dataset.tf20="yes";
-  let src=photoFor(h.textContent)||photos.pushup;art.textContent="";
-  art.append(trustedImg(src,"Foto ilustrativa da atividade: "+h.textContent));
+  const src=photoFor(h.textContent);art.textContent="";
+  if(src){const image=trustedImg(src,"Foto ilustrativa da atividade: "+h.textContent);imageFallback(image,"Fotografia de "+h.textContent+" não disponível");art.append(image)}else{art.innerHTML='<div class="tf21-neutral-guide" aria-label="Consultar guia técnico deste movimento">◈<small>Guia técnico</small></div>'}
   let play=card.lastElementChild;if(play){play.className="tf20-play";play.textContent="▶"}
  });
  if(!$("#tf20-trainingcredit",root)){
@@ -114,12 +139,12 @@ function shiro(){
  const m=$("#main .tf17-school");if(!m)return;
  const myPhoto=!!localStorage.getItem(PHOTO);
  const hero=m.querySelector(".tf17-doghero img");if(hero&&!hero.dataset.tf20){hero.dataset.tf20="1";if(!myPhoto)hero.src=photos.dog}
- $$(".tf17-dogtile img",m).forEach((el,i)=>{if(el.dataset.tf20)return;el.dataset.tf20="1";el.src=[photos.dog,photos.dog2,photos.dog3][i%3]});
+ $(".tf17-dogtile img",m).forEach(el=>{if(el.dataset.tf20)return;el.dataset.tf20="1";const title=el.closest(".tf17-dogtile")?.querySelector("strong")?.textContent||"";el.src=commandPhoto(title);el.alt="Pastor-branco-suíço: fotografia ilustrativa para "+title;imageFallback(el,"Foto do comando "+title+" indisponível")});
  const caption=m.querySelector(".tf17-photo-license");if(caption&&!caption.dataset.tf20){caption.dataset.tf20="1";caption.innerHTML='Fotos de exemplo da raça, não são o Shiro. Fotos: <a href="https://www.pexels.com/photo/white-swiss-shepherd-dog-in-a-sunny-park-31566538/" rel="noopener noreferrer" target="_blank">Pexels / Nadin Romanova</a> e fotógrafos creditados. Você pode substituir pela foto real do Shiro.'}
 }
 function dogDialog(){
  const m=$("#tf17-detail");if(!m?.open)return;
- const image=m.querySelector(".pic");if(image&&!image.dataset.tf20){image.dataset.tf20="1";image.src=photos.dog2}
+ const image=m.querySelector(".pic");if(image&&!image.dataset.tf20){image.dataset.tf20="1";image.src=commandPhoto(m.querySelector(".copy h2")?.textContent);imageFallback(image,"Fotografia de adestramento indisponível")}
  const c=m.querySelector(".tf17-photo-license");if(c&&!c.dataset.tf20){c.dataset.tf20="1";c.textContent="Foto da raça, ilustrativa; a execução correta é descrita nos passos acima."}
 }
 function trainer(){
@@ -143,7 +168,7 @@ function trainer(){
   const photo=$(".tf17-coach-photo img",view)||$(".tf15-photo img",view);if(photo&&!photo.dataset.tf20){photo.dataset.tf20="1";photo.src=localStorage.getItem(PHOTO)||photos.dog2}
   const old=$(".tf15-photo",view);if(old)old.style.display="none";
   let box=$(".tf20-doglarge",view);
-  if(!box){box=document.createElement("div");box.className="tf20-doglarge";box.innerHTML='<img alt="Foto ilustrativa de pastor-branco-suíço" src="'+(localStorage.getItem(PHOTO)||photos.dog2)+'"><small>Imagem ilustrativa. Siga as instruções textuais de cada comando.</small>';$(".tf12-movename",view)?.insertAdjacentElement("afterend",box)}
+  if(!box){box=document.createElement("div");box.className="tf20-doglarge";box.innerHTML='<img alt="Foto ilustrativa de pastor-branco-suíço" src="'+(localStorage.getItem(PHOTO)||commandPhoto($(".tf12-movename",view)?.textContent?.replace(/^♧\\s*/,"")))+'"><small>Imagem ilustrativa. Siga as instruções textuais de cada comando.</small>';imageFallback(box.querySelector("img"),"Fotografia do comando indisponível");$(".tf12-movename",view)?.insertAdjacentElement("afterend",box)}
   const count=Number($(".tf12-dog-target strong",view)?.textContent?.match(/^\d+/)?.[0]||0),target=Number($(".tf12-dog-target strong",view)?.textContent?.match(/\/\s*(\d+)/)?.[1]||5);
   if(!$("#tf20-attempts",view)){const attempts=document.createElement("div");attempts.id="tf20-attempts";attempts.className="tf20-attempts";$(".tf12-dog-target",view)?.after(attempts)}
   const slot=$("#tf20-attempts",view);if(slot)slot.innerHTML=Array.from({length:Math.min(12,target)},(_,i)=>'<i class="'+(i<count?"hit":"")+'">'+(i<count?"✓":"♧")+"</i>").join("");
