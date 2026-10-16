@@ -57,15 +57,15 @@ function mission(main){
  if(!hero)return;
  hero.classList.add("tf22-mission");
  const kicker=$(".kicker",hero);
- if(kicker)kicker.textContent="⏱  PRÓXIMA ATIVIDADE";
+ if(kicker&&kicker.textContent!=="⏱  PRÓXIMA ATIVIDADE")kicker.textContent="⏱  PRÓXIMA ATIVIDADE";
  const dateLine=$("p.muted",hero);
  if(dateLine){dateLine.classList.add("tf22-mission-meta")}
  const action=$("button.primary",hero);
- if(action){action.textContent="▶  INICIAR AGORA";action.classList.add("tf20-yellow")}
+ if(action){if(action.textContent!=="▶  INICIAR AGORA")action.textContent="▶  INICIAR AGORA";action.classList.add("tf20-yellow")}
 }
 function cleanup(main){
  const promo=$("#tf20-cta",main);
- if(promo){promo.textContent="▥  Ver meu dashboard do dia";promo.classList.add("tf22-dashboard-button")}
+ if(promo){if(promo.textContent!=="▥  Ver meu dashboard do dia")promo.textContent="▥  Ver meu dashboard do dia";promo.classList.add("tf22-dashboard-button")}
  const base=$("#tf20-dash",main);
  if(base)base.classList.add("tf22-dashboard");
  const mini=$("#tf17-todayplus",main);
