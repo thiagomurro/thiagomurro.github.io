@@ -158,7 +158,7 @@ function focusView(){
 }
 function showClock(){
  const el=$("#tf18-focusclock");if(!el)return;const now=focus.elapsed+(focus.run?Date.now()-focus.started:0),remain=Math.max(0,1500000-now);if(remain===0){focus.run=false;focus.elapsed=1500000}
- el.textContent=String(Math.floor(remain/60000)).padStart(2,"0")+":"+String(Math.ceil(remain%60000/1000)).padStart(2,"0")
+ const seconds=Math.ceil(remain/1000);el.textContent=String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(seconds%60).padStart(2,"0")
 }
 function activate(page){
  active=page;
@@ -256,5 +256,6 @@ if(main)new MutationObserver(cyclePaint).observe(main,{childList:true});
 window.addEventListener("pageshow",cyclePaint);
 window.addEventListener("tf-remote-update",cyclePaint);
 focusTick=setInterval(()=>{if(active==="focusTimer"&&focus.run)showClock()},500);
+window.TF18_APP=Object.freeze({activate:page=>{const allowed=["today","agenda","training","shiro","quotes","more","awards","sleep","modes","config","metrics"];if(allowed.includes(page))activate(page)},current:()=>active,version:"18.1"});
 setupNav();cyclePaint();
 })();
