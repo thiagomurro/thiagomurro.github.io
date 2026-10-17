@@ -1,6 +1,6 @@
 /* TOTAL FOCUS 100 V33 — biblioteca didática completa de calistenia; somente leitura de dados privados. */
 (()=>{"use strict";
-if(window.TF31_EXERCISES?.version==="33.0")return;
+if(window.TF31_EXERCISES?.version==="35.0")return;
 const DK="totalfocus100.private.dataset.v1",SK="totalfocus100.v1";
 const ROOT="./tf25-assets/treinos/";
 const PHOTO={
@@ -32,8 +32,18 @@ const PHOTO={
 "Bird-dog":"v31/bird_dog",
 "Ponte de glúteos":"v31/ponte_gluteos"
 };
-const EXTRA={"Superman no chão":"v32/superman","Isometria na parede":"v32/isometria_parede"};
+const EXTRA={"Superman no chão":"v32/superman","Isometria na parede":"v32/isometria_parede","Polichinelo":"v35/polichinelo","Flexão Spartana":"v35/flexao_spartana","Flexão tipo jacaré":"v35/flexao_jacare","Flexão com um pé elevado":"v35/flexao_pe_elevado"};
+const MUSCLES_V35={
+"Polichinelo":{"Principais":["Quadríceps","Panturrilhas","Deltoides"],"Estabilizadores":["Glúteos","Abdominais"]},
+"Flexão Spartana":{"Principais":["Peitoral maior","Tríceps braquial","Deltoide anterior"],"Estabilizadores":["Reto abdominal","Oblíquos","Serrátil anterior"]},
+"Flexão tipo jacaré":{"Principais":["Peitoral maior","Tríceps braquial","Deltoide anterior"],"Estabilizadores":["Serrátil anterior","Reto abdominal","Oblíquos"]},
+"Flexão com um pé elevado":{"Principais":["Peitoral maior","Tríceps braquial","Deltoide anterior"],"Estabilizadores":["Abdominais","Glúteos","Estabilizadores pélvicos"]}
+};
 const STEPS={
+"Polichinelo":["Em pé, una os pés e mantenha os braços ao lado do corpo.","Salte suavemente abrindo as pernas enquanto eleva os braços.","No ponto alto, mantenha o tronco estável e respire continuamente.","Feche as pernas, abaixe os braços e repita sem perder o controle."],
+"Flexão Spartana":["Comece em prancha alta, com uma mão mais adiante ou mais aberta que a outra.","Flexione os cotovelos, mantendo tronco e quadril alinhados.","Empurre o chão até estender os braços, sem torcer a lombar.","Na repetição seguinte, inverta lentamente as posições das mãos."],
+"Flexão tipo jacaré":["Comece em prancha alta, mãos apoiadas com firmeza.","Dobre os cotovelos aproximando o peito do chão, sem perder alinhamento.","Avance uma mão e o pé oposto em deslocamento curto, com o corpo baixo.","Empurre para cima e repita alternando lados, somente com controle."],
+"Flexão com um pé elevado":["Inicie em prancha alta, com um pé apoiado em superfície estável — variação ilustrada.","Desça flexionando os cotovelos sem deixar a bacia girar.","Mantenha o core ativo e a perna elevada estável durante o movimento.","Empurre o chão, retorne e alterne o pé; faça a variante sem apoio apenas com técnica segura."],
 "Flexão inclinada":["Utilize bancada ou apoio fixo que não deslize; mantenha o corpo alinhado.", "Dobre os cotovelos e aproxime o peito do apoio.", "Evite deixar quadril ou lombar caírem.", "Empurre e retorne com controle."],
 "Isometria de bíceps":["Fique em pé com o cotovelo junto ao corpo.", "Com a mão oposta, ofereça resistência leve ao braço em flexão.", "Sustente por 10 a 15 segundos, respirando normalmente.", "Solte com calma e repita no outro braço."],
 "Panturrilhas":["Fique em pé perto de apoio firme, com ambos os pés no chão.", "Levante os calcanhares lentamente, ficando sobre a parte dianteira dos pés.", "Segure um instante sem balançar o corpo.", "Abaixe os calcanhares com controle."],
@@ -65,6 +75,10 @@ const STEPS={
 "Isometria na parede":["Apoie as costas na parede e dê passos curtos à frente.","Deslize para baixo até uma flexão de joelhos confortável.","Mantenha a posição respirando normalmente.","Empurre o solo e retorne lentamente à posição em pé."]
 };
 const WARN={
+"Flexão Spartana":"Exercício avançado. Progrida somente após dominar a flexão tradicional; evite dor nos ombros, punhos e lombar.",
+"Flexão tipo jacaré":"Exercício avançado que exige estabilidade de ombros e tronco. Comece com amplitude e deslocamento pequenos; não force articulações.",
+"Flexão com um pé elevado":"A imagem usa apoio elevado para um pé, diferente da versão com o pé suspenso no ar. Não confunda as variações; ambas exigem estabilidade e progressão.",
+"Polichinelo":"Se houver desconforto articular, use polichinelo sem salto, alternando os pés.",
 "Extensão de quadril em quatro apoios":"A sequência ilustra uma variante com joelho dobrado. No cronograma V30 a orientação é estender a perna para trás. As duas técnicas não devem ser confundidas; siga a versão indicada para sua sessão.",
 "Flexão inclinada no sofá firme":"Use somente um sofá com apoio realmente firme, que não deslize ou tombe. Se não for estável, use uma bancada fixa.",
 "Agachamento na cadeira":"Escolha uma cadeira estável, posicionada contra a parede e que não deslize.",
@@ -103,7 +117,7 @@ function showExercise(name,select="steps"){const {d,spec}=info(name);if(!spec&&!
 const tabs='<div class="tf32-tabs" role="tablist">'+[["steps","Passo a passo"],["muscles","Músculos"],["tips","Dicas"]].map(([k,l])=>'<button type="button" role="tab" data-tf32-tab="'+k+'" aria-selected="'+(tab===k)+'">'+l+'</button>').join('')+'</div>';
 let body='';
 if(tab==="steps")body=stage(name);
-else if(tab==="muscles")body='<div class="tf32-para"><b>Músculos envolvidos:</b> '+esc(spec?.muscles?.join(', ')||"Guia complementar: não pertence à programação V30")+'</div><div class="tf32-diagrams"><img src="./tf25-assets/musculos_frontal.webp" alt="Mapa muscular frontal ilustrativo"><img src="./tf25-assets/musculos_traseiro.webp" alt="Mapa muscular traseiro ilustrativo"></div><p class="tf32-note">Mapas anatômicos gerais, não mensuração individual da ativação muscular.</p>';
+else if(tab==="muscles")body=MUSCLES_V35[name]?'<div class="tf32-para"><b>Principais músculos:</b> '+esc(MUSCLES_V35[name].Principais.join(", "))+'<p><b>Estabilizadores:</b> '+esc(MUSCLES_V35[name].Estabilizadores.join(", "))+'</p></div><p class="tf32-note">Os destaques anatômicos aqui são descritos especificamente para este exercício; não mostramos um mapa genérico com regiões coloridas que poderia sugerir músculos incorretos. A ativação varia conforme técnica e execução.</p>':'<div class="tf32-para"><b>Músculos envolvidos:</b> '+esc(spec?.muscles?.join(", ")||"Guia complementar: não pertence à programação V30")+'</div><div class="tf32-diagrams"><img src="./tf25-assets/musculos_frontal.webp" alt="Mapa muscular frontal ilustrativo genérico"><img src="./tf25-assets/musculos_traseiro.webp" alt="Mapa muscular traseiro ilustrativo genérico"></div><p class="tf32-note">Mapas anatômicos gerais, não representam músculos especificamente destacados para este exercício.</p>';
 else body='<div class="tf32-para"><b>Como começar</b><p>'+esc(spec?.start||STEPS[name]?.[0]||"")+'</p><b>Como executar</b><p>'+esc(spec?.move||STEPS[name]?.[1]||"")+'</p><b>Erro a evitar</b><p>'+esc(spec?.mistake||"Não force amplitudes dolorosas.")+'</p></div>';
 const session=spec?due(name):null;
 frame(name,tabs+body+summary(name)+(session?'<button type="button" class="tf32-start" data-tf32-start>▶ Abrir treino agendado</button>':'<button type="button" class="tf32-start" disabled>▶ '+(spec?'Sem sessão pendente para este exercício':'Guia complementar, sem sessão agendada')+'</button>')+'<button class="tf32-other" data-tf32-library>▦ Voltar à biblioteca</button>');
@@ -118,10 +132,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-tf32-name]
 e.preventDefault();if(b.hasAttribute('data-tf32-close'))dlg.close();else if(b.hasAttribute('data-tf32-name'))showExercise(b.dataset.tf32Name);else if(b.hasAttribute('data-tf32-library'))library();else if(b.hasAttribute('data-tf32-tab'))showExercise(active,b.dataset.tf32Tab);else if(b.hasAttribute('data-tf32-zoom'))zoom(Number(b.dataset.tf32Zoom));else if(b.hasAttribute('data-tf32-back-exercise'))showExercise(active);else if(b.hasAttribute('data-tf32-start'))begin();else if(lastView==='zoom')showExercise(active);else library();
 });
 function attach(){const root=document.querySelector('[data-tf25-root="treino"]'),trainer=document.querySelector('#tf12-dialog');
-if(root&&!root.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.type='button';b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='▦ Exercícios ilustrados · V33';b.addEventListener('click',library);(root.querySelector('.tf25-top')||root).append(b);}
+if(root&&!root.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.type='button';b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='▦ Exercícios ilustrados · V35';b.addEventListener('click',library);(root.querySelector('.tf25-top')||root).append(b);}
 if(trainer?.open&&!trainer.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='Ver fotos passo a passo';b.addEventListener('click',library);const view=trainer.querySelector('#tf12-view');(view||trainer).prepend(b);}
 }
 const main=document.querySelector('#main');if(main){let pending=false;new MutationObserver(()=>{if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;attach();});}}).observe(main,{subtree:true,childList:true});}
 setInterval(attach,1800);attach();
-window.TF31_EXERCISES=Object.freeze({version:'33.0',library,open:showExercise,photoNames:Object.keys(PHOTO),extraNames:Object.keys(EXTRA)});
+window.TF31_EXERCISES=Object.freeze({version:'35.0',library,open:showExercise,photoNames:Object.keys(PHOTO),extraNames:Object.keys(EXTRA)});
 })();
