@@ -1,10 +1,10 @@
 /* TOTAL FOCUS 100 V33 — biblioteca didática completa de calistenia; somente leitura de dados privados. */
 (()=>{"use strict";
-if(window.TF31_EXERCISES?.version==="35.0")return;
+if(window.TF31_EXERCISES?.version==="36.0")return;
 const DK="totalfocus100.private.dataset.v1",SK="totalfocus100.v1";
 const ROOT="./tf25-assets/treinos/";
 const imgStep=(name,prefix,i)=>name==="Flexão no chão"?"./tf25-assets/flexao_etapa_"+(i+1)+".webp":ROOT+prefix+"/etapa_0"+(i+1)+".webp";
-const PHOTO={
+const PHOTO={"Flexão no chão":"original_flexao",
 "Flexão inclinada":"v33/flexao_inclinada",
 "Isometria de bíceps":"v33/isometria_biceps",
 "Panturrilhas":"v33/panturrilhas",
@@ -33,7 +33,7 @@ const PHOTO={
 "Bird-dog":"v31/bird_dog",
 "Ponte de glúteos":"v31/ponte_gluteos"
 };
-const EXTRA={"Flexão no chão":"original_flexao","Superman no chão":"v32/superman","Isometria na parede":"v32/isometria_parede","Polichinelo":"v35/polichinelo","Flexão Spartana":"v35/flexao_spartana","Flexão tipo jacaré":"v35/flexao_jacare","Flexão com um pé elevado":"v35/flexao_pe_elevado"};
+const EXTRA={"Superman no chão":"v32/superman","Isometria na parede":"v32/isometria_parede","Polichinelo":"v35/polichinelo","Flexão Spartana":"v35/flexao_spartana","Flexão tipo jacaré":"v35/flexao_jacare","Flexão com um pé elevado":"v35/flexao_pe_elevado"};
 const MUSCLES_V35={
 "Polichinelo":{"Principais":["Quadríceps","Panturrilhas","Deltoides"],"Estabilizadores":["Glúteos","Abdominais"]},
 "Flexão Spartana":{"Principais":["Peitoral maior","Tríceps braquial","Deltoide anterior"],"Estabilizadores":["Reto abdominal","Oblíquos","Serrátil anterior"]},
@@ -135,10 +135,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-tf32-name]
 e.preventDefault();if(b.hasAttribute('data-tf32-close'))dlg.close();else if(b.hasAttribute('data-tf32-name'))showExercise(b.dataset.tf32Name);else if(b.hasAttribute('data-tf32-library'))library();else if(b.hasAttribute('data-tf32-tab'))showExercise(active,b.dataset.tf32Tab);else if(b.hasAttribute('data-tf32-zoom'))zoom(Number(b.dataset.tf32Zoom));else if(b.hasAttribute('data-tf32-back-exercise'))showExercise(active);else if(b.hasAttribute('data-tf32-start'))begin();else if(lastView==='zoom')showExercise(active);else library();
 });
 function attach(){const root=document.querySelector('[data-tf25-root="treino"]'),trainer=document.querySelector('#tf12-dialog');
-if(root&&!root.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.type='button';b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='▦ Exercícios ilustrados · V35';b.addEventListener('click',library);(root.querySelector('.tf25-top')||root).append(b);}
+if(root&&!root.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.type='button';b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='▦ Exercícios ilustrados · V36';b.addEventListener('click',library);(root.querySelector('.tf25-top')||root).append(b);}
 if(trainer?.open&&!trainer.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='Ver fotos passo a passo';b.addEventListener('click',library);const view=trainer.querySelector('#tf12-view');(view||trainer).prepend(b);}
 }
 const main=document.querySelector('#main');if(main){let pending=false;new MutationObserver(()=>{if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;attach();});}}).observe(main,{subtree:true,childList:true});}
 setInterval(attach,1800);attach();
-window.TF31_EXERCISES=Object.freeze({version:'35.0',library,open:showExercise,photoNames:Object.keys(PHOTO),extraNames:Object.keys(EXTRA)});
+window.TF31_EXERCISES=Object.freeze({version:'36.0',library,open:showExercise,photoNames:Object.keys(PHOTO),extraNames:Object.keys(EXTRA)});
 })();
