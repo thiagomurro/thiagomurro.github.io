@@ -1,9 +1,24 @@
-/* TOTAL FOCUS 100 V32 — biblioteca fotográfica de calistenia; somente leitura de dados privados. */
+/* TOTAL FOCUS 100 V33 — biblioteca didática completa de calistenia; somente leitura de dados privados. */
 (()=>{"use strict";
-if(window.TF31_EXERCISES?.version==="32.0")return;
+if(window.TF31_EXERCISES?.version==="33.0")return;
 const DK="totalfocus100.private.dataset.v1",SK="totalfocus100.v1";
 const ROOT="./tf25-assets/treinos/";
 const PHOTO={
+"Flexão inclinada":"v33/flexao_inclinada",
+"Isometria de bíceps":"v33/isometria_biceps",
+"Panturrilhas":"v33/panturrilhas",
+"Mobilidade torácica":"v33/mobilidade_toracica",
+"Mobilidade de quadril":"v33/mobilidade_quadril",
+"Mobilidade de tornozelo":"v33/mobilidade_tornozelo",
+"Elevação escapular em W":"v33/elevacao_escapular_w",
+"Prancha inclinada":"v33/prancha_inclinada",
+"Respiração e relaxamento":"v33/respiracao_relaxamento",
+"Prancha de joelhos":"v33/prancha_joelhos",
+"Anjo na parede":"v33/anjo_parede",
+"Remada auto-resistida":"v33/remada_auto_resistida",
+"Afundo reverso com apoio":"v33/afundo_reverso",
+"Agachamento livre":"v33/agachamento_livre",
+"Flexão de joelhos":"v33/flexao_joelhos",
 "Flexão na parede":"v32/flexao_parede",
 "Flexão inclinada no sofá firme":"v32/flexao_sofa",
 "Agachamento na cadeira":"v32/agachamento_cadeira",
@@ -19,6 +34,21 @@ const PHOTO={
 };
 const EXTRA={"Superman no chão":"v32/superman","Isometria na parede":"v32/isometria_parede"};
 const STEPS={
+"Flexão inclinada":["Utilize bancada ou apoio fixo que não deslize; mantenha o corpo alinhado.", "Dobre os cotovelos e aproxime o peito do apoio.", "Evite deixar quadril ou lombar caírem.", "Empurre e retorne com controle."],
+"Isometria de bíceps":["Fique em pé com o cotovelo junto ao corpo.", "Com a mão oposta, ofereça resistência leve ao braço em flexão.", "Sustente por 10 a 15 segundos, respirando normalmente.", "Solte com calma e repita no outro braço."],
+"Panturrilhas":["Fique em pé perto de apoio firme, com ambos os pés no chão.", "Levante os calcanhares lentamente, ficando sobre a parte dianteira dos pés.", "Segure um instante sem balançar o corpo.", "Abaixe os calcanhares com controle."],
+"Mobilidade torácica":["Sente-se ereto ou apoie-se em quatro apoios, sem forçar.", "Gire suavemente o tronco para um dos lados.", "Gire para o lado oposto sem torcer a região lombar.", "Volte ao centro e respire."],
+"Mobilidade de quadril":["Fique em pé e segure apoio que não deslize.", "Mova uma perna suavemente para a frente.", "Mova a perna para trás sem arquear a lombar.", "Volte ao centro e troque de lado."],
+"Mobilidade de tornozelo":["Posicione uma perna à frente, com todo o calcanhar apoiado.", "Leve o joelho adiante na direção dos dedos do pé.", "Mantenha o calcanhar totalmente no chão.", "Retorne e repita com a outra perna."],
+"Elevação escapular em W":["Fique ereto com os braços dobrados na posição de W.", "Mantenha os ombros baixos, evitando encolhê-los.", "Aproxime suavemente as escápulas, sem curvar o tronco.", "Relaxe e repita em ritmo controlado."],
+"Prancha inclinada":["Apoie as mãos numa bancada firme e os pés no chão.", "Estenda os braços e alinhe cabeça, quadril e calcanhares.", "Contraia abdômen e glúteos e respire continuamente.", "Finalize após o tempo previsto, sem deixar o quadril cair."],
+"Respiração e relaxamento":["Sente-se ou deite em posição confortável, com ombros soltos.", "Inspire naturalmente, sem forçar a expansão.", "Expire de maneira lenta e tranquila.", "Repita os ciclos mantendo o corpo relaxado."],
+"Prancha de joelhos":["Apoie os antebraços e joelhos no chão, sobre uma toalha.", "Alinhe cotovelos sob os ombros, com abdômen levemente contraído.", "Sustente com quadril estável e respiração normal.", "Apoie o corpo no chão para finalizar, sem desabar."],
+"Anjo na parede":["Encoste as costas à parede e posicione os braços em W.", "Deslize os braços lentamente para cima até onde for confortável.", "Evite arquear a lombar para alcançar maior altura.", "Deslize os braços de volta ao W."],
+"Remada auto-resistida":["Fique ereto, com um cotovelo próximo ao tronco.", "Coloque a mão oposta no antebraço e ofereça resistência moderada.", "Puxe o cotovelo para trás sem torcer o tronco.", "Controle a volta e repita do outro lado."],
+"Afundo reverso com apoio":["Fique em pé perto de apoio estável usado apenas para equilíbrio.", "Dê um passo para TRÁS com uma das pernas.", "Flexione os joelhos apenas até uma amplitude confortável.", "Retorne à posição em pé e troque a perna."],
+"Agachamento livre":["Fique em pé com os pés aproximadamente na largura dos ombros.", "Leve o quadril para trás, flexionando os joelhos.", "Mantenha calcanhares no chão e joelhos alinhados aos pés.", "Empurre o chão e levante-se com controle."],
+"Flexão de joelhos":["Apoie as mãos e os joelhos no chão, com o tronco firme.", "Dobre os cotovelos e aproxime o peito do chão.", "Mantenha o abdômen ativo, sem arquear a lombar.", "Estenda os cotovelos e volte ao início."],
 "Flexão na parede":["Mãos na parede e pés afastados; mantenha o corpo em linha.","Flexione os cotovelos aproximando o peito da parede.","Mantenha abdômen firme e ombros estáveis.","Empurre a parede e retorne com controle."],
 "Flexão inclinada no sofá firme":["Apoie as mãos em uma estrutura firme e que não deslize.","Flexione os cotovelos mantendo tronco e pernas alinhados.","Desça até uma amplitude confortável sem perder a postura.","Empurre o apoio e retorne lentamente."],
 "Agachamento na cadeira":["Fique em pé à frente de uma cadeira estável.","Leve o quadril para trás e aproxime-se do assento.","Toque a cadeira com controle, sem desabar.","Empurre o chão e fique em pé novamente."],
@@ -64,10 +94,10 @@ function frame(title,body){dlg.innerHTML='<div class="tf32-head"><button type="b
 function summary(name){const v=info(name).spec,extra=!v;
 const sets=v?.sets||"Não agendado";
 const reps=v?.reps||"Exercício complementar";
-return '<div class="tf32-summary"><div><span>Séries</span><br>'+esc(sets)+'</div><div><span>Repetições ou duração</span><br>'+esc(reps)+'</div></div>'+(WARN[name]?'<p class="tf32-warning">'+esc(WARN[name])+'</p>':'')+'<p class="tf32-note">Fotos ilustrativas produzidas por IA; use sempre o plano privado como referência. A biblioteca não registra atividades automaticamente.</p>';
+return '<div class="tf32-summary"><div><span>Séries</span><br>'+esc(sets)+'</div><div><span>Repetições ou duração</span><br>'+esc(reps)+'</div></div>'+(WARN[name]?'<p class="tf32-warning">'+esc(WARN[name])+'</p>':'')+'<p class="tf32-note">Imagens didáticas: as fotos de V31/V32 são geradas por IA; os desenhos V33 são esquemáticos. Consulte sempre seu plano privado. A biblioteca não registra atividades automaticamente.</p>';
 }
 function stage(name){const desc=STEPS[name]||[],prefix=PHOTO[name]||EXTRA[name];if(!prefix)return '<div class="tf32-para">Sequência fotográfica específica ainda não disponível. Consulte a aba Dicas para a técnica indicada no seu plano.</div>';
-return '<div class="tf32-steps">'+desc.map((s,i)=>'<div class="tf32-step"><button type="button" class="tf32-photo" data-tf32-zoom="'+i+'" aria-label="Ampliar etapa '+(i+1)+'"><img src="'+ROOT+prefix+'/etapa_0'+(i+1)+'.webp" loading="lazy" alt="'+esc(name)+' — etapa '+(i+1)+'" onerror="this.hidden=true"></button><div class="tf32-step-text"><strong><span class="tf32-number">'+(i+1)+'</span>'+["Posição inicial","Movimento","Controle","Retorno"][i]+'</strong><p>'+esc(s)+'</p></div></div>').join('')+'</div>';
+return '<div class="tf32-steps">'+(prefix.startsWith('v33/')?'<p class="tf32-note tf33-illustration">ILUSTRAÇÕES ESQUEMÁTICAS — use as instruções da V30 como referência. Não são fotografias.</p>':'')+desc.map((s,i)=>'<div class="tf32-step"><button type="button" class="tf32-photo" data-tf32-zoom="'+i+'" aria-label="Ampliar etapa '+(i+1)+'"><img src="'+ROOT+prefix+'/etapa_0'+(i+1)+'.webp" loading="lazy" alt="'+esc(name)+' — etapa '+(i+1)+'" onerror="this.hidden=true"></button><div class="tf32-step-text"><strong><span class="tf32-number">'+(i+1)+'</span>'+["Posição inicial","Movimento","Controle","Retorno"][i]+'</strong><p>'+esc(s)+'</p></div></div>').join('')+'</div>';
 }
 function showExercise(name,select="steps"){const {d,spec}=info(name);if(!spec&&!EXTRA[name])return;active=name;tab=select;lastView="exercise";
 const tabs='<div class="tf32-tabs" role="tablist">'+[["steps","Passo a passo"],["muscles","Músculos"],["tips","Dicas"]].map(([k,l])=>'<button type="button" role="tab" data-tf32-tab="'+k+'" aria-selected="'+(tab===k)+'">'+l+'</button>').join('')+'</div>';
@@ -79,7 +109,7 @@ const session=spec?due(name):null;
 frame(name,tabs+body+summary(name)+(session?'<button type="button" class="tf32-start" data-tf32-start>▶ Abrir treino agendado</button>':'<button type="button" class="tf32-start" disabled>▶ '+(spec?'Sem sessão pendente para este exercício':'Guia complementar, sem sessão agendada')+'</button>')+'<button class="tf32-other" data-tf32-library>▦ Voltar à biblioteca</button>');
 }
 function library(){lastView="library";active="";const specs=info("").d.exerciseSpecs||{},names=Object.keys(specs),has=names.length;
-const build=(name)=>{const p=PHOTO[name]||EXTRA[name],photo=p?'<img src="'+ROOT+p+'/etapa_01.webp" alt="'+esc(name)+'" loading="lazy">':'';return '<button class="tf32-libitem" data-tf32-name="'+esc(name)+'">'+photo+'<strong>'+esc(name)+'</strong><small>'+(p?'4 fotos + explicações':'Orientação técnica')+'</small></button>';};
+const build=(name)=>{const p=PHOTO[name]||EXTRA[name],photo=p?'<img src="'+ROOT+p+'/etapa_01.webp" alt="'+esc(name)+'" loading="lazy">':'';return '<button class="tf32-libitem" data-tf32-name="'+esc(name)+'">'+photo+'<strong>'+esc(name)+'</strong><small>'+(p?(p.startsWith('v33/')?'4 diagramas + técnica':'4 fotografias + técnica'):'Orientação técnica')+'</small></button>';};
 frame('Biblioteca de exercícios','<p class="tf32-note">'+(has?'Exercícios extraídos do seu cronograma privado; nenhum registro será alterado.':'Importe primeiro seu cronograma privado para visualizar a cartela principal.')+'</p><div class="tf32-library">'+names.map(build).join('')+'</div><p class="tf32-note">Guias visuais complementares (não adicionados à rotina):</p><div class="tf32-library">'+Object.keys(EXTRA).map(build).join('')+'</div>');
 }
 function zoom(i){const p=PHOTO[active]||EXTRA[active];if(!p)return;lastView="zoom";frame(active+' · etapa '+(i+1),'<img class="tf32-zoom" src="'+ROOT+p+'/etapa_0'+(i+1)+'.webp" alt="'+esc(active)+' ampliado"><button class="tf32-other" data-tf32-back-exercise>‹ Voltar às quatro etapas</button>');}
@@ -88,10 +118,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-tf32-name]
 e.preventDefault();if(b.hasAttribute('data-tf32-close'))dlg.close();else if(b.hasAttribute('data-tf32-name'))showExercise(b.dataset.tf32Name);else if(b.hasAttribute('data-tf32-library'))library();else if(b.hasAttribute('data-tf32-tab'))showExercise(active,b.dataset.tf32Tab);else if(b.hasAttribute('data-tf32-zoom'))zoom(Number(b.dataset.tf32Zoom));else if(b.hasAttribute('data-tf32-back-exercise'))showExercise(active);else if(b.hasAttribute('data-tf32-start'))begin();else if(lastView==='zoom')showExercise(active);else library();
 });
 function attach(){const root=document.querySelector('[data-tf25-root="treino"]'),trainer=document.querySelector('#tf12-dialog');
-if(root&&!root.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.type='button';b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='▦ Exercícios ilustrados · V32';b.addEventListener('click',library);(root.querySelector('.tf25-top')||root).append(b);}
+if(root&&!root.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.type='button';b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='▦ Exercícios ilustrados · V33';b.addEventListener('click',library);(root.querySelector('.tf25-top')||root).append(b);}
 if(trainer?.open&&!trainer.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='Ver fotos passo a passo';b.addEventListener('click',library);const view=trainer.querySelector('#tf12-view');(view||trainer).prepend(b);}
 }
 const main=document.querySelector('#main');if(main){let pending=false;new MutationObserver(()=>{if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;attach();});}}).observe(main,{subtree:true,childList:true});}
 setInterval(attach,1800);attach();
-window.TF31_EXERCISES=Object.freeze({version:'32.0',library,open:showExercise,photoNames:Object.keys(PHOTO),extraNames:Object.keys(EXTRA)});
+window.TF31_EXERCISES=Object.freeze({version:'33.0',library,open:showExercise,photoNames:Object.keys(PHOTO),extraNames:Object.keys(EXTRA)});
 })();
