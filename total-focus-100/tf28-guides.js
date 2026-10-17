@@ -13,7 +13,14 @@ var rows=[
 ["Deita","deita","shiro",["Mostre o petisco diante do focinho do cão sentado.","Conduza o petisco lentamente para baixo e ligeiramente à frente.","Marque o comportamento quando o peito tocar o solo.","Recompense imediatamente e libere o cão com um sinal consistente."],[]],
 ["Fica","fica","shiro",["Solicite ao cão uma posição confortável.","Use uma palavra e um sinal com a mão.","Afaste-se um passo e volte antes de ele sair da posição.","Recompense a permanência; aumente tempo e distância gradualmente."],[]],
 ["Vem","vem","shiro",["Pratique em local seguro e com poucos estímulos.","Chame pelo nome e diga Vem em tom convidativo.","Recompense quando ele se aproximar de você.","Reforce a chegada com petisco ou brincadeira e libere."],[]],
-["Junto","junto","shiro",["Segure o reforço próximo à perna que servirá de referência.","Incentive o cão a posicionar-se ao seu lado.","Caminhe alguns passos enquanto mantém o alinhamento.","Recompense enquanto ele permanece perto sem puxar a guia."],[]]
+["Junto","junto","shiro",["Segure o reforço próximo à perna que servirá de referência.","Incentive o cão a posicionar-se ao seu lado.","Caminhe alguns passos enquanto mantém o alinhamento.","Recompense enquanto ele permanece perto sem puxar a guia."],[]],
+["Olha","olha","shiro",["Mostre um petisco perto de seu rosto, sem forçar contato.","Diga 'Olha' apenas uma vez em tom calmo.","Quando Shiro olhar para você, marque com 'Isso!' e recompense.","Aumente o tempo de contato visual gradualmente."],[]],
+["Espera","espera","shiro",["Peça uma posição confortável e faça um gesto de palma aberta.","Diga 'Espera' e dê um passo pequeno para trás.","Volte antes que ele saia da posição e recompense.","Aumente tempo e distância aos poucos; libere com 'Okay'."],[]],
+["Solta","solta","shiro",["Ofereça um brinquedo adequado que Shiro goste de segurar.","Apresente um petisco de maior valor e diga 'Solta'.","Quando ele liberar o objeto, marque o acerto imediatamente.","Recompense e devolva o brinquedo para manter a confiança."],[]],
+["Traz","traz","shiro",["Apresente um brinquedo e lance a curta distância em local seguro.","Diga 'Traz' e incentive o retorno com entusiasmo.","Quando Shiro voltar com o brinquedo, marque e recompense.","Use 'Solta' para entregar o objeto; aumente a distância gradualmente."],[]],
+["Pega","pega","shiro",["Apresente um brinquedo seguro e apropriado para morder.","Diga 'Pega' quando Shiro demonstrar interesse.","Recompense quando ele segurar o objeto gentilmente.","Combine com 'Solta' e finalize antes de ele perder o interesse."],[]],
+["Patinha","patinha","shiro",["Peça a posição sentada sem pressionar as articulações.","Apresente a mão aberta e diga 'Patinha'.","Quando ele levantar a pata voluntariamente, marque e recompense.","Repita sessões curtas e deixe Shiro descansar."],[]],
+["Deixa","deixa","shiro",["Coloque um petisco em sua mão fechada e aguarde.","Diga 'Deixa' uma vez, sem empurrar Shiro.","Quando ele desistir de tentar pegar, marque o acerto.","Recompense com outro petisco e libere com 'Okay'."],[]]
 ];
 var byKey={},byName={};rows.forEach(function(r){byKey[r[1]]=r;byName[r[0].toLowerCase()]=r;});
 function read(k){try{return JSON.parse(localStorage.getItem(k)||"null")||{};}catch(e){return {};}}
@@ -29,6 +36,14 @@ function show(title,body){init();dialog.innerHTML='<div class="tf28-top"><h2>'+e
 function library(){var options=rows.map(function(r){return '<button data-tf28="guide" data-key="'+esc(r[1])+'">'+esc(r[0])+' ›</button>';}).join("");show("Biblioteca ilustrada",' <p class="tf28-note">Guias demonstrativos. As séries, repetições e duração de cada sessão continuam definidas na sua agenda.</p><div class="tf28-options">'+options+"</div>");}
 function guide(key){
  var r=byKey[key];if(!r)return;
+ var newSet=["olha","espera","solta","traz","pega","patinha","deixa"].includes(key);
+ if(newSet){
+  var cover=base+"shiro/"+key+"/capa.webp";
+  var full=base+"shiro/"+key+"/"+(["olha","deixa"].includes(key)?"capa.webp":"guia.webp");
+  var intro='<div class="tf28-card" style="margin-bottom:13px"><img style="width:100%;aspect-ratio:1.7" src="'+esc(full)+'" alt="Guia visual para '+esc(r[0])+'" loading="lazy" onerror="this.src=\''+esc(cover)+'\'"><div class="tf28-note">Imagem ilustrativa de Pastor Branco Suíço gerada por IA, não fotografia pessoal do Shiro.</div></div>';
+  var steps='<ol style="font-size:14px;line-height:1.8;color:#e2f8fa">'+r[3].map(function(step){return "<li>"+esc(step)+"</li>";}).join("")+"</ol>";
+  show("Shiro • "+r[0],intro+steps+'<div class="tf28-note">Treino curto, reforço positivo e pausas; mantenha a duração definida na rotina. Imagem demonstrativa, sem substituir orientação profissional.</div><div class="tf28-options"><button data-tf28="library">‹ Biblioteca</button><button data-tf28="close">Concluir visualização</button></div>');return;
+ }
  var cards=r[3].map(function(s,i){var u=base+r[2]+"/"+r[1]+"/etapa_0"+(i+1)+".webp";return '<figure class="tf28-card"><img src="'+esc(u)+'" loading="lazy" alt="'+esc(r[0]+' — etapa '+(i+1))+'" onerror="this.hidden=true;this.nextElementSibling.style.display=\'flex\'"><div class="tf28-img-fallback">Etapa '+(i+1)+' · fotografia aguardando publicação</div><figcaption><strong>'+(i+1)+'.</strong> '+esc(s)+'</figcaption></figure>';}).join("");
  var muscle=r[4].length?'<div class="tf28-labels">'+r[4].map(function(s){return "<span>"+esc(s)+"</span>";}).join("")+"</div>":'';
  var warning=r[2]==="shiro"?"Treino canino com reforço positivo, sem correções aversivas. O cão das ilustrações é representativo, não é uma fotografia do Shiro.":"Imagens por IA são ilustrativas e podem apresentar imprecisões. Respeite sua condição física e a prescrição do seu plano.";
@@ -37,6 +52,6 @@ function guide(key){
 document.addEventListener("click",function(e){var b=e.target.closest("[data-tf28]");if(b){e.preventDefault();e.stopImmediatePropagation();var a=b.dataset.tf28;if(a==="close")dialog.close();else if(a==="library")library();else if(a==="guide")guide(b.dataset.key);return;}
  var c=e.target.closest('[data-tf25="command"]');if(!c)return;var name=c.dataset.command,matched=match(name);if(!matched||matched[2]!=="shiro")return;e.preventDefault();e.stopImmediatePropagation();guide(matched[1]);},true);
 var main=document.querySelector("#main");if(main){var queued=false;new MutationObserver(function(){if(!queued){queued=true;requestAnimationFrame(function(){queued=false;inject();});}}).observe(main,{childList:true,subtree:true});}
-window.TF28_GUIDES=Object.freeze({version:"28.1",open:guide,library:library,names:rows.map(function(r){return r[0];})});
+window.TF28_GUIDES=Object.freeze({version:"29.0",open:guide,library:library,names:rows.map(function(r){return r[0];})});
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
