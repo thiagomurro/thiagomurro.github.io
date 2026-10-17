@@ -3,7 +3,6 @@
 if(window.TF31_EXERCISES)return;
 const DK="totalfocus100.private.dataset.v1",base="./tf25-assets/treinos/";
 const photo={
-"Agachamento livre":"agachamento_livre",
 "Abdominal supra curto":"abdominal_supra",
 "Prancha de antebraços":"v31/prancha_antebracos",
 "Bird-dog":"v31/bird_dog",
