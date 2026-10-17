@@ -36,7 +36,7 @@ function show(title,body){init();dialog.innerHTML='<div class="tf28-top"><h2>'+e
 function library(){var options=rows.map(function(r){return '<button data-tf28="guide" data-key="'+esc(r[1])+'">'+esc(r[0])+' ›</button>';}).join("");show("Biblioteca ilustrada",' <p class="tf28-note">Guias demonstrativos. As séries, repetições e duração de cada sessão continuam definidas na sua agenda.</p><div class="tf28-options">'+options+"</div>");}
 function guide(key){
  var r=byKey[key];if(!r)return;
- var newSet=["olha","espera","solta","traz","pega","patinha","deixa"].includes(key);
+ var newSet=["patinha","deixa"].includes(key);
  if(newSet){
   var cover=base+"shiro/"+key+"/capa.webp";
   var full=base+"shiro/"+key+"/"+(["olha","deixa"].includes(key)?"capa.webp":"guia.webp");
@@ -52,6 +52,6 @@ function guide(key){
 document.addEventListener("click",function(e){var b=e.target.closest("[data-tf28]");if(b){e.preventDefault();e.stopImmediatePropagation();var a=b.dataset.tf28;if(a==="close")dialog.close();else if(a==="library")library();else if(a==="guide")guide(b.dataset.key);return;}
  var c=e.target.closest('[data-tf25="command"]');if(!c)return;var name=c.dataset.command,matched=match(name);if(!matched||matched[2]!=="shiro")return;e.preventDefault();e.stopImmediatePropagation();guide(matched[1]);},true);
 var main=document.querySelector("#main");if(main){var queued=false;new MutationObserver(function(){if(!queued){queued=true;requestAnimationFrame(function(){queued=false;inject();});}}).observe(main,{childList:true,subtree:true});}
-window.TF28_GUIDES=Object.freeze({version:"29.0",open:guide,library:library,names:rows.map(function(r){return r[0];})});
+window.TF28_GUIDES=Object.freeze({version:"35.0",open:guide,library:library,names:rows.map(function(r){return r[0];})});
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
