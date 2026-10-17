@@ -3,6 +3,7 @@
 if(window.TF31_EXERCISES?.version==="35.0")return;
 const DK="totalfocus100.private.dataset.v1",SK="totalfocus100.v1";
 const ROOT="./tf25-assets/treinos/";
+const imgStep=(name,prefix,i)=>name==="Flexão no chão"?"./tf25-assets/flexao_etapa_"+(i+1)+".webp":ROOT+prefix+"/etapa_0"+(i+1)+".webp";
 const PHOTO={
 "Flexão inclinada":"v33/flexao_inclinada",
 "Isometria de bíceps":"v33/isometria_biceps",
@@ -32,7 +33,7 @@ const PHOTO={
 "Bird-dog":"v31/bird_dog",
 "Ponte de glúteos":"v31/ponte_gluteos"
 };
-const EXTRA={"Superman no chão":"v32/superman","Isometria na parede":"v32/isometria_parede","Polichinelo":"v35/polichinelo","Flexão Spartana":"v35/flexao_spartana","Flexão tipo jacaré":"v35/flexao_jacare","Flexão com um pé elevado":"v35/flexao_pe_elevado"};
+const EXTRA={"Flexão no chão":"original_flexao","Superman no chão":"v32/superman","Isometria na parede":"v32/isometria_parede","Polichinelo":"v35/polichinelo","Flexão Spartana":"v35/flexao_spartana","Flexão tipo jacaré":"v35/flexao_jacare","Flexão com um pé elevado":"v35/flexao_pe_elevado"};
 const MUSCLES_V35={
 "Polichinelo":{"Principais":["Quadríceps","Panturrilhas","Deltoides"],"Estabilizadores":["Glúteos","Abdominais"]},
 "Flexão Spartana":{"Principais":["Peitoral maior","Tríceps braquial","Deltoide anterior"],"Estabilizadores":["Reto abdominal","Oblíquos","Serrátil anterior"]},
@@ -111,7 +112,7 @@ const reps=v?.reps||"Exercício complementar";
 return '<div class="tf32-summary"><div><span>Séries</span><br>'+esc(sets)+'</div><div><span>Repetições ou duração</span><br>'+esc(reps)+'</div></div>'+(WARN[name]?'<p class="tf32-warning">'+esc(WARN[name])+'</p>':'')+'<p class="tf32-note">Imagens didáticas: as fotos de V31/V32 são geradas por IA; os desenhos V33 são esquemáticos. Consulte sempre seu plano privado. A biblioteca não registra atividades automaticamente.</p>';
 }
 function stage(name){const desc=STEPS[name]||[],prefix=PHOTO[name]||EXTRA[name];if(!prefix)return '<div class="tf32-para">Sequência fotográfica específica ainda não disponível. Consulte a aba Dicas para a técnica indicada no seu plano.</div>';
-return '<div class="tf32-steps">'+(prefix.startsWith('v33/')?'<p class="tf32-note tf33-illustration">ILUSTRAÇÕES ESQUEMÁTICAS — use as instruções da V30 como referência. Não são fotografias.</p>':'')+desc.map((s,i)=>'<div class="tf32-step"><button type="button" class="tf32-photo" data-tf32-zoom="'+i+'" aria-label="Ampliar etapa '+(i+1)+'"><img src="'+ROOT+prefix+'/etapa_0'+(i+1)+'.webp" loading="lazy" alt="'+esc(name)+' — etapa '+(i+1)+'" onerror="this.hidden=true"></button><div class="tf32-step-text"><strong><span class="tf32-number">'+(i+1)+'</span>'+["Posição inicial","Movimento","Controle","Retorno"][i]+'</strong><p>'+esc(s)+'</p></div></div>').join('')+'</div>';
+return '<div class="tf32-steps">'+(prefix.startsWith('v33/')?'<p class="tf32-note tf33-illustration">ILUSTRAÇÕES ESQUEMÁTICAS — use as instruções da V30 como referência. Não são fotografias.</p>':'')+desc.map((s,i)=>'<div class="tf32-step"><button type="button" class="tf32-photo" data-tf32-zoom="'+i+'" aria-label="Ampliar etapa '+(i+1)+'"><img src="'+imgStep(name,prefix,i)+'" loading="lazy" alt="'+esc(name)+' — etapa '+(i+1)+'" onerror="this.hidden=true"></button><div class="tf32-step-text"><strong><span class="tf32-number">'+(i+1)+'</span>'+["Posição inicial","Movimento","Controle","Retorno"][i]+'</strong><p>'+esc(s)+'</p></div></div>').join('')+'</div>';
 }
 function showExercise(name,select="steps"){const {d,spec}=info(name);if(!spec&&!EXTRA[name])return;active=name;tab=select;lastView="exercise";
 const tabs='<div class="tf32-tabs" role="tablist">'+[["steps","Passo a passo"],["muscles","Músculos"],["tips","Dicas"]].map(([k,l])=>'<button type="button" role="tab" data-tf32-tab="'+k+'" aria-selected="'+(tab===k)+'">'+l+'</button>').join('')+'</div>';
@@ -123,10 +124,10 @@ const session=spec?due(name):null;
 frame(name,tabs+body+summary(name)+(session?'<button type="button" class="tf32-start" data-tf32-start>▶ Abrir treino agendado</button>':'<button type="button" class="tf32-start" disabled>▶ '+(spec?'Sem sessão pendente para este exercício':'Guia complementar, sem sessão agendada')+'</button>')+'<button class="tf32-other" data-tf32-library>▦ Voltar à biblioteca</button>');
 }
 function library(){lastView="library";active="";const specs=info("").d.exerciseSpecs||{},names=Object.keys(specs),has=names.length;
-const build=(name)=>{const p=PHOTO[name]||EXTRA[name],photo=p?'<img src="'+ROOT+p+'/etapa_01.webp" alt="'+esc(name)+'" loading="lazy">':'';return '<button class="tf32-libitem" data-tf32-name="'+esc(name)+'">'+photo+'<strong>'+esc(name)+'</strong><small>'+(p?(p.startsWith('v33/')?'4 diagramas + técnica':'4 fotografias + técnica'):'Orientação técnica')+'</small></button>';};
+const build=(name)=>{const p=PHOTO[name]||EXTRA[name],photo=p?'<img src="'+imgStep(name,p,0)+'" alt="'+esc(name)+'" loading="lazy">':'';return '<button class="tf32-libitem" data-tf32-name="'+esc(name)+'">'+photo+'<strong>'+esc(name)+'</strong><small>'+(p?(p.startsWith('v33/')?'4 diagramas + técnica':'4 fotografias + técnica'):'Orientação técnica')+'</small></button>';};
 frame('Biblioteca de exercícios','<p class="tf32-note">'+(has?'Exercícios extraídos do seu cronograma privado; nenhum registro será alterado.':'Importe primeiro seu cronograma privado para visualizar a cartela principal.')+'</p><div class="tf32-library">'+names.map(build).join('')+'</div><p class="tf32-note">Guias visuais complementares (não adicionados à rotina):</p><div class="tf32-library">'+Object.keys(EXTRA).map(build).join('')+'</div>');
 }
-function zoom(i){const p=PHOTO[active]||EXTRA[active];if(!p)return;lastView="zoom";frame(active+' · etapa '+(i+1),'<img class="tf32-zoom" src="'+ROOT+p+'/etapa_0'+(i+1)+'.webp" alt="'+esc(active)+' ampliado"><button class="tf32-other" data-tf32-back-exercise>‹ Voltar às quatro etapas</button>');}
+function zoom(i){const p=PHOTO[active]||EXTRA[active];if(!p)return;lastView="zoom";frame(active+' · etapa '+(i+1),'<img class="tf32-zoom" src="'+imgStep(active,p,i)+'" alt="'+esc(active)+' ampliado"><button class="tf32-other" data-tf32-back-exercise>‹ Voltar às quatro etapas</button>');}
 function begin(){const name=active,t=due(name);if(!t){showExercise(name);return;}dlg.close();const btn=document.createElement('button');btn.type='button';btn.hidden=true;btn.dataset.do='view';btn.dataset.id=t.id;document.body.append(btn);btn.click();btn.remove();}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-tf32-name],[data-tf32-close],[data-tf32-library],[data-tf32-tab],[data-tf32-zoom],[data-tf32-back],[data-tf32-back-exercise],[data-tf32-start]');if(!b)return;
 e.preventDefault();if(b.hasAttribute('data-tf32-close'))dlg.close();else if(b.hasAttribute('data-tf32-name'))showExercise(b.dataset.tf32Name);else if(b.hasAttribute('data-tf32-library'))library();else if(b.hasAttribute('data-tf32-tab'))showExercise(active,b.dataset.tf32Tab);else if(b.hasAttribute('data-tf32-zoom'))zoom(Number(b.dataset.tf32Zoom));else if(b.hasAttribute('data-tf32-back-exercise'))showExercise(active);else if(b.hasAttribute('data-tf32-start'))begin();else if(lastView==='zoom')showExercise(active);else library();
