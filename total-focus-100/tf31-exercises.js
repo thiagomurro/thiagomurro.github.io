@@ -41,6 +41,8 @@ const MUSCLES_V35={
 "Flexão com um pé elevado":{"Principais":["Peitoral maior","Tríceps braquial","Deltoide anterior"],"Estabilizadores":["Abdominais","Glúteos","Estabilizadores pélvicos"]}
 };
 const STEPS={
+"Flexão no chão":["Em prancha alta, alinhe o tronco e apoie as mãos firmemente no chão.","Desça flexionando os cotovelos sem perder estabilidade do quadril.","Mantenha o abdômen ativo e evite forçar ombros e punhos.","Suba com controle e pare antes de perder a técnica."],
+"Abdominal protocolo TAF PMERJ":["Deite de costas, joelhos próximos de 90 graus, pés seguros e mãos sobre os ombros.","Eleve o tronco para aproximar cotovelos dos joelhos conforme o protocolo do edital de referência.","Volte até as escápulas tocarem o solo, sem usar impulso dos braços.","Treine séries curtas e faça o teste de 60 segundos apenas nos dias programados."],
 "Polichinelo":["Em pé, una os pés e mantenha os braços ao lado do corpo.","Salte suavemente abrindo as pernas enquanto eleva os braços.","No ponto alto, mantenha o tronco estável e respire continuamente.","Feche as pernas, abaixe os braços e repita sem perder o controle."],
 "Flexão Spartana":["Comece em prancha alta, com uma mão mais adiante ou mais aberta que a outra.","Flexione os cotovelos, mantendo tronco e quadril alinhados.","Empurre o chão até estender os braços, sem torcer a lombar.","Na repetição seguinte, inverta lentamente as posições das mãos."],
 "Flexão tipo jacaré":["Comece em prancha alta, mãos apoiadas com firmeza.","Dobre os cotovelos aproximando o peito do chão, sem perder alinhamento.","Avance uma mão e o pé oposto em deslocamento curto, com o corpo baixo.","Empurre para cima e repita alternando lados, somente com controle."],
@@ -111,7 +113,7 @@ const sets=v?.sets||"Não agendado";
 const reps=v?.reps||"Exercício complementar";
 return '<div class="tf32-summary"><div><span>Séries</span><br>'+esc(sets)+'</div><div><span>Repetições ou duração</span><br>'+esc(reps)+'</div></div>'+(WARN[name]?'<p class="tf32-warning">'+esc(WARN[name])+'</p>':'')+'<p class="tf32-note">Imagens didáticas: as fotos de V31/V32 são geradas por IA; os desenhos V33 são esquemáticos. Consulte sempre seu plano privado. A biblioteca não registra atividades automaticamente.</p>';
 }
-function stage(name){const desc=STEPS[name]||[],prefix=PHOTO[name]||EXTRA[name];if(!prefix)return '<div class="tf32-para">Sequência fotográfica específica ainda não disponível. Consulte a aba Dicas para a técnica indicada no seu plano.</div>';
+function stage(name){const desc=STEPS[name]||[],prefix=PHOTO[name]||EXTRA[name];if(!prefix)return '<div class="tf32-para"><p>Fotografias específicas em preparação. Consulte as etapas técnicas abaixo.</p><ol>'+desc.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></div>';
 return '<div class="tf32-steps">'+(prefix.startsWith('v33/')?'<p class="tf32-note tf33-illustration">ILUSTRAÇÕES ESQUEMÁTICAS — use as instruções da V30 como referência. Não são fotografias.</p>':'')+desc.map((s,i)=>'<div class="tf32-step"><button type="button" class="tf32-photo" data-tf32-zoom="'+i+'" aria-label="Ampliar etapa '+(i+1)+'"><img src="'+imgStep(name,prefix,i)+'" loading="lazy" alt="'+esc(name)+' — etapa '+(i+1)+'" onerror="this.hidden=true"></button><div class="tf32-step-text"><strong><span class="tf32-number">'+(i+1)+'</span>'+["Posição inicial","Movimento","Controle","Retorno"][i]+'</strong><p>'+esc(s)+'</p></div></div>').join('')+'</div>';
 }
 function showExercise(name,select="steps"){const {d,spec}=info(name);if(!spec&&!EXTRA[name])return;active=name;tab=select;lastView="exercise";
