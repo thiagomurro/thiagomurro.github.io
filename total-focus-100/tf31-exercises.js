@@ -6,8 +6,7 @@ const photo={
 "Abdominal supra curto":"abdominal_supra",
 "Prancha de antebraços":"v31/prancha_antebracos",
 "Bird-dog":"v31/bird_dog",
-"Ponte de glúteos":"v31/ponte_gluteos",
-"Afundo reverso com apoio":"avanco"
+"Ponte de glúteos":"v31/ponte_gluteos"
 };
 const hints={
 "Agachamento livre":["Fique em pé com os pés afastados.","Leve o quadril para trás, mantendo os calcanhares no chão.","Flexione os joelhos dentro da amplitude confortável.","Retorne devagar, sem travar os joelhos."],
