@@ -17,7 +17,7 @@ function events(){
  for(const item of d.tasks){
   const x={...item,...(s.overrides?.[item.id]||{})};
   if(x.date<start||x.date>limit||x.date>d.end)continue;
-  if(!cfg.cats.includes(x.category)||["feito","cancelado"].includes(s.statuses?.[item.id]))continue;
+  if(!cfg.cats.includes(x.category)||["feito","cancelado"].includes(s.statuses?.[item.id])||x.meta?.noReminder===true||x.meta?.freeTime===true)continue;
   if(!/^\d{2}:\d{2}$/.test(x.time))continue;
   out.push({id:"tf-"+String(item.id).replace(/[^a-z0-9_-]/gi,"").slice(0,80)+"@totalfocus.local",date:x.date,time:x.time,category:x.category,title:cfg.discreet?"TOTAL FOCUS — "+x.category:"TOTAL FOCUS — "+x.title});
  }
