@@ -39,10 +39,12 @@ function guide(key){
  var newSet=["patinha","deixa"].includes(key);
  if(newSet){
   var cover=base+"shiro/"+key+"/capa.webp";
-  var full=base+"shiro/"+key+"/"+(["olha","deixa"].includes(key)?"capa.webp":"guia.webp");
-  var intro='<div class="tf28-card" style="margin-bottom:13px"><img style="width:100%;aspect-ratio:1.7" src="'+esc(full)+'" alt="Guia visual para '+esc(r[0])+'" loading="lazy" onerror="this.src=\''+esc(cover)+'\'"><div class="tf28-note">Imagem ilustrativa de Pastor Branco Suíço gerada por IA, não fotografia pessoal do Shiro.</div></div>';
-  var steps='<ol style="font-size:14px;line-height:1.8;color:#e2f8fa">'+r[3].map(function(step){return "<li>"+esc(step)+"</li>";}).join("")+"</ol>";
-  show("Shiro • "+r[0],intro+steps+'<div class="tf28-note">Treino curto, reforço positivo e pausas; mantenha a duração definida na rotina. Imagem demonstrativa, sem substituir orientação profissional.</div><div class="tf28-options"><button data-tf28="library">‹ Biblioteca</button><button data-tf28="close">Concluir visualização</button></div>');return;
+  var visual=r[3].map(function(step,i){
+    var image=base+"shiro/"+key+"/etapa_0"+(i+1)+".webp";
+    var error=i===0?"this.onerror=null;this.src='"+cover+"'":"this.hidden=true;this.nextElementSibling.style.display='flex'";
+    return '<figure class="tf28-card"><img src="'+esc(image)+'" alt="'+esc(r[0]+" — etapa "+(i+1))+'" loading="lazy" onerror="'+error+'"><div class="tf28-img-fallback">Foto específica desta etapa ainda pendente</div><figcaption><strong>'+(i+1)+'.</strong> '+esc(step)+'</figcaption></figure>';
+  }).join("");
+  show("Shiro • "+r[0],'<p class="tf28-note">Quatro etapas orientadas. As fotografias individuais de Patinha e Deixa ainda estão em preparação; não reutilizaremos imagens de outros comandos.</p><div class="tf28-cards">'+visual+'</div><div class="tf28-note">Treino curto, reforço positivo e palavra de liberação OKAY. Registros e sessões da agenda não são alterados.</div><div class="tf28-options"><button data-tf28="library">‹ Biblioteca</button><button data-tf28="close">Concluir visualização</button></div>');return;
  }
  var cards=r[3].map(function(s,i){var u=base+r[2]+"/"+r[1]+"/etapa_0"+(i+1)+".webp";return '<figure class="tf28-card"><img src="'+esc(u)+'" loading="lazy" alt="'+esc(r[0]+' — etapa '+(i+1))+'" onerror="this.hidden=true;this.nextElementSibling.style.display=\'flex\'"><div class="tf28-img-fallback">Etapa '+(i+1)+' · fotografia aguardando publicação</div><figcaption><strong>'+(i+1)+'.</strong> '+esc(s)+'</figcaption></figure>';}).join("");
  var muscle=r[4].length?'<div class="tf28-labels">'+r[4].map(function(s){return "<span>"+esc(s)+"</span>";}).join("")+"</div>":'';
@@ -52,6 +54,6 @@ function guide(key){
 document.addEventListener("click",function(e){var b=e.target.closest("[data-tf28]");if(b){e.preventDefault();e.stopImmediatePropagation();var a=b.dataset.tf28;if(a==="close")dialog.close();else if(a==="library")library();else if(a==="guide")guide(b.dataset.key);return;}
  var c=e.target.closest('[data-tf25="command"]');if(!c)return;var name=c.dataset.command,matched=match(name);if(!matched||matched[2]!=="shiro")return;e.preventDefault();e.stopImmediatePropagation();guide(matched[1]);},true);
 var main=document.querySelector("#main");if(main){var queued=false;new MutationObserver(function(){if(!queued){queued=true;requestAnimationFrame(function(){queued=false;inject();});}}).observe(main,{childList:true,subtree:true});}
-window.TF28_GUIDES=Object.freeze({version:"35.0",open:guide,library:library,names:rows.map(function(r){return r[0];})});
+window.TF28_GUIDES=Object.freeze({version:"37.0",open:guide,library:library,names:rows.map(function(r){return r[0];})});
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
