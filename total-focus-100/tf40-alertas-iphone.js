@@ -56,6 +56,10 @@ function alarmText(rows){
  return head+"\n"+rows.map(e=>dayLabel(e.date)+" | "+e.time+" | "+e.title).join("\n")+
  "\n\nConfigure como recorrentes somente horários realmente iguais. Para domingos e eventos variáveis, confira a data.\n";
 }
+function vibrationText(rows){
+ const head="TOTAL FOCUS 100 — ALARMES VIBRATÓRIOS DO EXPEDIENTE\nNo app RELÓGIO escolha SOM: NENHUM e mantenha uma vibração/resposta tátil ativa.\nRepita de segunda a sexta os horários 08h, 08h30 e 16h.\n\n";
+ return head+rows.map(e=>dayLabel(e.date)+" | "+e.time+" | "+e.title).join("\n")+"\n\nO app web não cria alarmes diretamente no Relógio.\n";
+}
 const icsText=v=>{
  const stamp=d=>new Date(d).toISOString().replace(/[-:]|\.\d{3}/g,"");
  const ts=(date,time)=>date.replace(/-/g,"")+"T"+time.replace(":","")+"00";
@@ -90,12 +94,13 @@ function box(){
  const list=alarms.slice(0,18).map(e=>'<div style="padding:7px 0;border-bottom:1px solid #205466;display:flex;gap:9px"><b style="min-width:90px;color:#89fff1">'+escapeHTML(dayLabel(e.date))+' '+escapeHTML(e.time)+'</b><span>'+escapeHTML(e.title)+'</span></div>').join("");
  panel.innerHTML='<div style="font-size:11px;letter-spacing:1.2px;color:#72f2ec;font-weight:800">ALARME INTELIGENTE • IPHONE</div>'+
  '<h2 style="margin:7px 0 10px">Som fora do trabalho, discrição no expediente</h2>'+
- '<p style="font-size:13px;line-height:1.5">Alarmes importantes: Relógio do iPhone (com som). Avisos do expediente: Calendário sem som, com vibração habilitada no iOS.</p>'+
+ '<p style="font-size:13px;line-height:1.5">Alarmes importantes: Relógio do iPhone com som. No expediente, Relógio com Som = Nenhum e vibração ativa (08h, 08h30, 16h). Calendário como alternativa.</p>'+
  '<label style="display:block;font-size:13px">Período <select id="tf40-days" style="width:100%;margin:5px 0 12px"><option value="12" '+(settings.days===12?"selected":"")+'>Próximos 12 dias</option><option value="30" '+(settings.days===30?"selected":"")+'>Próximos 30 dias</option><option value="100" '+(settings.days===100?"selected":"")+'>Até o fim dos 100 dias</option></select></label>'+
- (data?'<p><b>'+alarms.length+'</b> horários para alarmes no Relógio · <b>'+vibrations.length+'</b> avisos discretos no Calendário</p>'+
- '<div style="display:flex;flex-wrap:wrap;gap:7px"><button type="button" id="tf40-copy">Copiar lista de alarmes</button><button type="button" id="tf40-text">Baixar lista (.txt)</button><button type="button" class="primary" id="tf40-ics">Baixar só avisos do trabalho (.ics)</button></div>'+
+ (data?'<p><b>'+alarms.length+'</b> horários de alarme sonoro · <b>'+vibrations.length+'</b> alarmes vibratórios no expediente</p>'+
+ '<div style="display:flex;flex-wrap:wrap;gap:7px"><button type="button" id="tf40-copy">Copiar lista de alarmes</button><button type="button" id="tf40-text">Baixar alarmes com som (.txt)</button><button type="button" id="tf40-vibration">Baixar alarmes só vibração (.txt)</button><button type="button" id="tf40-ics">Calendário do trabalho (.ics) — opcional</button></div>'+
  '<details style="margin:10px 0"><summary style="cursor:pointer">Ver próximos horários de alarme sonoro</summary>'+list+'</details>'+
- '<p style="font-size:12px;line-height:1.5"><b>Passo 1:</b> crie os alarmes de som no app Relógio seguindo a lista. O app web não pode criá-los sozinho. <b>Passo 2:</b> importe o arquivo de trabalho no Calendário; em Ajustes → Notificações → Calendário, deixe os sons desligados. Em Ajustes → Resposta Tátil e Som → Resposta Tátil, escolha reproduzir no modo silencioso. Teste com um evento de poucos minutos: vibração não é garantida por arquivo .ics. <b>Não importe junto os antigos arquivos gerais de alertas</b>, para evitar duplicação.</p>':
+ '<details style="margin:10px 0"><summary style="cursor:pointer">Ver alarmes do expediente (som desligado + vibração)</summary>'+vibrations.slice(0,12).map(e=>'<div style="padding:7px 0;border-bottom:1px solid #205466"><b style="color:#89fff1">'+escapeHTML(dayLabel(e.date))+' '+escapeHTML(e.time)+'</b> · '+escapeHTML(e.title)+'</div>').join("")+'</details>'+
+ '<p style="font-size:12px;line-height:1.5"><b>Passo 1:</b> crie os alarmes prioritários no Relógio com som audível. <b>Passo 2:</b> no Relógio, configure os 3 horários de trabalho: 08h, 08h30 e 16h, repetição de segunda a sexta, Som = Nenhum, vibração diferente de Nenhuma. Teste no iPhone. <b>Alternativa:</b> o arquivo .ics de trabalho pode ser importado no Calendário, com som desligado e resposta tátil ativada, mas não obriga o aparelho a vibrar. Não use os dois métodos no mesmo horário.</p>':
  '<p>Importe o cronograma privado V39 para gerar alarmes e avisos do trabalho.</p>')+
  '<p style="color:#b7d5df;font-size:11px">A lista é gerada localmente. O site não envia sua agenda a servidores nem ativa alarmes de forma remota.</p>';
 }
@@ -105,17 +110,18 @@ document.addEventListener("change",e=>{
  localStorage.setItem("totalfocus100.alerts.v40",JSON.stringify(settings));const p=document.querySelector("#tf40-alerts");if(p)p.dataset.signature="";box();
 });
 document.addEventListener("click",async e=>{
- const id=e.target?.closest?.("button")?.id;if(!["tf40-copy","tf40-text","tf40-ics"].includes(id))return;
+ const id=e.target?.closest?.("button")?.id;if(!["tf40-copy","tf40-text","tf40-vibration","tf40-ics"].includes(id))return;
  const {alarms,vibrations}=events();
  if(id==="tf40-ics"){if(!vibrations.length)return alert("Nenhum aviso do expediente no período.");download(icsText(vibrations),"TOTAL_FOCUS_100_SOMENTE_TRABALHO_SEM_SOM.ics","text/calendar;charset=utf-8");return;}
  const text=alarmText(alarms);
  if(id==="tf40-text"){download(text,"TOTAL_FOCUS_100_ALARMES_IMPORTANTES.txt","text/plain;charset=utf-8");return;}
+ if(id==="tf40-vibration"){download(vibrationText(vibrations),"TOTAL_FOCUS_100_ALARMES_SO_VIBRACAO.txt","text/plain;charset=utf-8");return;}
  try{await navigator.clipboard.writeText(text);alert("Lista copiada. Abra o Relógio e crie os alarmes prioritários.");}
  catch{download(text,"TOTAL_FOCUS_100_ALARMES_IMPORTANTES.txt","text/plain;charset=utf-8");}
 });
 let queued=false;const refresh=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;box()})};
 const main=document.querySelector(ROOT);if(main)new MutationObserver(refresh).observe(main,{childList:true});
 window.addEventListener("tf-remote-update",refresh);
-window.TF40_ALERTS={version:"40.0",events,alarmText,icsText};
+window.TF40_ALERTS={version:"40.1",events,alarmText,vibrationText,icsText};
 refresh();
 })();
