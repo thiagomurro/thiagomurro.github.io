@@ -1,6 +1,6 @@
 /* TOTAL FOCUS 100 V33 — biblioteca didática completa de calistenia; somente leitura de dados privados. */
 (()=>{"use strict";
-if(window.TF31_EXERCISES?.version==="36.0")return;
+if(window.TF31_EXERCISES?.version==="37.0")return;
 const DK="totalfocus100.private.dataset.v1",SK="totalfocus100.v1";
 const ROOT="./tf25-assets/treinos/";
 const imgStep=(name,prefix,i)=>name==="Flexão no chão"?"./tf25-assets/flexao_etapa_"+(i+1)+".webp":ROOT+prefix+"/etapa_0"+(i+1)+".webp";
@@ -109,9 +109,13 @@ function due(name){const {d}=info(name),done=read(SK).statuses||{};
 const match=(d.tasks||[]).filter(t=>t.category==="Treino"&&Array.isArray(t.meta?.moves)&&t.meta.moves.includes(name)&&t.id&&!(["feito","cancelado"].includes(done[t.id]))).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));return match[0]||null;}
 function frame(title,body){dlg.innerHTML='<div class="tf32-head"><button type="button" class="tf31-trigger" data-tf32-back aria-label="Voltar">‹</button><h2>'+esc(title)+'</h2><span class="tf32-heart">♡</span><button type="button" class="tf31-trigger" data-tf32-close aria-label="Fechar">✕</button></div>'+body;if(!dlg.open)dlg.showModal();dlg.scrollTop=0;}
 function summary(name){const v=info(name).spec,extra=!v;
-const sets=v?.sets||"Não agendado";
-const reps=v?.reps||"Exercício complementar";
-return '<div class="tf32-summary"><div><span>Séries</span><br>'+esc(sets)+'</div><div><span>Repetições ou duração</span><br>'+esc(reps)+'</div></div>'+(WARN[name]?'<p class="tf32-warning">'+esc(WARN[name])+'</p>':'')+'<p class="tf32-note">Imagens didáticas: as fotos de V31/V32 são geradas por IA; os desenhos V33 são esquemáticos. Consulte sempre seu plano privado. A biblioteca não registra atividades automaticamente.</p>';
+const today=new Intl.DateTimeFormat("sv-SE",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
+const queue=(info(name).d.tasks||[]).filter(t=>t.category==="Treino"&&t.date>=today&&Array.isArray(t.meta?.prescriptionV37)&&t.meta.prescriptionV37.some(p=>p.exercise===name)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+const plan=queue[0]?.meta?.prescriptionV37?.find(p=>p.exercise===name);
+const sets=plan?.sets??v?.sets??"Não agendado";
+const reps=plan?.target||v?.reps||"Exercício complementar";
+const extraPlan=plan?'<p class="tf32-note"><b>Próximo treino V37:</b> '+esc(queue[0]?.date||"")+' · descanso '+esc(plan.restSec)+' segundos · intensidade máxima '+esc(plan.rpeCeiling)+'. '+esc(plan.notes||"")+'</p>':'';
+return '<div class="tf32-summary"><div><span>Séries</span><br>'+esc(sets)+'</div><div><span>Repetições ou duração</span><br>'+esc(reps)+'</div></div>'+extraPlan+(WARN[name]?'<p class="tf32-warning">'+esc(WARN[name])+'</p>':'')+'<p class="tf32-note">Imagens didáticas: as fotos de V31/V32 são geradas por IA; os desenhos V33 são esquemáticos. Consulte sempre seu plano privado. A biblioteca não registra atividades automaticamente.</p>';
 }
 function stage(name){const desc=STEPS[name]||[],prefix=PHOTO[name]||EXTRA[name];if(!prefix)return '<div class="tf32-para"><p>Fotografias específicas em preparação. Consulte as etapas técnicas abaixo.</p><ol>'+desc.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></div>';
 return '<div class="tf32-steps">'+(prefix.startsWith('v33/')?'<p class="tf32-note tf33-illustration">ILUSTRAÇÕES ESQUEMÁTICAS — use as instruções da V30 como referência. Não são fotografias.</p>':'')+desc.map((s,i)=>'<div class="tf32-step"><button type="button" class="tf32-photo" data-tf32-zoom="'+i+'" aria-label="Ampliar etapa '+(i+1)+'"><img src="'+imgStep(name,prefix,i)+'" loading="lazy" alt="'+esc(name)+' — etapa '+(i+1)+'" onerror="this.hidden=true"></button><div class="tf32-step-text"><strong><span class="tf32-number">'+(i+1)+'</span>'+["Posição inicial","Movimento","Controle","Retorno"][i]+'</strong><p>'+esc(s)+'</p></div></div>').join('')+'</div>';
@@ -135,10 +139,10 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-tf32-name]
 e.preventDefault();if(b.hasAttribute('data-tf32-close'))dlg.close();else if(b.hasAttribute('data-tf32-name'))showExercise(b.dataset.tf32Name);else if(b.hasAttribute('data-tf32-library'))library();else if(b.hasAttribute('data-tf32-tab'))showExercise(active,b.dataset.tf32Tab);else if(b.hasAttribute('data-tf32-zoom'))zoom(Number(b.dataset.tf32Zoom));else if(b.hasAttribute('data-tf32-back-exercise'))showExercise(active);else if(b.hasAttribute('data-tf32-start'))begin();else if(lastView==='zoom')showExercise(active);else library();
 });
 function attach(){const root=document.querySelector('[data-tf25-root="treino"]'),trainer=document.querySelector('#tf12-dialog');
-if(root&&!root.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.type='button';b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='▦ Exercícios ilustrados · V36';b.addEventListener('click',library);(root.querySelector('.tf25-top')||root).append(b);}
+if(root&&!root.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.type='button';b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='▦ Exercícios ilustrados · V37';b.addEventListener('click',library);(root.querySelector('.tf25-top')||root).append(b);}
 if(trainer?.open&&!trainer.querySelector('[data-tf32-open]')){const b=document.createElement('button');b.className='tf31-trigger';b.dataset.tf32Open='';b.textContent='Ver fotos passo a passo';b.addEventListener('click',library);const view=trainer.querySelector('#tf12-view');(view||trainer).prepend(b);}
 }
 const main=document.querySelector('#main');if(main){let pending=false;new MutationObserver(()=>{if(!pending){pending=true;requestAnimationFrame(()=>{pending=false;attach();});}}).observe(main,{subtree:true,childList:true});}
 setInterval(attach,1800);attach();
-window.TF31_EXERCISES=Object.freeze({version:'36.0',library,open:showExercise,photoNames:Object.keys(PHOTO),extraNames:Object.keys(EXTRA)});
+window.TF31_EXERCISES=Object.freeze({version:'37.0',library,open:showExercise,photoNames:Object.keys(PHOTO),extraNames:Object.keys(EXTRA)});
 })();
