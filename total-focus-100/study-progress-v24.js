@@ -92,6 +92,7 @@ function evaluate(){
  try{
   let changed=false,warnings=[];
   for(const type of ["pmerj","english"]){
+   if(type==="pmerj"&&data.studyProgression?.pmerj?.initialMinutes>=60)continue;
    if(plan[type]?.on)continue;
    const result=info(type,data,app,day);
    const minimum=type==="pmerj"?14:24;
@@ -112,18 +113,19 @@ function evaluate(){
 }
 function row(type,d,s,plan){
  const z=info(type,d,s),upgrade=!!plan[type]?.on,ready=full30(today(),d.start);
- const label=type==="pmerj"?"PMERJ":"Inglês",unit=upgrade?goal[type]:initial[type],availableDays=z.n?z.n+" sessões": "Sem sessões encerradas";
+ const fixed60=type==="pmerj"&&d.studyProgression?.pmerj?.initialMinutes>=60;
+ const label=type==="pmerj"?"PMERJ":"Inglês",unit=fixed60?60:(upgrade?goal[type]:initial[type]),availableDays=z.n?z.n+" sessões": "Sem sessões encerradas";
  const pct=z.pct.toString();
- return '<div class="tf24-track"><div class="tf24-head"><strong>'+label+'</strong><span class="tf24-badge" data-promoted="'+upgrade+'">'+(upgrade?"EVOLUÇÃO ATIVADA":"META · 80%")+'</span></div>'+
+ return '<div class="tf24-track"><div class="tf24-head"><strong>'+label+'</strong><span class="tf24-badge" data-promoted="'+upgrade+'">'+(fixed60?"META 60 MIN":upgrade?"EVOLUÇÃO ATIVADA":"META · 80%")+'</span></div>'+
  '<div class="tf24-numbers"><b>'+z.all+'/'+z.n+'</b><span>'+z.pct+'% de adesão</span><strong>'+unit+' min</strong></div>'+
- '<div class="tf24-progress"><i style="width:'+pct+'%"></i></div><small>'+availableDays+' nos últimos 30 dias completos · '+(upgrade?"meta de evolução atingida":z.remaining+" conclusão(ões) para 80%")+'.</small>'+
- '<p class="tf24-extra">'+(upgrade?"Aumentou para "+goal[type]+" minutos em "+plan[type].on+". A conquista é permanente até o fim do desafio.":ready?"Avaliação diária automática; marque as sessões realmente estudadas como concluídas.":"Primeira avaliação em "+shift(d.start,30)+".")+'</p></div>'
+ '<div class="tf24-progress"><i style="width:'+pct+'%"></i></div><small>'+availableDays+' nos últimos 30 dias completos · '+(fixed60?"estudo de 60 min já ativo":upgrade?"meta de evolução atingida":z.remaining+" conclusão(ões) para 80%")+'.</small>'+
+ '<p class="tf24-extra">'+(fixed60?"PMERJ: 16h–17h nos dias com expediente. Nenhum complemento automático após 80%.":upgrade?"Aumentou para "+goal[type]+" minutos em "+plan[type].on+". A conquista é permanente até o fim do desafio.":ready?"Avaliação diária automática; marque as sessões realmente estudadas como concluídas.":"Primeira avaliação em "+shift(d.start,30)+".")+'</p></div>'
 }
 function renderBox(){
  const d=J(DK),s=J(SK)||{};if(!d?.studyProgression)return "";
  const p=state(),ready=full30(today(),d.start);
- return '<section class="tf24-panel" id="tf24-panel"><div class="tf24-eyebrow">⚡ MOTOR DE EVOLUÇÃO · 30 DIAS</div><h2>Estudos e novas metas</h2><p>Suba de nível com pelo menos 80% das sessões concluídas nos últimos 30 dias. PMERJ e inglês progridem separadamente.</p>'+row("pmerj",d,s,p)+row("english",d,s,p)+
- '<p class="tf24-foot">PMERJ: 30 min no almoço; após a promoção, mais 30 min fora do expediente. Inglês: 15 min diários (inclusive sábado e domingo); após a promoção, 30 min. Quarta-feira pode ser dividida em 2 blocos de 15 min.</p>'+
+ return '<section class="tf24-panel" id="tf24-panel"><div class="tf24-eyebrow">⚡ MOTOR DE EVOLUÇÃO · 30 DIAS</div><h2>Estudos e novas metas</h2><p>Suba de nível com pelo menos 80% das sessões concluídas nos últimos 30 dias. A meta PMERJ pode iniciar com 60 min na V39; a evolução do inglês segue a regra dos 80%.</p>'+row("pmerj",d,s,p)+row("english",d,s,p)+
+ '<p class="tf24-foot">PMERJ: na V39, 60 min das 16h às 17h, com almoço livre e sem complemento após 80%; consulte a agenda nas versões anteriores. Inglês: 15 min diários (inclusive sábado e domingo); após a promoção, 30 min. Quarta-feira pode ser dividida em 2 blocos de 15 min.</p>'+
  (p.pending?.length?'<p class="tf24-warning">Conflitos em '+p.pending.length+' data(s). Consulte o cronograma antes de contar a ampliação.</p>':"")+
  '<div class="tf24-row"><button id="tf24-refresh" type="button">↻ Conferir evolução</button><button id="tf24-open-today" type="button">▤ Estudos de hoje</button></div></section>';
 }
