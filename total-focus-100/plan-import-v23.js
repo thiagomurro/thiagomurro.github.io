@@ -24,7 +24,7 @@ let queued=false;
 function display(){
 const main=q("#main");if(!main)return;const menu=main.querySelector('[data-tf18-screen="configMenu"] .tf18-listnav'),native=main.querySelector("h1")?.textContent?.includes("Ajustes e privacidade");
 if(!menu&&!native||main.querySelector("#tf23-update"))return;
-const b=document.createElement("button");b.id="tf23-update";b.type="button";b.className="tf23-update";b.style.cssText="width:100%;padding:15px;text-align:left;border:1px solid #36dbd5;border-radius:12px;background:#0d3549;color:#affdf1;font-weight:850;margin:12px 0";b.textContent="▦ Atualizar cronograma privado (V24 / V30 / V36)";
+const b=document.createElement("button");b.id="tf23-update";b.type="button";b.className="tf23-update";b.style.cssText="width:100%;padding:15px;text-align:left;border:1px solid #36dbd5;border-radius:12px;background:#0d3549;color:#affdf1;font-weight:850;margin:12px 0";b.textContent="▦ Atualizar cronograma privado (até V37)";
 (menu||main).append(b);b.addEventListener("click",()=>input.click())
 }
 input.addEventListener("change",async()=>{const file=input.files?.[0];input.value="";if(!file)return;if(file.size>6000000)return alert("Arquivo muito grande");
@@ -33,7 +33,8 @@ const d=JSON.parse(await file.text()),r=inspect(d),promoted=JSON.parse(localStor
 if(promoted.pmerj?.on||promoted.english?.on)throw Error("A progressão de estudo já foi desbloqueada neste dispositivo. Não reimporte a versão inicial e não apague os complementos. Faça backup primeiro.");
 const upgradeV30=Array.isArray(d.trainingRoadmapV30)&&d.trainingRoadmapV30.length===14;
 const upgradeV36=Array.isArray(d.trainingRoadmapV36)&&d.trainingRoadmapV36.length===14;
-if(!confirm("Aplicar novo plano "+(upgradeV36?"V36 — TAF, flexões e anatomia":upgradeV30?"V30 — corrida e calistenia":"V24")+"?\nPMERJ: "+r.days+" dias de expediente, 15h30–16h.\nCotações: "+r.quotes+" blocos só domingo, segunda e quinta.\nInglês: 15 min nos 100 dias (inclui fins de semana), dobrando após a meta.\n"+(upgradeV30?"Cardio: terça, quinta e domingo, com caminhadas à parte.\nForça: calistenia sem pesos segunda, quarta e sexta.\nIgreja quarta: 19h–21h20.\n":"")+done+" registros de atividades concluídas serão mantidos no histórico, embora exercícios substituídos possam ter outros IDs.\n\nNenhum dado será enviado ao GitHub."))return;
+const upgradeV37=Array.isArray(d.trainingRoadmapV37)&&d.trainingRoadmapV37.length===15;
+if(!confirm("Aplicar novo plano "+(upgradeV37?"V37 — séries, repetições e descansos progressivos":upgradeV36?"V36 — TAF, flexões e anatomia":upgradeV30?"V30 — corrida e calistenia":"V24")+"?\nPMERJ: "+r.days+" dias de expediente, 15h30–16h.\nCotações: "+r.quotes+" blocos só domingo, segunda e quinta.\nInglês: 15 min nos 100 dias (inclui fins de semana), dobrando após a meta.\n"+(upgradeV30?"Cardio: terça, quinta e domingo, com caminhadas à parte.\nForça: calistenia sem pesos segunda, quarta e sexta.\nIgreja quarta: 19h–21h20.\n":"")+done+" registros de atividades concluídas serão mantidos no histórico, embora exercícios substituídos possam ter outros IDs.\n\nNenhum dado será enviado ao GitHub."))return;
 const old=localStorage.getItem(DK);if(old)localStorage.setItem(PREV,old);localStorage.setItem(DK,JSON.stringify(d));window.dispatchEvent(new Event("tf-remote-update"));alert("Cronograma privado atualizado. Confira a agenda e faça backup para preservar seu histórico.");
 }catch(e){alert("Importação não realizada: "+e.message)}});
 const main=q("#main");if(main)new MutationObserver(()=>{if(!queued){queued=true;requestAnimationFrame(()=>{queued=false;display()})}}).observe(main,{childList:true});display();
