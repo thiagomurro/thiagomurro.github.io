@@ -16,8 +16,8 @@ function base(){const d=read(DK),s=read(SK)||{};if(!d?.tasks?.length)return null
 function valid(t){return t.priority==="flex"&&!t.meta?.optional}
 function done(s,t){return s.statuses?.[t.id]==="feito"}
 function updateLocal(s){if(!write(SK,s))return;window.dispatchEvent(new Event("tf-remote-update"))}
-function taskRow(t,s){const isDone=done(s,t),status=s.statuses?.[t.id]||"pendente",color=colors[t.category]||"#71d2e4",button=t.priority==="flex";
- return '<div class="tf18-event" data-done="'+isDone+'"><div class="time">'+esc(t.time)+'</div><div class="event-body" style="--tcolor:'+color+'"><strong>'+esc(t.title)+'</strong><small>'+esc(t.category)+' · '+(isDone?"✓ Concluído":esc(status))+'</small></div>'+(button?'<button class="event-action" data-do="view" data-id="'+esc(t.id)+'">Abrir ›</button>':'<span class="event-action">●</span>')+'</div>'}
+function taskRow(t,s){const isDone=done(s,t),status=s.statuses?.[t.id]||"pendente",color=colors[t.category]||"#71d2e4",button=t.priority==="flex",custom=window.TF41_ROUTINE?.controls(t,s);
+ return '<div class="tf18-event" data-done="'+isDone+'"><div class="time">'+esc(t.time)+'</div><div class="event-body" style="--tcolor:'+color+'"><strong>'+esc(t.title)+'</strong><small>'+esc(t.category)+' · '+(isDone?"✓ Concluído":esc(status))+'</small></div>'+(custom?'<div class="tf41-actions">'+custom+'</div>':(button?'<button class="event-action" data-do="view" data-id="'+esc(t.id)+'">Abrir ›</button>':'<span class="event-action">●</span>'))+'</div>'}
 function top(title,caption,extra=""){return '<div class="tf18-pagehead"><div><small>◈ TOTAL FOCUS 100</small><h1>'+title+'</h1></div>'+extra+'</div>'}
 function tabs(key,items,value){return '<div class="tf18-segments">'+items.map(([k,name])=>'<button type="button" data-tf18-'+key+'="'+k+'" aria-pressed="'+(k===value)+'">'+name+'</button>').join("")+'</div>'}
 function eventsFor(tasks,dt){return tasks.filter(t=>t.date===dt).sort((a,b)=>String(a.time).localeCompare(String(b.time)))}
@@ -256,6 +256,6 @@ if(main)new MutationObserver(cyclePaint).observe(main,{childList:true});
 window.addEventListener("pageshow",cyclePaint);
 window.addEventListener("tf-remote-update",cyclePaint);
 focusTick=setInterval(()=>{if(active==="focusTimer"&&focus.run)showClock()},500);
-window.TF18_APP=Object.freeze({activate:page=>{const allowed=["today","agenda","training","shiro","quotes","more","awards","sleep","modes","config","metrics"];if(allowed.includes(page))activate(page)},current:()=>active,version:"18.1"});
+window.TF18_APP=Object.freeze({activate:page=>{const allowed=["today","agenda","training","shiro","quotes","more","awards","sleep","modes","config","metrics"];if(allowed.includes(page))activate(page)},refresh:()=>{if(active==="agenda")calendar();else if(active==="sleep")sleepView();else if(active==="quotes")quotations()},current:()=>active,version:"18.2"});
 setupNav();cyclePaint();
 })();
