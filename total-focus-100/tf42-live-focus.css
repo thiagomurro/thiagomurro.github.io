@@ -58,3 +58,49 @@
  .tf42-top{align-items:start}
  .tf42-live-tag{font-size:9px;padding:5px 7px}
 }
+
+/* V43 — centralização real da missão e símbolos sem emoji */
+#main.tf22-home #tf20-cover.tf42-cover .tf42-live-wrap{align-items:stretch}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-symbol{
+ width:108px;height:108px;min-height:108px;border-radius:30px;align-self:center;
+ display:flex;align-items:center;justify-content:center;margin:8px auto 18px;
+ background:radial-gradient(circle at 28% 10%,#44ebdb6d,#0a3d5b91 65%);
+ box-shadow:0 0 37px #31f4e838,inset 0 1px #b2fff53a;
+}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-symbol svg{
+ width:61px;height:61px;display:block;color:#edffff;filter:drop-shadow(0 0 7px #68ffe57f);
+}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-body{
+ align-items:center!important;justify-content:flex-start;text-align:center;
+ width:100%;gap:13px;flex:1;
+}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-body h2{
+ text-align:center!important;width:100%;max-width:580px;margin:0 auto!important;
+}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-hours{text-align:center}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-type{
+ display:inline-flex;align-items:center;justify-content:center;
+ padding:7px 13px;border-radius:999px;background:#71552a42;border:1px solid #aa874059;
+}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-track{width:min(100%,450px);margin-left:auto;margin-right:auto}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-go{max-width:540px;align-self:center}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-after{
+ max-width:540px;margin-left:auto;margin-right:auto;justify-items:center;text-align:center;
+}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-actions{justify-content:center}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-eyebrow{
+ justify-content:center;flex-wrap:wrap;align-items:center;text-align:center;gap:8px 16px;
+}
+#main.tf22-home #tf20-cover.tf42-cover .tf42-bottom{
+ width:100%;gap:12px;text-align:center;justify-content:center
+}
+@media(min-width:860px){
+ #main.tf22-home #tf20-cover.tf42-cover .tf42-live-wrap{justify-content:space-between}
+ #main.tf22-home #tf20-cover.tf42-cover .tf42-symbol{width:128px;height:128px;min-height:128px;margin:16px auto}
+ #main.tf22-home #tf20-cover.tf42-cover .tf42-symbol svg{width:75px;height:75px}
+ #main.tf22-home #tf20-cover.tf42-cover .tf42-body{justify-content:center}
+}
+@media(max-width:390px){
+ #main.tf22-home #tf20-cover.tf42-cover .tf42-symbol{width:90px;height:90px;min-height:90px;margin:5px auto 12px}
+ #main.tf22-home #tf20-cover.tf42-cover .tf42-symbol svg{width:54px;height:54px}
+}
