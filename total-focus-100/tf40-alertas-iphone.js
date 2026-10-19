@@ -88,7 +88,7 @@ function box(){
   !!root.querySelector("h1")?.textContent?.includes("Ajustes e privacidade");
  if(!config)return;
  let panel=root.querySelector("#tf40-alerts");
- if(!panel){panel=document.createElement("section");panel.id="tf40-alerts";panel.className="card";panel.style.cssText="border:1px solid #35d6d3;border-radius:18px;margin:16px 0;padding:16px;background:#092b3b;color:#eaffff";const prior=root.querySelector("#tf14-reminders");if(prior)prior.insertAdjacentElement("afterend",panel);else root.append(panel);}
+ if(!panel){panel=document.createElement("section");panel.id="tf40-alerts";panel.className="card";panel.style.cssText="border:1px solid #35d6d3;border-radius:18px;margin:16px 0;padding:16px;background:#092b3b;color:#eaffff";const menu=root.querySelector('[data-tf18-screen="configMenu"]');const title=root.querySelector("h1");if(menu){const nav=menu.querySelector(".tf18-listnav");if(nav)nav.insertAdjacentElement("beforebegin",panel);else menu.prepend(panel)}else if(title&&title.textContent.includes("Ajustes e privacidade"))title.insertAdjacentElement("afterend",panel);else root.prepend(panel);}
  const {alarms,vibrations,data}=events(),signature=[settings.days,alarms.map(e=>e.date+e.time+e.id),vibrations.map(e=>e.date+e.time+e.id)].join("|");
  if(panel.dataset.signature===signature)return;panel.dataset.signature=signature;
  const list=alarms.slice(0,18).map(e=>'<div style="padding:7px 0;border-bottom:1px solid #205466;display:flex;gap:9px"><b style="min-width:90px;color:#89fff1">'+escapeHTML(dayLabel(e.date))+' '+escapeHTML(e.time)+'</b><span>'+escapeHTML(e.title)+'</span></div>').join("");
@@ -122,6 +122,6 @@ document.addEventListener("click",async e=>{
 let queued=false;const refresh=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;box()})};
 const main=document.querySelector(ROOT);if(main)new MutationObserver(refresh).observe(main,{childList:true});
 window.addEventListener("tf-remote-update",refresh);
-window.TF40_ALERTS={version:"40.1",events,alarmText,vibrationText,icsText};
+window.TF40_ALERTS={version:"40.2",events,alarmText,vibrationText,icsText};
 refresh();
 })();
