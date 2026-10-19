@@ -78,6 +78,63 @@ const icsText=v=>{
  }
  return lines.concat(["END:VCALENDAR",""]).join("\r\n");
 };
+
+/* Exportação de compromissos completos para Google Agenda, sem publicar o cronograma. */
+function calendarTaskKind(t){
+ const title=String(t.title||"").toLocaleLowerCase("pt-BR");
+ if(t.meta?.optional===true||t.meta?.noReminder===true||t.meta?.freeTime===true)return null;
+ if(t.category==="Trabalho"||(t.category==="PMERJ"&&minute(t.time)>=480&&minute(t.time)<1020))return "work";
+ if(t.category==="Treino"&&!/opcional/.test(title))return "personal";
+ if(t.category==="Cardio")return "personal";
+ if(t.category==="Inglês"||t.category==="Shiro")return "personal";
+ if(t.category==="PMERJ")return "personal";
+ if(t.category==="Igreja"&&!/convívio e saída/.test(title))return "personal";
+ if(t.category==="Rotina"&&/acordar|banho e se arrumar|se arrumar|prepar(aç|ar)ão? para a igreja|preparar para a igreja/i.test(title))return "personal";
+ return null;
+}
+function calendarRows(kind){
+ const d=read(DK),state=read(SK)||{};
+ if(!Array.isArray(d?.tasks))return [];
+ const start=dateString(new Date())>d.start?dateString(new Date()):d.start,stop=shift(start,settings.days-1);
+ return d.tasks.map(t=>({...t,...(state.overrides?.[t.id]||{})}))
+ .filter(t=>t.date>=start&&t.date<=stop&&t.date<=d.end&&/^\d\d:\d\d$/.test(t.time)&&
+  (kind==="all"?!!calendarTaskKind(t):calendarTaskKind(t)===kind))
+ .sort((a,b)=>(a.date+a.time+a.id).localeCompare(b.date+b.time+b.id));
+}
+function calendarICS(rows,kind){
+ const pad=x=>String(x).padStart(2,"0");
+ const ts=(date,time)=>date.replace(/-/g,"")+"T"+time.replace(":","")+"00";
+ const esc=s=>String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n");
+ const datePlus=(str,days)=>shift(str,days);
+ const ending=t=>{
+  const start=minute(t.time);
+  const v=/^\d\d:\d\d$/.test(t.end||"")?minute(t.end):start+15;
+  const m=v<=start?v+1440:v;
+  const total=Math.floor(m/1440);
+  return ts(datePlus(t.date,total),pad(Math.floor(m%1440/60))+":"+pad(m%60));
+ };
+ const label=kind==="all"?"ATIVIDADES E TRABALHO":kind==="work"?"TRABALHO":"ATIVIDADES PESSOAIS";
+ const lines=["BEGIN:VCALENDAR","VERSION:2.0","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+  "PRODID:-//TOTAL FOCUS 100//V43 GOOGLE AGENDA//PT-BR",
+  "X-WR-CALNAME:TOTAL FOCUS - "+label,"X-WR-TIMEZONE:America/Sao_Paulo",
+  "BEGIN:VTIMEZONE","TZID:America/Sao_Paulo","BEGIN:STANDARD","DTSTART:19700101T000000",
+  "TZOFFSETFROM:-0300","TZOFFSETTO:-0300","TZNAME:-03","END:STANDARD","END:VTIMEZONE"];
+ const dt=new Date().toISOString().replace(/[-:]|\.\d{3}/g,"");
+ for(const t of rows){
+  const g=calendarTaskKind(t),name="TOTAL FOCUS • "+t.title;
+  const description=(g==="work"?"AVISO DISCRETO: horario de expediente. ":"ATIVIDADE PESSOAL: verificar notificações de som no Google Agenda. ")+
+   "Importado do cronograma privado TOTAL FOCUS. Não é alarme contínuo do Relógio.";
+  lines.push("BEGIN:VEVENT","UID:tf43-"+String(t.id).replace(/[^a-z0-9_-]/ig,"").slice(0,85)+"@totalfocus.local",
+  "DTSTAMP:"+dt,"DTSTART;TZID=America/Sao_Paulo:"+ts(t.date,t.time),
+  "DTEND;TZID=America/Sao_Paulo:"+ending(t),
+  "SUMMARY:"+esc(name),"DESCRIPTION:"+esc(description),
+  "CATEGORIES:"+esc(t.category||"TOTAL FOCUS"),"TRANSP:TRANSPARENT",
+  "BEGIN:VALARM","ACTION:DISPLAY","TRIGGER:PT0M",
+  "DESCRIPTION:"+esc(t.title),"END:VALARM","END:VEVENT");
+ }
+ return lines.concat(["END:VCALENDAR",""]).join("\r\n");
+}
+
 function download(data,name,mime){
  const blob=new Blob([data],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement("a");
  a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);
@@ -89,7 +146,7 @@ function box(){
  if(!config)return;
  let panel=root.querySelector("#tf40-alerts");
  if(!panel){panel=document.createElement("section");panel.id="tf40-alerts";panel.className="card";panel.style.cssText="border:1px solid #35d6d3;border-radius:18px;margin:16px 0;padding:16px;background:#092b3b;color:#eaffff";const menu=root.querySelector('[data-tf18-screen="configMenu"]');const title=root.querySelector("h1");if(menu){const nav=menu.querySelector(".tf18-listnav");if(nav)nav.insertAdjacentElement("beforebegin",panel);else menu.prepend(panel)}else if(title&&title.textContent.includes("Ajustes e privacidade"))title.insertAdjacentElement("afterend",panel);else root.prepend(panel);}
- const {alarms,vibrations,data}=events(),signature=[settings.days,alarms.map(e=>e.date+e.time+e.id),vibrations.map(e=>e.date+e.time+e.id)].join("|");
+ const {alarms,vibrations,data}=events(),signature=[settings.days,alarms.map(e=>e.date+e.time+e.id),vibrations.map(e=>e.date+e.time+e.id),calendarRows("personal").map(e=>e.date+e.time+e.id)].join("|");
  if(panel.dataset.signature===signature)return;panel.dataset.signature=signature;
  const list=alarms.slice(0,18).map(e=>'<div style="padding:7px 0;border-bottom:1px solid #205466;display:flex;gap:9px"><b style="min-width:90px;color:#89fff1">'+escapeHTML(dayLabel(e.date))+' '+escapeHTML(e.time)+'</b><span>'+escapeHTML(e.title)+'</span></div>').join("");
  panel.innerHTML='<div style="font-size:11px;letter-spacing:1.2px;color:#72f2ec;font-weight:800">ALARME INTELIGENTE • IPHONE</div>'+
@@ -97,10 +154,10 @@ function box(){
  '<p style="font-size:13px;line-height:1.5">Alarmes importantes: Relógio do iPhone com som. No expediente, Relógio com Som = Nenhum e vibração ativa (08h, 08h30, 16h). Calendário como alternativa.</p>'+
  '<label style="display:block;font-size:13px">Período <select id="tf40-days" style="width:100%;margin:5px 0 12px"><option value="12" '+(settings.days===12?"selected":"")+'>Próximos 12 dias</option><option value="30" '+(settings.days===30?"selected":"")+'>Próximos 30 dias</option><option value="100" '+(settings.days===100?"selected":"")+'>Até o fim dos 100 dias</option></select></label>'+
  (data?'<p><b>'+alarms.length+'</b> horários de alarme sonoro · <b>'+vibrations.length+'</b> alarmes vibratórios no expediente</p>'+
- '<div style="display:flex;flex-wrap:wrap;gap:7px"><button type="button" id="tf40-copy">Copiar lista de alarmes</button><button type="button" id="tf40-text">Baixar alarmes com som (.txt)</button><button type="button" id="tf40-vibration">Baixar alarmes só vibração (.txt)</button><button type="button" id="tf40-ics">Calendário do trabalho (.ics) — opcional</button></div>'+
+ '<div style="display:flex;flex-wrap:wrap;gap:7px"><button type="button" id="tf40-copy">Copiar lista de alarmes</button><button type="button" id="tf40-text">Baixar alarmes com som (.txt)</button><button type="button" id="tf40-vibration">Baixar alarmes só vibração (.txt)</button><button type="button" id="tf40-ics">Calendário do trabalho (.ics) — opcional</button><button type="button" class="primary" id="tf43-ics-personal">Google Agenda: treinos, corrida, inglês e igreja (.ics)</button><button type="button" id="tf43-ics-all">Google Agenda: tudo junto (.ics)</button></div>'+
  '<details style="margin:10px 0"><summary style="cursor:pointer">Ver próximos horários de alarme sonoro</summary>'+list+'</details>'+
  '<details style="margin:10px 0"><summary style="cursor:pointer">Ver alarmes do expediente (som desligado + vibração)</summary>'+vibrations.slice(0,12).map(e=>'<div style="padding:7px 0;border-bottom:1px solid #205466"><b style="color:#89fff1">'+escapeHTML(dayLabel(e.date))+' '+escapeHTML(e.time)+'</b> · '+escapeHTML(e.title)+'</div>').join("")+'</details>'+
- '<p style="font-size:12px;line-height:1.5"><b>Passo 1:</b> crie os alarmes prioritários no Relógio com som audível. <b>Passo 2:</b> no Relógio, configure os 3 horários de trabalho: 08h, 08h30 e 16h, repetição de segunda a sexta, Som = Nenhum, vibração diferente de Nenhuma. Teste no iPhone. <b>Alternativa:</b> o arquivo .ics de trabalho pode ser importado no Calendário, com som desligado e resposta tátil ativada, mas não obriga o aparelho a vibrar. Não use os dois métodos no mesmo horário.</p>':
+ '<p style="font-size:12px;line-height:1.5"><b>Passo 1:</b> crie os alarmes prioritários no Relógio com som audível. <b>Passo 2:</b> no Relógio, configure os 3 horários de trabalho: 08h, 08h30 e 16h, repetição de segunda a sexta, Som = Nenhum, vibração diferente de Nenhuma. Teste no iPhone. <b>Alternativa:</b> o arquivo .ics de trabalho pode ser importado no Calendário, com som desligado e resposta tátil ativada, mas não obriga o aparelho a vibrar. Não use os dois métodos no mesmo horário. Para Google Agenda, utilize o botão <b>treinos, corrida, inglês e igreja (.ics)</b>. Ele também inclui acordar, banho/preparação e atividades do Shiro. Se você já importou o .ics de trabalho, <b>não escolha tudo junto</b>, para não duplicar os eventos. Selecione 100 dias antes de baixar para incluir o desafio inteiro. O Google Agenda pode não manter os alertas do arquivo importado; confira as notificações dos eventos.</p>':
  '<p>Importe o cronograma privado V39 para gerar alarmes e avisos do trabalho.</p>')+
  '<p style="color:#b7d5df;font-size:11px">A lista é gerada localmente. O site não envia sua agenda a servidores nem ativa alarmes de forma remota.</p>';
 }
@@ -110,8 +167,15 @@ document.addEventListener("change",e=>{
  localStorage.setItem("totalfocus100.alerts.v40",JSON.stringify(settings));const p=document.querySelector("#tf40-alerts");if(p)p.dataset.signature="";box();
 });
 document.addEventListener("click",async e=>{
- const id=e.target?.closest?.("button")?.id;if(!["tf40-copy","tf40-text","tf40-vibration","tf40-ics"].includes(id))return;
+ const id=e.target?.closest?.("button")?.id;if(!["tf40-copy","tf40-text","tf40-vibration","tf40-ics","tf43-ics-personal","tf43-ics-all"].includes(id))return;
  const {alarms,vibrations}=events();
+ if(id==="tf43-ics-personal"||id==="tf43-ics-all"){
+  const group=id==="tf43-ics-all"?"all":"personal",rows=calendarRows(group);
+  if(!rows.length)return alert("Nenhuma atividade selecionada neste período. Confira seu cronograma privado.");
+  const name=group==="personal"?"TOTAL_FOCUS_100_GOOGLE_AGENDA_FORA_DO_TRABALHO.ics":"TOTAL_FOCUS_100_GOOGLE_AGENDA_TODAS_ATIVIDADES.ics";
+  download(calendarICS(rows,group),name,"text/calendar;charset=utf-8");
+  return;
+ }
  if(id==="tf40-ics"){if(!vibrations.length)return alert("Nenhum aviso do expediente no período.");download(icsText(vibrations),"TOTAL_FOCUS_100_SOMENTE_TRABALHO_SEM_SOM.ics","text/calendar;charset=utf-8");return;}
  const text=alarmText(alarms);
  if(id==="tf40-text"){download(text,"TOTAL_FOCUS_100_ALARMES_IMPORTANTES.txt","text/plain;charset=utf-8");return;}
@@ -122,6 +186,6 @@ document.addEventListener("click",async e=>{
 let queued=false;const refresh=()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;box()})};
 const main=document.querySelector(ROOT);if(main)new MutationObserver(refresh).observe(main,{childList:true});
 window.addEventListener("tf-remote-update",refresh);
-window.TF40_ALERTS={version:"40.2",events,alarmText,vibrationText,icsText};
+window.TF40_ALERTS={version:"43.0",events,alarmText,vibrationText,icsText,calendarRows,calendarICS,calendarTaskKind};
 refresh();
 })();
