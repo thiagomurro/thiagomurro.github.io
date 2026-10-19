@@ -25,7 +25,7 @@ function selection(d,s,selected,nowDate=new Date()){
  (selected<today||(todaySelected&&end(t)<=clock))).length;
  const chosen=active[0]||upcoming||null;
  const later=chosen?tasks.find(t=>min(t.time)!==null&&min(t.time)>(chosen===active[0]?clock:min(chosen.time))&&!terminal.has(status(s,t))&&!blocked(t)):null;
- const mode=active.length?"now":chosen?"next":selected<today?"review":"rest";
+ const mode=selected<today?"review":active.length?"now":chosen?"next":"rest";
  return {selected,today,todaySelected,clock,tasks,chosen,later,awaiting,active,mode};
 }
 function action(task,s,mode){
@@ -50,7 +50,7 @@ function markup(v,s){
  const task=v.chosen,n=v.clock;
  const progress=task&&v.mode==="now"&&min(task.time)!==null?Math.max(0,Math.min(100,Math.round((n-min(task.time))/(end(task)-min(task.time))*100))):0;
  const remaining=task&&v.mode==="now"?Math.max(0,end(task)-n):null;
- let label=v.mode==="now"?"AGORA • EM ANDAMENTO":v.mode==="next"?"PRÓXIMA ATIVIDADE":v.mode==="review"?"REVISÃO DO DIA":"TEMPO DISPONÍVEL";
+ let label=v.mode==="now"?"AGORA • EM ANDAMENTO":v.mode==="next"?(v.todaySelected?"PRÓXIMA ATIVIDADE":"AGENDA PROGRAMADA"):v.mode==="review"?"REVISÃO DO DIA":"TEMPO DISPONÍVEL";
  const cardTitle=task?task.title:v.mode==="review"?"Consulte as atividades realizadas":"Sem atividade programada";
  const beginEnd=task?safe(task.time+"–"+(task.end||hm(end(task)%1440))):"";
  const dateLabel=v.selected.split("-").reverse().join("/");
