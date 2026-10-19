@@ -79,7 +79,7 @@ function paint(){
  const k=JSON.stringify([selected,v.clock,v.mode,v.chosen?.id||"",v.later?.id||"",v.awaiting, v.tasks.map(t=>t.id+":"+status(s,t))]);
  if(previous===k&&cover.dataset.tf42==="1")return;
  previous=k;
- cover.dataset.tf42="1";cover.classList.add("tf42-cover");
+ cover.dataset.tf22="1";cover.dataset.tf42="1";cover.classList.add("tf42-cover");
  cover.removeAttribute("aria-label");cover.setAttribute("aria-label","Atividade da rotina atual, com controles interativos");
  cover.innerHTML=markup(v,s);
  main.classList.add("tf42-home");
