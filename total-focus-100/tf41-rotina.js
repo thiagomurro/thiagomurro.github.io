@@ -107,6 +107,7 @@ window.addEventListener("tf-remote-update",()=>{prevSig="";schedule()});
 window.addEventListener("pageshow",schedule);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){prevSig="";schedule()}});
 setInterval(()=>{if(!document.hidden){prevSig="";schedule()}},60000);
-window.TF41_ROUTINE=Object.freeze({version:"41.0",controls,update,saveSleep,refresh:schedule});
+window.TF41_ROUTINE=Object.freeze({version:"41.1",controls,update,saveSleep,refresh:schedule});
+if(read(DK)?.tasks?.length)requestAnimationFrame(()=>window.dispatchEvent(new Event("tf-remote-update")));
 schedule();
 })();
