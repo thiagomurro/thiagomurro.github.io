@@ -64,3 +64,32 @@
 /* Nome completo com leitura confortável no celular e no desktop. */
 .hero h1.full-name{font-size:clamp(2.65rem,5.2vw,4.8rem);line-height:1.02;letter-spacing:-.045em;overflow-wrap:normal}
 .hero h1.full-name small{font-size:clamp(.7rem,1.1vw,.9rem);line-height:1.6;letter-spacing:.12em}
+
+
+/* Página inicial — caminhos claros, guia rápido e perguntas frequentes */
+.path-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.path-card{display:flex;flex-direction:column;align-items:flex-start;min-height:250px;padding:24px;border:1px solid var(--line);border-radius:22px;background:var(--paper2);text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.path-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(16,17,22,.08);border-color:#d2bd8c}
+.path-card h3{font-size:1.16rem;line-height:1.2;letter-spacing:-.025em;margin:16px 0 9px}
+.path-card p{font-size:.94rem;color:var(--muted);margin:0}
+.path-link{display:flex;gap:7px;align-items:center;margin-top:auto;padding-top:22px;font-size:.9rem;font-weight:850;color:#87651f}
+.steps-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:30px}
+.step-card{background:white;border:1px solid var(--line);border-radius:22px;padding:26px}
+.step-number{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#f1e6cb;color:#745316;font-weight:900;font-size:.88rem}
+.step-card h3{font-size:1.14rem;line-height:1.25;margin:17px 0 8px}
+.step-card p{color:var(--muted);margin:0;font-size:.95rem}
+.youtube-callout{display:grid;grid-template-columns:1.3fr .7fr;gap:24px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:28px;margin-bottom:24px}
+.youtube-callout h3{font-size:1.25rem;margin:0 0 8px}
+.youtube-callout p{color:var(--muted);margin:0}
+.youtube-callout .actions{justify-content:flex-end;margin-top:0}
+.faq-list{border-top:1px solid var(--line)}
+.faq-list details{padding:20px 2px;border-bottom:1px solid var(--line)}
+.faq-list summary{cursor:pointer;font-size:1.04rem;font-weight:800;line-height:1.45;padding-right:12px}
+.faq-list summary::marker{color:var(--gold2)}
+.faq-list details[open] summary{margin-bottom:12px}
+.faq-list p{color:var(--muted);max-width:850px;margin:8px 0 0}
+.faq-list a{font-weight:800;color:#87651f;text-decoration-thickness:1px;text-underline-offset:3px}
+.btn:focus-visible,.navlinks a:focus-visible,.brand:focus-visible,.path-card:focus-visible,.social:focus-visible,.offer-card a:focus-visible,.faq-list a:focus-visible,.faq-list summary:focus-visible{outline:3px solid var(--gold2);outline-offset:4px}
+@media(max-width:920px){.path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.steps-grid{grid-template-columns:1fr}.youtube-callout{grid-template-columns:1fr}.youtube-callout .actions{justify-content:flex-start;margin-top:18px}}
+@media(max-width:560px){.path-grid{grid-template-columns:1fr}.path-card{min-height:0;padding:22px}.youtube-callout{padding:22px}.step-card{padding:22px}}
+@media(prefers-reduced-motion:reduce){.path-card{transition:none}.path-card:hover{transform:none}}
